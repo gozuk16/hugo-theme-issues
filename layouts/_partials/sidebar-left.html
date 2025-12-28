@@ -1,0 +1,18 @@
+{{- /*
+左サイドバー - ナビゲーションメニュー
+
+このパーシャルは全ページ共通で使用され、サイトのメインナビゲーションを提供します。
+*/}}
+
+<nav aria-label="Main navigation">
+  <h2 class="visually-hidden">Main Menu</h2>
+  {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
+</nav>
+
+{{- /* 追加のナビゲーション要素（必要に応じて） */}}
+{{- with site.Menus.secondary }}
+  <nav aria-label="Secondary navigation">
+    <h3>Quick Links</h3>
+    {{ partial "menu.html" (dict "menuID" "secondary" "page" .) }}
+  </nav>
+{{- end }}

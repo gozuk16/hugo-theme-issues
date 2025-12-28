@@ -1,9 +1,31 @@
 {{ define "main" }}
   {{ .Content }}
-  {{ range site.RegularPages }}
-    <section>
-      <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-      {{ .Summary }}
-    </section>
-  {{ end }}
+
+  <section class="post-list">
+    {{ range site.RegularPages }}
+      <article class="post-summary">
+        <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
+        {{ with .Date }}
+          <time datetime="{{ . | time.Format `2006-01-02` }}">
+            {{ . | time.Format "January 2, 2006" }}
+          </time>
+        {{ end }}
+        <div class="summary">
+          {{ .Summary }}
+        </div>
+        <a href="{{ .RelPermalink }}" class="read-more">Read more →</a>
+      </article>
+    {{ end }}
+  </section>
+{{ end }}
+
+{{ define "sidebar" }}
+  {{- /* ホームページ専用サイドバー */}}
+  <section class="widget">
+    <h3>About This Site</h3>
+    <p>{{ site.Params.description | default "Welcome to our site!" }}</p>
+  </section>
+
+  {{- /* デフォルトのサイドバーコンテンツも表示 */}}
+  {{ partial "sidebar-right.html" . }}
 {{ end }}

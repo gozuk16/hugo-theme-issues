@@ -1,10 +1,26 @@
 {{ define "main" }}
   <h1>{{ .Title }}</h1>
   {{ .Content }}
-  {{ range .Pages }}
-    <section>
-      <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-      {{ .Summary }}
-    </section>
-  {{ end }}
+
+  <section class="page-list">
+    {{ range .Pages }}
+      <article class="page-summary">
+        <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
+        <div class="summary">
+          {{ .Summary }}
+        </div>
+        <a href="{{ .RelPermalink }}" class="read-more">Read more →</a>
+      </article>
+    {{ end }}
+  </section>
+{{ end }}
+
+{{ define "sidebar" }}
+  <section class="widget">
+    <h3>In This Section</h3>
+    <p>{{ .Params.description | default "Browse all pages in this section." }}</p>
+    <p><strong>Total pages:</strong> {{ len .Pages }}</p>
+  </section>
+
+  {{ partial "sidebar-right.html" . }}
 {{ end }}

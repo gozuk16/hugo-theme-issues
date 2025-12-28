@@ -1,0 +1,36 @@
+{{- /*
+右サイドバー - デフォルト表示
+
+このパーシャルは、個別ページテンプレートで sidebar ブロックが定義されていない場合に使用されます。
+基本的なサイト情報や共通ウィジェットを表示します。
+*/}}
+
+{{- /* 最近の投稿 */}}
+<section class="widget">
+  <h3>Recent Posts</h3>
+  <ul>
+    {{- range first 5 (where site.RegularPages "Type" "posts") }}
+      <li>
+        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+        <br>
+        <small>{{ .Date.Format "Jan 2, 2006" }}</small>
+      </li>
+    {{- end }}
+  </ul>
+</section>
+
+{{- /* タグクラウド */}}
+{{- with site.Taxonomies.tags }}
+  <section class="widget">
+    <h3>Tags</h3>
+    <ul>
+      {{- range $name, $taxonomy := . }}
+        <li>
+          <a href="{{ "/tags/" | relLangURL }}{{ $name | urlize }}">
+            {{ $name }} ({{ len $taxonomy }})
+          </a>
+        </li>
+      {{- end }}
+    </ul>
+  </section>
+{{- end }}
