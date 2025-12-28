@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクト概要
 
-このリポジトリは、Hugoの静的サイトジェネレータ用のテーマです。`hugo-theme-issues`は、おそらくJIRAのissueを表示するために設計されたシンプルなテーマです。
+このリポジトリは、Hugoの静的サイトジェネレータ用のテーマです。`hugo-theme-issues`は、JIRAのissueをMarkdownに変換して表示するために設計されたシンプルなテーマです。
 
 ## 前提条件
 
@@ -91,7 +91,7 @@ hugo server -D --source .
 
 ### コンテンツのフロントマター
 
-```yaml
+```toml
 +++
 title = 'タイトル'
 date = 2023-01-15T09:00:00-07:00
@@ -99,7 +99,3 @@ draft = false
 tags = ['tag1', 'tag2']
 +++
 ```
-
-### 親プロジェクトとの関係
-
-このテーマは`/Users/gozu/go/src/github.com/gozuk16/migrate_jira-cloud/hugo-jira/themes/`ディレクトリに配置されており、親のHugoサイトから使用されることを想定しています。
