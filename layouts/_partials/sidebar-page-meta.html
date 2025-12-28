@@ -1,0 +1,74 @@
+{{- /*
+ページメタデータ用サイドバー
+
+記事ページで使用される、ページ固有のメタデータ（日付、タグ等）を表示します。
+
+@context {page} page The current page.
+
+@example: {{ partial "sidebar-page-meta.html" . }}
+*/}}
+
+{{- /* ページメタデータ */}}
+<section class="page-meta">
+  <h3>Page Info</h3>
+
+  {{- /* 公開日 */}}
+  {{- with .Date }}
+    <div class="meta-item">
+      <strong>Published:</strong><br>
+      {{ $dateMachine := . | time.Format "2006-01-02T15:04:05-07:00" }}
+      {{ $dateHuman := . | time.Format ":date_long" }}
+      <time datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
+    </div>
+  {{- end }}
+
+  {{- /* 更新日 */}}
+  {{- with .Lastmod }}
+    {{- if ne . $.Date }}
+      <div class="meta-item">
+        <strong>Updated:</strong><br>
+        {{ $dateMachine := . | time.Format "2006-01-02T15:04:05-07:00" }}
+        {{ $dateHuman := . | time.Format ":date_long" }}
+        <time datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
+      </div>
+    {{- end }}
+  {{- end }}
+
+  {{- /* 読了時間 */}}
+  {{- with .ReadingTime }}
+    <div class="meta-item">
+      <strong>Reading Time:</strong><br>
+      {{ . }} min read
+    </div>
+  {{- end }}
+
+  {{- /* 文字数 */}}
+  {{- with .WordCount }}
+    <div class="meta-item">
+      <strong>Word Count:</strong><br>
+      {{ . }} words
+    </div>
+  {{- end }}
+</section>
+
+{{- /* タグ */}}
+{{- with .GetTerms "tags" }}
+  <section class="widget">
+    <h3>Tags</h3>
+    <ul>
+      {{- range . }}
+        <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+      {{- end }}
+    </ul>
+  </section>
+{{- end }}
+
+{{- /* 目次 (Table of Contents) */}}
+{{- if .Params.toc | default true }}
+  {{- with .TableOfContents }}
+    <section class="widget toc">
+      <h3>Table of Contents</h3>
+      {{ . }}
+    </section>
+  {{- end }}
+{{- end }}

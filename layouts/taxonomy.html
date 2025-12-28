@@ -1,7 +1,21 @@
 {{ define "main" }}
   <h1>{{ .Title }}</h1>
   {{ .Content }}
-  {{ range .Pages }}
-    <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-  {{ end }}
+
+  <section class="taxonomy-list">
+    {{ range .Pages }}
+      <article>
+        <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
+      </article>
+    {{ end }}
+  </section>
+{{ end }}
+
+{{ define "sidebar" }}
+  <section class="widget">
+    <h3>{{ .Title }} Overview</h3>
+    <p><strong>Total items:</strong> {{ len .Pages }}</p>
+  </section>
+
+  {{ partial "sidebar-right.html" . }}
 {{ end }}

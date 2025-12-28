@@ -7,9 +7,21 @@
   <header>
     {{ partial "header.html" . }}
   </header>
+
+  <aside class="sidebar-left">
+    {{ partial "sidebar-left.html" . }}
+  </aside>
+
   <main>
     {{ block "main" . }}{{ end }}
   </main>
+
+  <aside class="sidebar-right">
+    {{ block "sidebar" . }}
+      {{ partial "sidebar-right.html" . }}
+    {{ end }}
+  </aside>
+
   <footer>
     {{ partial "footer.html" . }}
   </footer>

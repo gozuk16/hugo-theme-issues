@@ -1,7 +1,37 @@
 {{ define "main" }}
   <h1>{{ .Title }}</h1>
   {{ .Content }}
-  {{ range .Pages }}
-    <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-  {{ end }}
+
+  <section class="term-pages">
+    {{ range .Pages }}
+      <article>
+        <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
+      </article>
+    {{ end }}
+  </section>
+{{ end }}
+
+{{ define "sidebar" }}
+  <section class="widget">
+    <h3>Tag Info</h3>
+    <p><strong>Pages tagged:</strong> {{ len .Pages }}</p>
+  </section>
+
+  {{- /* 関連タグ */}}
+  {{- with site.Taxonomies.tags }}
+    <section class="widget">
+      <h3>Other Tags</h3>
+      <ul>
+        {{- range $name, $taxonomy := . }}
+          {{- if ne $name $.Title }}
+            <li>
+              <a href="{{ "/tags/" | relLangURL }}{{ $name | urlize }}">
+                {{ $name }} ({{ len $taxonomy }})
+              </a>
+            </li>
+          {{- end }}
+        {{- end }}
+      </ul>
+    </section>
+  {{- end }}
 {{ end }}
