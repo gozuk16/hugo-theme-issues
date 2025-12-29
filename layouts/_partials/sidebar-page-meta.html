@@ -1,52 +1,173 @@
 {{- /*
-ページメタデータ用サイドバー
+JIRA Issue メタデータ用サイドバー
 
-記事ページで使用される、ページ固有のメタデータ（日付、タグ等）を表示します。
+JIRA issueページで使用される、issue固有のメタデータを表示します。
 
 @context {page} page The current page.
 
 @example: {{ partial "sidebar-page-meta.html" . }}
 */}}
 
-{{- /* ページメタデータ */}}
-<section class="page-meta">
-  <h3>Page Info</h3>
+{{- /* 基本情報 */}}
+<section class="issue-basic-info page-meta">
+  <h3>基本情報</h3>
 
-  {{- /* 公開日 */}}
-  {{- with .Date }}
+  {{- /* Issue ID */}}
+  {{- with .Params.issue_id }}
     <div class="meta-item">
-      <strong>Published:</strong><br>
-      {{ $dateMachine := . | time.Format "2006-01-02T15:04:05-07:00" }}
-      {{ $dateHuman := . | time.Format ":date_long" }}
-      <time datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
+      <strong>Issue ID:</strong><br>
+      {{ . }}
     </div>
   {{- end }}
 
-  {{- /* 更新日 */}}
-  {{- with .Lastmod }}
-    {{- if ne . $.Date }}
+  {{- /* ステータス */}}
+  {{- with .Params.status }}
+    <div class="meta-item">
+      <strong>ステータス:</strong><br>
+      {{ . }}
+    </div>
+  {{- end }}
+
+  {{- /* 優先度 */}}
+  {{- with .Params.priority }}
+    <div class="meta-item">
+      <strong>優先度:</strong><br>
+      {{ . }}
+    </div>
+  {{- end }}
+
+  {{- /* Issue Type */}}
+  {{- with .Params.issue_type }}
+    <div class="meta-item">
+      <strong>Issue Type:</strong><br>
+      {{ . }}
+    </div>
+  {{- end }}
+</section>
+
+{{- /* 時間管理情報 */}}
+{{- if or .Params.initial_estimate .Params.remaining_estimate .Params.time_spent }}
+  <section class="issue-time-tracking page-meta">
+    <h3>時間管理</h3>
+
+    {{- with .Params.initial_estimate }}
       <div class="meta-item">
-        <strong>Updated:</strong><br>
-        {{ $dateMachine := . | time.Format "2006-01-02T15:04:05-07:00" }}
-        {{ $dateHuman := . | time.Format ":date_long" }}
-        <time datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
+        <strong>初期見積り:</strong><br>
+        {{ . }}
       </div>
     {{- end }}
-  {{- end }}
 
-  {{- /* 読了時間 */}}
-  {{- with .ReadingTime }}
+    {{- with .Params.remaining_estimate }}
+      <div class="meta-item">
+        <strong>残り時間:</strong><br>
+        {{ . }}
+      </div>
+    {{- end }}
+
+    {{- with .Params.time_spent }}
+      <div class="meta-item">
+        <strong>作業時間:</strong><br>
+        {{ . }}
+      </div>
+    {{- end }}
+  </section>
+{{- end }}
+
+{{- /* 開発情報（GitHub/Bitbucket統合） */}}
+{{- if or .Params.dev_pull_requests .Params.dev_branches }}
+  <section class="issue-development page-meta">
+    <h3>開発情報</h3>
+
+    {{- /* プルリクエスト */}}
+    {{- with .Params.dev_pull_requests }}
+      <div class="meta-item">
+        <strong>プルリクエスト:</strong><br>
+        {{- range . }}
+          <div style="margin-left: 1rem; margin-top: 0.5rem;">
+            {{- if .url }}
+              <a href="{{ .url }}" target="_blank">{{ .name }}</a>
+            {{- else }}
+              {{ .name }}
+            {{- end }}
+            {{- if .author }}
+              <br><small>作成者: {{ .author }}</small>
+            {{- end }}
+            {{- if .branch }}
+              <br><small>ブランチ: <code>{{ .branch }}</code></small>
+            {{- end }}
+            {{- if .status }}
+              <br><small>状態: {{ .status }}</small>
+            {{- end }}
+          </div>
+        {{- end }}
+      </div>
+    {{- end }}
+
+    {{- /* ブランチ */}}
+    {{- with .Params.dev_branches }}
+      <div class="meta-item">
+        <strong>ブランチ:</strong><br>
+        {{- range . }}
+          <div style="margin-left: 1rem; margin-top: 0.5rem;">
+            {{- if .url }}
+              <a href="{{ .url }}" target="_blank"><code>{{ .name }}</code></a>
+            {{- else }}
+              <code>{{ .name }}</code>
+            {{- end }}
+          </div>
+        {{- end }}
+      </div>
+    {{- end }}
+  </section>
+{{- end }}
+
+{{- /* プロジェクト情報 */}}
+<section class="issue-dev-info page-meta">
+  <h3>プロジェクト情報</h3>
+
+  {{- /* 担当者 */}}
+  {{- with .Params.assignee }}
     <div class="meta-item">
-      <strong>Reading Time:</strong><br>
-      {{ . }} min read
+      <strong>担当者:</strong><br>
+      {{ . }}
     </div>
   {{- end }}
 
-  {{- /* 文字数 */}}
-  {{- with .WordCount }}
+  {{- /* 報告者 */}}
+  {{- with .Params.reporter }}
     <div class="meta-item">
-      <strong>Word Count:</strong><br>
-      {{ . }} words
+      <strong>報告者:</strong><br>
+      {{ . }}
+    </div>
+  {{- end }}
+
+  {{- /* プロジェクト */}}
+  {{- with .Params.project }}
+    <div class="meta-item">
+      <strong>プロジェクト:</strong><br>
+      {{ . }}
+    </div>
+  {{- end }}
+
+  {{- /* コンポーネント */}}
+  {{- with .Params.components }}
+    <div class="meta-item">
+      <strong>コンポーネント:</strong><br>
+      {{- if reflect.IsSlice . }}
+        {{- range . }}
+          {{ . }}<br>
+        {{- end }}
+      {{- else }}
+        {{ . }}
+      {{- end }}
+    </div>
+  {{- end }}
+
+  {{- /* バージョン */}}
+  {{- with .Params.version }}
+    <div class="meta-item">
+      <strong>バージョン:</strong><br>
+      {{ . }}
     </div>
   {{- end }}
 </section>
@@ -61,14 +182,4 @@
       {{- end }}
     </ul>
   </section>
-{{- end }}
-
-{{- /* 目次 (Table of Contents) */}}
-{{- if .Params.toc | default true }}
-  {{- with .TableOfContents }}
-    <section class="widget toc">
-      <h3>Table of Contents</h3>
-      {{ . }}
-    </section>
-  {{- end }}
 {{- end }}
