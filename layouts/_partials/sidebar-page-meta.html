@@ -2,18 +2,20 @@
 JIRA Issue メタデータ用サイドバー
 
 JIRA issueページで使用される、issue固有のメタデータを表示します。
+データは jira_metadata shortcode から .Scratch 経由で取得します。
 
 @context {page} page The current page.
 
 @example: {{ partial "sidebar-page-meta.html" . }}
 */}}
 
+
 {{- /* 基本情報 */}}
 <section class="issue-basic-info page-meta">
   <h3>基本情報</h3>
 
   {{- /* Issue ID */}}
-  {{- with .Params.issue_id }}
+  {{- with .Scratch.Get "issue_id" }}
     <div class="meta-item">
       <strong>Issue ID:</strong><br>
       {{ . }}
@@ -21,7 +23,7 @@ JIRA issueページで使用される、issue固有のメタデータを表示�
   {{- end }}
 
   {{- /* ステータス */}}
-  {{- with .Params.status }}
+  {{- with .Scratch.Get "status" }}
     <div class="meta-item">
       <strong>ステータス:</strong><br>
       {{ . }}
@@ -29,7 +31,7 @@ JIRA issueページで使用される、issue固有のメタデータを表示�
   {{- end }}
 
   {{- /* 優先度 */}}
-  {{- with .Params.priority }}
+  {{- with .Scratch.Get "priority" }}
     <div class="meta-item">
       <strong>優先度:</strong><br>
       {{ . }}
@@ -37,7 +39,7 @@ JIRA issueページで使用される、issue固有のメタデータを表示�
   {{- end }}
 
   {{- /* Issue Type */}}
-  {{- with .Params.issue_type }}
+  {{- with .Scratch.Get "issue_type" }}
     <div class="meta-item">
       <strong>Issue Type:</strong><br>
       {{ . }}
@@ -46,25 +48,25 @@ JIRA issueページで使用される、issue固有のメタデータを表示�
 </section>
 
 {{- /* 時間管理情報 */}}
-{{- if or .Params.initial_estimate .Params.remaining_estimate .Params.time_spent }}
+{{- if or (.Scratch.Get "initial_estimate") (.Scratch.Get "remaining_estimate") (.Scratch.Get "time_spent") }}
   <section class="issue-time-tracking page-meta">
     <h3>時間管理</h3>
 
-    {{- with .Params.initial_estimate }}
+    {{- with .Scratch.Get "initial_estimate" }}
       <div class="meta-item">
         <strong>初期見積り:</strong><br>
         {{ . }}
       </div>
     {{- end }}
 
-    {{- with .Params.remaining_estimate }}
+    {{- with .Scratch.Get "remaining_estimate" }}
       <div class="meta-item">
         <strong>残り時間:</strong><br>
         {{ . }}
       </div>
     {{- end }}
 
-    {{- with .Params.time_spent }}
+    {{- with .Scratch.Get "time_spent" }}
       <div class="meta-item">
         <strong>作業時間:</strong><br>
         {{ . }}
@@ -74,12 +76,12 @@ JIRA issueページで使用される、issue固有のメタデータを表示�
 {{- end }}
 
 {{- /* 開発情報（GitHub/Bitbucket統合） */}}
-{{- if or .Params.dev_pull_requests .Params.dev_branches }}
+{{- if or (.Scratch.Get "dev_pull_requests") (.Scratch.Get "dev_branches") }}
   <section class="issue-development page-meta">
     <h3>開発情報</h3>
 
     {{- /* プルリクエスト */}}
-    {{- with .Params.dev_pull_requests }}
+    {{- with .Scratch.Get "dev_pull_requests" }}
       <div class="meta-item">
         <strong>プルリクエスト:</strong><br>
         {{- range . }}
@@ -104,7 +106,7 @@ JIRA issueページで使用される、issue固有のメタデータを表示�
     {{- end }}
 
     {{- /* ブランチ */}}
-    {{- with .Params.dev_branches }}
+    {{- with .Scratch.Get "dev_branches" }}
       <div class="meta-item">
         <strong>ブランチ:</strong><br>
         {{- range . }}
@@ -126,7 +128,7 @@ JIRA issueページで使用される、issue固有のメタデータを表示�
   <h3>プロジェクト情報</h3>
 
   {{- /* 担当者 */}}
-  {{- with .Params.assignee }}
+  {{- with .Scratch.Get "assignee" }}
     <div class="meta-item">
       <strong>担当者:</strong><br>
       {{ . }}
@@ -134,7 +136,7 @@ JIRA issueページで使用される、issue固有のメタデータを表示�
   {{- end }}
 
   {{- /* 報告者 */}}
-  {{- with .Params.reporter }}
+  {{- with .Scratch.Get "reporter" }}
     <div class="meta-item">
       <strong>報告者:</strong><br>
       {{ . }}
@@ -142,7 +144,7 @@ JIRA issueページで使用される、issue固有のメタデータを表示�
   {{- end }}
 
   {{- /* プロジェクト */}}
-  {{- with .Params.project }}
+  {{- with .Scratch.Get "project" }}
     <div class="meta-item">
       <strong>プロジェクト:</strong><br>
       {{ . }}
@@ -150,7 +152,7 @@ JIRA issueページで使用される、issue固有のメタデータを表示�
   {{- end }}
 
   {{- /* コンポーネント */}}
-  {{- with .Params.components }}
+  {{- with .Scratch.Get "components" }}
     <div class="meta-item">
       <strong>コンポーネント:</strong><br>
       {{- if reflect.IsSlice . }}
@@ -164,7 +166,7 @@ JIRA issueページで使用される、issue固有のメタデータを表示�
   {{- end }}
 
   {{- /* バージョン */}}
-  {{- with .Params.version }}
+  {{- with .Scratch.Get "version" }}
     <div class="meta-item">
       <strong>バージョン:</strong><br>
       {{ . }}
