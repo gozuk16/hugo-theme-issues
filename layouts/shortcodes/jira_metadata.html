@@ -1,0 +1,108 @@
+{{- /*
+JIRA Metadata Shortcode
+
+Markdownファイル内でJIRA issueのメタデータを定義するためのshortcode。
+JSON形式でメタデータを記述し、.Scratchに保存します。
+メインコンテンツには何も表示しません（空文字列を返す）。
+
+使用例:
+{{< jira_metadata >}}
+{
+  "issue_id": "PROJ-123",
+  "status": "In Progress",
+  "priority": "High",
+  "issue_type": "Bug",
+  "assignee": "山田太郎",
+  "reporter": "佐藤花子",
+  "project": "MyProject",
+  "components": ["Backend", "API"],
+  "version": "v1.2.0",
+  "initial_estimate": "8h",
+  "remaining_estimate": "2h",
+  "time_spent": "6h",
+  "dev_pull_requests": [
+    {
+      "name": "Fix login bug",
+      "url": "https://github.com/...",
+      "author": "山田太郎",
+      "branch": "fix/login-bug",
+      "status": "Open"
+    }
+  ],
+  "dev_branches": [
+    {
+      "name": "feature/new-feature",
+      "url": "https://github.com/..."
+    }
+  ]
+}
+{{< /jira_metadata >}}
+*/}}
+
+{{- /* shortcode内のJSON文字列を取得 */}}
+{{- $jsonStr := .Inner | strings.TrimSpace }}
+
+{{- /* JSONをパースして辞書型に変換 */}}
+{{- $metadata := dict }}
+{{- with $jsonStr }}
+  {{- $metadata = . | transform.Unmarshal }}
+{{- end }}
+
+{{- /* 各フィールドを.Scratchに保存 */}}
+{{- with $metadata.issue_id }}
+  {{- $.Page.Scratch.Set "issue_id" . }}
+{{- end }}
+
+{{- with $metadata.status }}
+  {{- $.Page.Scratch.Set "status" . }}
+{{- end }}
+
+{{- with $metadata.priority }}
+  {{- $.Page.Scratch.Set "priority" . }}
+{{- end }}
+
+{{- with $metadata.issue_type }}
+  {{- $.Page.Scratch.Set "issue_type" . }}
+{{- end }}
+
+{{- with $metadata.assignee }}
+  {{- $.Page.Scratch.Set "assignee" . }}
+{{- end }}
+
+{{- with $metadata.reporter }}
+  {{- $.Page.Scratch.Set "reporter" . }}
+{{- end }}
+
+{{- with $metadata.project }}
+  {{- $.Page.Scratch.Set "project" . }}
+{{- end }}
+
+{{- with $metadata.components }}
+  {{- $.Page.Scratch.Set "components" . }}
+{{- end }}
+
+{{- with $metadata.version }}
+  {{- $.Page.Scratch.Set "version" . }}
+{{- end }}
+
+{{- with $metadata.initial_estimate }}
+  {{- $.Page.Scratch.Set "initial_estimate" . }}
+{{- end }}
+
+{{- with $metadata.remaining_estimate }}
+  {{- $.Page.Scratch.Set "remaining_estimate" . }}
+{{- end }}
+
+{{- with $metadata.time_spent }}
+  {{- $.Page.Scratch.Set "time_spent" . }}
+{{- end }}
+
+{{- with $metadata.dev_pull_requests }}
+  {{- $.Page.Scratch.Set "dev_pull_requests" . }}
+{{- end }}
+
+{{- with $metadata.dev_branches }}
+  {{- $.Page.Scratch.Set "dev_branches" . }}
+{{- end }}
+
+{{- /* 空文字列を返す（メインコンテンツに表示しない） */}}

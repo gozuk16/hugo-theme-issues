@@ -1,10 +1,20 @@
 {{ define "main" }}
+  {{ $content := .Content }}
+  {{ $main := replaceRE "(?s)<!-- PAGE_RIGHT_START -->(.*?)<!-- PAGE_RIGHT_END -->" "" $content }}
   <article>
-    <h1>{{ .Title }}</h1>
-    {{ .Content }}
+	{{ $main | safeHTML }}
   </article>
 {{ end }}
 
+
 {{ define "sidebar" }}
-  {{ partial "sidebar-page-meta.html" . }}
+  {{ $content := .Content }}
+  {{ $right := "" }}
+  {{ with findRE "(?s)<!-- PAGE_RIGHT_START -->(.*?)<!-- PAGE_RIGHT_END -->" $content }}
+    {{ $right = index . 0 }}
+    {{ $right = replaceRE "(?s)<!-- PAGE_RIGHT_START -->|<!-- PAGE_RIGHT_END -->" "" $right }}
+  {{ end }}
+  <aside class="page-right">
+    {{ $right | safeHTML }}
+  </aside>
 {{ end }}
