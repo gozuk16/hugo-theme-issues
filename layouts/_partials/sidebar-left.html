@@ -1,18 +1,46 @@
 {{- /*
-左サイドバー - ナビゲーションメニュー
+左サイドバー - プロジェクト内のページ一覧
 
-このパーシャルは全ページ共通で使用され、サイトのメインナビゲーションを提供します。
+このパーシャルは、現在表示中のページと同じプロジェクト（セクション）内のページを一覧表示します。
 */}}
 
-<nav aria-label="Main navigation">
-  <h2 class="visually-hidden">Main Menu</h2>
-  {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
-</nav>
+{{- $currentPage := . }}
 
-{{- /* 追加のナビゲーション要素（必要に応じて） */}}
-{{- with site.Menus.secondary }}
-  <nav aria-label="Secondary navigation">
-    <h3>Quick Links</h3>
-    {{ partial "menu.html" (dict "menuID" "secondary" "page" .) }}
+{{- /* 現在のページのセクション（親ディレクトリ）を取得 */}}
+{{- $currentSection := .CurrentSection }}
+
+{{- /* セクションが存在する場合のみページリストを表示 */}}
+{{- if $currentSection }}
+  <nav aria-label="Project pages">
+    {{- /* プロジェクト名をタイトルとして表示 */}}
+    {{- with $currentSection.Params.title }}
+      <h2>{{ . }}</h2>
+    {{- else }}
+      <h2>{{ $currentSection.Title }}</h2>
+    {{- end }}
+
+    {{- /* セクション内のすべての通常ページを取得 */}}
+    {{- $pages := where $currentSection.RegularPages "Type" "page" }}
+
+    {{- /* issue_key でソート */}}
+    {{- $sortedPages := sort $pages ".Params.issue_key" "asc" }}
+
+    {{- if $sortedPages }}
+      <ul>
+        {{- range $sortedPages }}
+          <li>
+            <a href="{{ .RelPermalink }}"
+               {{- if eq $currentPage.RelPermalink .RelPermalink }}
+               class="active" aria-current="page"
+               {{- end }}>
+              {{- with .Params.issue_key }}{{ . }}: {{- end }}
+              {{ .Title }}
+            </a>
+          </li>
+        {{- end }}
+      </ul>
+    {{- else }}
+      <p>このプロジェクトにはページがありません。</p>
+    {{- end }}
   </nav>
 {{- end }}
