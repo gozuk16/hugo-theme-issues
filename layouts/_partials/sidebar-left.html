@@ -33,6 +33,18 @@
                {{- if eq $currentPage.RelPermalink .RelPermalink }}
                class="active" aria-current="page"
                {{- end }}>
+              {{- /* Issue Type アイコン表示 */ -}}
+              <span class="issue-type-icon">
+                {{- with .Params.issue_type -}}
+                  {{- if eq . "Epic" -}}🟣
+                  {{- else if eq . "Story" -}}📗
+                  {{- else if eq . "Task" -}}📋
+                  {{- else if or (eq . "Sub-task") (eq . "Subtask") -}}➡️
+                  {{- else if eq . "Bug" -}}🐛
+                  {{- else -}}📄
+                  {{- end -}}
+                {{- end -}}
+              </span>
               {{- with .Params.issue_key }}{{ . }}: {{- end }}
               {{ .Title }}
             </a>
