@@ -150,6 +150,19 @@ th {
   vertical-align: middle;
 }
 
+/* 子issueのインデント */
+.sidebar-left li.child-issue a {
+  padding-left: 2rem;
+}
+
+/* 孤立issueセクションの区切り */
+.sidebar-left .orphan-section-divider {
+  height: 0;
+  margin: 1rem 0;
+  border-top: 1px dashed var(--color-border);
+  list-style: none;
+}
+
 .sidebar-right h3 {
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
