@@ -18,11 +18,14 @@
       {{- if $currentSection.Parent }}
         <a href="{{ $currentSection.Parent.RelPermalink }}" class="parent-link" aria-label="親階層へ移動">⬆️</a>
       {{- end }}
-      {{- with $currentSection.Params.title }}
-        {{ . }}
-      {{- else }}
-        {{ $currentSection.Title }}
-      {{- end }}
+      {{- /* プロジェクト名（indexへのリンク） */}}
+      <a href="{{ $currentSection.RelPermalink }}" class="project-title">
+        {{- with $currentSection.Params.title }}
+          {{ . }}
+        {{- else }}
+          {{ $currentSection.Title }}
+        {{- end }}
+      </a>
     </h2>
 
     {{- /* セクション内のすべての通常ページを取得 */}}
