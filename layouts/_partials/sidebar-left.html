@@ -14,14 +14,14 @@
   <nav aria-label="Project pages">
     {{- /* プロジェクト名をタイトルとして表示 */}}
     <h2>
+      {{- /* 親階層へのリンク */}}
+      {{- if $currentSection.Parent }}
+        <a href="{{ $currentSection.Parent.RelPermalink }}" class="parent-link" aria-label="親階層へ移動">⬆️</a>
+      {{- end }}
       {{- with $currentSection.Params.title }}
         {{ . }}
       {{- else }}
         {{ $currentSection.Title }}
-      {{- end }}
-      {{- /* 親階層へのリンク */}}
-      {{- if $currentSection.Parent }}
-        <a href="{{ $currentSection.Parent.RelPermalink }}" class="parent-link" aria-label="親階層へ移動">⬆️</a>
       {{- end }}
     </h2>
 
