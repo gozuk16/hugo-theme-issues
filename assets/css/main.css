@@ -155,6 +155,11 @@ th {
   padding-left: 2rem;
 }
 
+/* 孫issueのインデント */
+.sidebar-left li.grandchild-issue a {
+  padding-left: 4rem;
+}
+
 /* 孤立issueセクションの区切り */
 .sidebar-left .orphan-section-divider {
   height: 0;

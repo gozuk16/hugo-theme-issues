@@ -86,31 +86,63 @@
                 {{ $child.Title }}
               </a>
             </li>
+
+            {{- /* この子issueの子issue（孫）を抽出 */}}
+            {{- $childKey := $child.Params.issue_key }}
+            {{- $grandchildren := where $pages ".Params.parent" $childKey }}
+            {{- $sortedGrandchildren := sort $grandchildren ".Params.rank" "asc" }}
+
+            {{- /* 孫issueを表示 */}}
+            {{- range $grandchild := $sortedGrandchildren }}
+              <li class="grandchild-issue">
+                <a href="{{ $grandchild.RelPermalink }}"
+                   {{- if eq $currentPage.RelPermalink $grandchild.RelPermalink }}
+                   class="active" aria-current="page"
+                   {{- end }}>
+                  {{- /* Issue Type アイコン表示 */}}
+                  <span class="issue-type-icon">
+                    {{- with $grandchild.Params.issue_type }}
+                      {{- if or (eq . "Epic") (eq . "エピック") }}🟣
+                      {{- else if or (eq . "Story") (eq . "ストーリー") }}📗
+                      {{- else if or (eq . "Task") (eq . "タスク") }}☑️
+                      {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") }}➡️
+                      {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
+                      {{- else }}📄
+                      {{- end }}
+                    {{- end }}
+                  </span>
+                  {{- with $grandchild.Params.issue_key }}{{ . }}: {{- end }}
+                  {{ $grandchild.Title }}
+                </a>
+              </li>
+            {{- end }}
           {{- end }}
         {{- end }}
 
         {{- /* 孤立issueを表示 */}}
-        {{- /* エピックのissue_keyリストを作成 */}}
-        {{- $epicKeys := slice }}
+        {{- /* エピック配下の全issue（エピック、子、孫）のissue_keyリストを作成 */}}
+        {{- $epicFamilyKeys := slice }}
         {{- range $sortedEpics }}
-          {{- $epicKeys = $epicKeys | append .Params.issue_key }}
+          {{- $epicFamilyKeys = $epicFamilyKeys | append .Params.issue_key }}
+          {{- /* 子issueを追加 */}}
+          {{- $epicKey := .Params.issue_key }}
+          {{- $children := where $pages ".Params.parent" $epicKey }}
+          {{- range $child := $children }}
+            {{- $epicFamilyKeys = $epicFamilyKeys | append $child.Params.issue_key }}
+            {{- /* 孫issueを追加 */}}
+            {{- $childKey := $child.Params.issue_key }}
+            {{- $grandchildren := where $pages ".Params.parent" $childKey }}
+            {{- range $grandchild := $grandchildren }}
+              {{- $epicFamilyKeys = $epicFamilyKeys | append $grandchild.Params.issue_key }}
+            {{- end }}
+          {{- end }}
         {{- end }}
 
         {{- /* 孤立issueを抽出してrank順にソート */}}
         {{- $orphans := slice }}
         {{- range $page := $pages }}
-          {{- $isOrphan := true }}
-          {{- $isEpic := or (eq $page.Params.issue_type "Epic") (eq $page.Params.issue_type "エピック") }}
-
-          {{- if $isEpic }}
-            {{- $isOrphan = false }}
-          {{- else if $page.Params.parent }}
-            {{- if in $epicKeys $page.Params.parent }}
-              {{- $isOrphan = false }}
-            {{- end }}
-          {{- end }}
-
-          {{- if $isOrphan }}
+          {{- /* エピック配下に属さないissueを孤立issueとする */}}
+          {{- if not (in $epicFamilyKeys $page.Params.issue_key) }}
             {{- $orphans = $orphans | append $page }}
           {{- end }}
         {{- end }}
