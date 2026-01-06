@@ -13,42 +13,176 @@
 {{- if $currentSection }}
   <nav aria-label="Project pages">
     {{- /* プロジェクト名をタイトルとして表示 */}}
-    {{- with $currentSection.Params.title }}
-      <h2>{{ . }}</h2>
-    {{- else }}
-      <h2>{{ $currentSection.Title }}</h2>
-    {{- end }}
+    <h2>
+      {{- /* 親階層へのリンク */}}
+      {{- if $currentSection.Parent }}
+        <a href="{{ $currentSection.Parent.RelPermalink }}" class="parent-link" aria-label="親階層へ移動">⬆️</a>
+      {{- end }}
+      {{- /* プロジェクト名（indexへのリンク） */}}
+      <a href="{{ $currentSection.RelPermalink }}" class="project-title">
+        {{- with $currentSection.Params.title }}
+          {{ . }}
+        {{- else }}
+          {{ $currentSection.Title }}
+        {{- end }}
+      </a>
+    </h2>
 
     {{- /* セクション内のすべての通常ページを取得 */}}
     {{- $pages := where $currentSection.RegularPages "Type" "page" }}
 
-    {{- /* issue_key でソート */}}
-    {{- $sortedPages := sort $pages ".Params.issue_key" "asc" }}
-
-    {{- if $sortedPages }}
+    {{- if $pages }}
       <ul>
-        {{- range $sortedPages }}
+        {{- /* エピックを抽出してrank順にソート */}}
+        {{- $epics := slice }}
+        {{- range $pages }}
+          {{- if or (eq .Params.issue_type "Epic") (eq .Params.issue_type "エピック") }}
+            {{- $epics = $epics | append . }}
+          {{- end }}
+        {{- end }}
+        {{- $sortedEpics := sort $epics ".Params.rank" "asc" }}
+
+        {{- /* エピックごとにグループ表示 */}}
+        {{- range $epic := $sortedEpics }}
+          {{- /* エピック表示 */}}
           <li>
-            <a href="{{ .RelPermalink }}"
-               {{- if eq $currentPage.RelPermalink .RelPermalink }}
+            <a href="{{ $epic.RelPermalink }}"
+               {{- if eq $currentPage.RelPermalink $epic.RelPermalink }}
                class="active" aria-current="page"
                {{- end }}>
-              {{- /* Issue Type アイコン表示 */ -}}
+              {{- /* Issue Type アイコン表示 */}}
               <span class="issue-type-icon">
-                {{- with .Params.issue_type -}}
-                  {{- if or (eq . "Epic") (eq . "エピック") -}}🟣
-                  {{- else if or (eq . "Story") (eq . "ストーリー") -}}📗
-                  {{- else if or (eq . "Task") (eq . "タスク") -}}☑️
-                  {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") -}}➡️
-                  {{- else if or (eq . "Bug") (eq . "バグ") -}}🐞
-                  {{- else -}}📄
-                  {{- end -}}
-                {{- end -}}
+                {{- with $epic.Params.issue_type }}
+                  {{- if or (eq . "Epic") (eq . "エピック") }}🟣
+                  {{- else if or (eq . "Story") (eq . "ストーリー") }}📗
+                  {{- else if or (eq . "Task") (eq . "タスク") }}☑️
+                  {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") }}➡️
+                  {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
+                  {{- else }}📄
+                  {{- end }}
+                {{- end }}
               </span>
-              {{- with .Params.issue_key }}{{ . }}: {{- end }}
-              {{ .Title }}
+              {{- with $epic.Params.issue_key }}{{ . }}: {{- end }}
+              {{ $epic.Title }}
             </a>
           </li>
+
+          {{- /* このエピックの子issueを抽出 */}}
+          {{- $epicKey := $epic.Params.issue_key }}
+          {{- $children := where $pages ".Params.parent" $epicKey }}
+          {{- $sortedChildren := sort $children ".Params.rank" "asc" }}
+
+          {{- /* 子issueを表示 */}}
+          {{- range $child := $sortedChildren }}
+            <li class="child-issue">
+              <a href="{{ $child.RelPermalink }}"
+                 {{- if eq $currentPage.RelPermalink $child.RelPermalink }}
+                 class="active" aria-current="page"
+                 {{- end }}>
+                {{- /* Issue Type アイコン表示 */}}
+                <span class="issue-type-icon">
+                  {{- with $child.Params.issue_type }}
+                    {{- if or (eq . "Epic") (eq . "エピック") }}🟣
+                    {{- else if or (eq . "Story") (eq . "ストーリー") }}📗
+                    {{- else if or (eq . "Task") (eq . "タスク") }}☑️
+                    {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") }}➡️
+                    {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
+                    {{- else }}📄
+                    {{- end }}
+                  {{- end }}
+                </span>
+                {{- with $child.Params.issue_key }}{{ . }}: {{- end }}
+                {{ $child.Title }}
+              </a>
+            </li>
+
+            {{- /* この子issueの子issue（孫）を抽出 */}}
+            {{- $childKey := $child.Params.issue_key }}
+            {{- $grandchildren := where $pages ".Params.parent" $childKey }}
+            {{- $sortedGrandchildren := sort $grandchildren ".Params.rank" "asc" }}
+
+            {{- /* 孫issueを表示 */}}
+            {{- range $grandchild := $sortedGrandchildren }}
+              <li class="grandchild-issue">
+                <a href="{{ $grandchild.RelPermalink }}"
+                   {{- if eq $currentPage.RelPermalink $grandchild.RelPermalink }}
+                   class="active" aria-current="page"
+                   {{- end }}>
+                  {{- /* Issue Type アイコン表示 */}}
+                  <span class="issue-type-icon">
+                    {{- with $grandchild.Params.issue_type }}
+                      {{- if or (eq . "Epic") (eq . "エピック") }}🟣
+                      {{- else if or (eq . "Story") (eq . "ストーリー") }}📗
+                      {{- else if or (eq . "Task") (eq . "タスク") }}☑️
+                      {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") }}➡️
+                      {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
+                      {{- else }}📄
+                      {{- end }}
+                    {{- end }}
+                  </span>
+                  {{- with $grandchild.Params.issue_key }}{{ . }}: {{- end }}
+                  {{ $grandchild.Title }}
+                </a>
+              </li>
+            {{- end }}
+          {{- end }}
+        {{- end }}
+
+        {{- /* 孤立issueを表示 */}}
+        {{- /* エピック配下の全issue（エピック、子、孫）のissue_keyリストを作成 */}}
+        {{- $epicFamilyKeys := slice }}
+        {{- range $sortedEpics }}
+          {{- $epicFamilyKeys = $epicFamilyKeys | append .Params.issue_key }}
+          {{- /* 子issueを追加 */}}
+          {{- $epicKey := .Params.issue_key }}
+          {{- $children := where $pages ".Params.parent" $epicKey }}
+          {{- range $child := $children }}
+            {{- $epicFamilyKeys = $epicFamilyKeys | append $child.Params.issue_key }}
+            {{- /* 孫issueを追加 */}}
+            {{- $childKey := $child.Params.issue_key }}
+            {{- $grandchildren := where $pages ".Params.parent" $childKey }}
+            {{- range $grandchild := $grandchildren }}
+              {{- $epicFamilyKeys = $epicFamilyKeys | append $grandchild.Params.issue_key }}
+            {{- end }}
+          {{- end }}
+        {{- end }}
+
+        {{- /* 孤立issueを抽出してrank順にソート */}}
+        {{- $orphans := slice }}
+        {{- range $page := $pages }}
+          {{- /* エピック配下に属さないissueを孤立issueとする */}}
+          {{- if not (in $epicFamilyKeys $page.Params.issue_key) }}
+            {{- $orphans = $orphans | append $page }}
+          {{- end }}
+        {{- end }}
+        {{- $sortedOrphans := sort $orphans ".Params.rank" "asc" }}
+
+        {{- /* 孤立issueを表示 */}}
+        {{- if $sortedOrphans }}
+          <li class="orphan-section-divider"></li>
+          {{- range $orphan := $sortedOrphans }}
+            <li class="orphan-issue">
+              <a href="{{ $orphan.RelPermalink }}"
+                 {{- if eq $currentPage.RelPermalink $orphan.RelPermalink }}
+                 class="active" aria-current="page"
+                 {{- end }}>
+                {{- /* Issue Type アイコン表示 */}}
+                <span class="issue-type-icon">
+                  {{- with $orphan.Params.issue_type }}
+                    {{- if or (eq . "Epic") (eq . "エピック") }}🟣
+                    {{- else if or (eq . "Story") (eq . "ストーリー") }}📗
+                    {{- else if or (eq . "Task") (eq . "タスク") }}☑️
+                    {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") }}➡️
+                    {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
+                    {{- else }}📄
+                    {{- end }}
+                  {{- end }}
+                </span>
+                {{- with $orphan.Params.issue_key }}{{ . }}: {{- end }}
+                {{ $orphan.Title }}
+              </a>
+            </li>
+          {{- end }}
         {{- end }}
       </ul>
     {{- else }}
