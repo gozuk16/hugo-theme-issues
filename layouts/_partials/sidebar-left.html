@@ -38,7 +38,7 @@
                 {{- with .Params.issue_type -}}
                   {{- if or (eq . "Epic") (eq . "エピック") -}}🟣
                   {{- else if or (eq . "Story") (eq . "ストーリー") -}}📗
-                  {{- else if or (eq . "Task") (eq . "タスク") -}}📋
+                  {{- else if or (eq . "Task") (eq . "タスク") -}}☑️
                   {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") -}}➡️
                   {{- else if or (eq . "Bug") (eq . "バグ") -}}🐛
                   {{- else -}}📄
