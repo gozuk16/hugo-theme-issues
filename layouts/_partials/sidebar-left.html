@@ -36,11 +36,11 @@
               {{- /* Issue Type アイコン表示 */ -}}
               <span class="issue-type-icon">
                 {{- with .Params.issue_type -}}
-                  {{- if eq . "Epic" -}}🟣
-                  {{- else if eq . "Story" -}}📗
-                  {{- else if eq . "Task" -}}📋
-                  {{- else if or (eq . "Sub-task") (eq . "Subtask") -}}➡️
-                  {{- else if eq . "Bug" -}}🐛
+                  {{- if or (eq . "Epic") (eq . "エピック") -}}🟣
+                  {{- else if or (eq . "Story") (eq . "ストーリー") -}}📗
+                  {{- else if or (eq . "Task") (eq . "タスク") -}}📋
+                  {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") -}}➡️
+                  {{- else if or (eq . "Bug") (eq . "バグ") -}}🐛
                   {{- else -}}📄
                   {{- end -}}
                 {{- end -}}
