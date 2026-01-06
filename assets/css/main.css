@@ -111,6 +111,21 @@ th {
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-left nav h2 .parent-link {
+  font-size: 1rem;
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.sidebar-left nav h2 .parent-link:hover {
+  background-color: var(--color-bg-light);
 }
 
 .sidebar-left nav a {
