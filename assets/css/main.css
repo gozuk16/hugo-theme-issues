@@ -222,7 +222,7 @@ th {
 
 .sidebar-left nav a {
   display: block;
-  padding: 0.5rem;
+  /*padding: 0.5rem;*/
   color: var(--color-link);
   border-radius: 4px;
   transition: background-color 0.2s;
@@ -259,12 +259,12 @@ th {
 
 /* 子issueのインデント */
 .sidebar-left li.child-issue a {
-  padding-left: 2rem;
+  padding-left: 1rem;
 }
 
 /* 孫issueのインデント */
 .sidebar-left li.grandchild-issue a {
-  padding-left: 4rem;
+  padding-left: 2rem;
 }
 
 /* 孤立issueセクションの区切り */
