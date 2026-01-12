@@ -98,6 +98,35 @@ main ol ol ul {
   list-style-type: square;
 }
 
+/* Code styles */
+code {
+  background-color: #f5f5f5;
+  color: #d63384;
+  padding: 0.2em 0.4em;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+pre {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+pre code {
+  background-color: inherit;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
 /* Links */
 a {
   color: var(--color-link);
