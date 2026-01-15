@@ -336,23 +336,14 @@ th {
   line-height: 1.6;
 }
 
-/* Icon styling - circular icon box */
+/* Icon styling */
 [class^="panel-"]::before,
 [class*=" panel-"]::before {
   position: absolute;
   left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
+  top: 0.25rem;
+  font-size: 1.5rem;
   line-height: 1;
-  color: white;
-  font-weight: bold;
 }
 
 /* Info Panel */
@@ -363,7 +354,6 @@ th {
 
 .panel-info::before {
   content: "ℹ️";
-  background-color: var(--panel-info-border);
 }
 
 /* Warning Panel */
@@ -374,7 +364,6 @@ th {
 
 .panel-warning::before {
   content: "⚠️";
-  background-color: var(--panel-warning-border);
 }
 
 /* Success Panel */
@@ -385,7 +374,6 @@ th {
 
 .panel-success::before {
   content: "✅";
-  background-color: var(--panel-success-border);
 }
 
 /* Error Panel */
@@ -396,7 +384,6 @@ th {
 
 .panel-error::before {
   content: "❌";
-  background-color: var(--panel-error-border);
 }
 
 /* Panel content adjustments */
@@ -480,8 +467,6 @@ th {
   [class^="panel-"]::before,
   [class*=" panel-"]::before {
     left: 0.75rem;
-    width: 1.75rem;
-    height: 1.75rem;
-    font-size: 0.875rem;
+    font-size: 1.25rem;
   }
 }
