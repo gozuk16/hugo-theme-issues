@@ -26,3 +26,10 @@ Occaecat nulla excepteur dolore excepteur duis eiusmod ullamco officia anim in v
 <div class="panel-error">
 <p><strong>❌ Error:</strong> This is an error panel. It indicates that a problem has occurred and action may be needed.</p>
 </div>
+
+## Blockquote Examples
+
+> This is a blockquote.
+> It can contain multiple lines.
+>
+> And multiple paragraphs.

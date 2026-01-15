@@ -167,6 +167,27 @@ pre code {
   font-size: 0.875rem;
 }
 
+/* Blockquote styles (JIRA quote style) */
+blockquote {
+  margin: 1rem 0;
+  padding: 1rem 0 1rem 1rem;
+  border-left: 4px solid #c1c1c1;
+  background-color: #fafafa;
+  color: var(--color-text);
+}
+
+blockquote > *:first-child {
+  margin-top: 0;
+}
+
+blockquote > *:last-child {
+  margin-bottom: 0;
+}
+
+blockquote p {
+  margin: 0.5rem 0;
+}
+
 /* Links */
 a {
   color: var(--color-link);
