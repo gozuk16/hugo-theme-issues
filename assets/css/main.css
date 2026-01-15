@@ -329,66 +329,74 @@ th {
 [class^="panel-"],
 [class*=" panel-"] {
   position: relative;
-  padding: 1rem 1rem 1rem 3rem;
+  padding: 1.5rem 1.5rem 1.5rem 4rem;
   margin: 1rem 0;
-  border: 1px solid;
-  border-radius: 4px;
-  border-left-width: 4px;
+  border: none;
+  border-radius: 8px;
   line-height: 1.6;
 }
 
-/* Icon styling */
+/* Icon styling - circular icon box */
 [class^="panel-"]::before,
 [class*=" panel-"]::before {
   position: absolute;
-  left: 0.75rem;
-  top: 1rem;
-  font-size: 1.25rem;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
   line-height: 1;
+  color: white;
+  font-weight: bold;
 }
 
 /* Info Panel */
 .panel-info {
   background-color: var(--panel-info-bg);
-  border-color: var(--panel-info-border);
   color: var(--panel-info-text);
 }
 
 .panel-info::before {
   content: "ℹ️";
+  background-color: var(--panel-info-border);
 }
 
 /* Warning Panel */
 .panel-warning {
   background-color: var(--panel-warning-bg);
-  border-color: var(--panel-warning-border);
   color: var(--panel-warning-text);
 }
 
 .panel-warning::before {
   content: "⚠️";
+  background-color: var(--panel-warning-border);
 }
 
 /* Success Panel */
 .panel-success {
   background-color: var(--panel-success-bg);
-  border-color: var(--panel-success-border);
   color: var(--panel-success-text);
 }
 
 .panel-success::before {
   content: "✅";
+  background-color: var(--panel-success-border);
 }
 
 /* Error Panel */
 .panel-error {
   background-color: var(--panel-error-bg);
-  border-color: var(--panel-error-border);
   color: var(--panel-error-text);
 }
 
 .panel-error::before {
   content: "❌";
+  background-color: var(--panel-error-border);
 }
 
 /* Panel content adjustments */
@@ -465,13 +473,15 @@ th {
   /* Panel adjustments for mobile */
   [class^="panel-"],
   [class*=" panel-"] {
-    padding: 0.875rem 0.875rem 0.875rem 2.5rem;
+    padding: 1.25rem 1rem 1.25rem 3.5rem;
     font-size: 0.9rem;
   }
 
   [class^="panel-"]::before,
   [class*=" panel-"]::before {
-    left: 0.5rem;
-    font-size: 1.1rem;
+    left: 0.75rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.875rem;
   }
 }
