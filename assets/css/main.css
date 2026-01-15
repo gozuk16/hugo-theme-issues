@@ -329,7 +329,7 @@ th {
 [class^="panel-"],
 [class*=" panel-"] {
   position: relative;
-  padding: 1.5rem 1.5rem 1.5rem 4rem;
+  padding: 0.3rem 1.5rem 0.25rem 1.25rem;
   margin: 1rem 0;
   border: none;
   border-radius: 8px;
@@ -340,9 +340,9 @@ th {
 [class^="panel-"]::before,
 [class*=" panel-"]::before {
   position: absolute;
-  left: 1rem;
-  top: 0.25rem;
-  font-size: 1.5rem;
+  left: 0.75rem;
+  top: 0.75rem;
+  font-size: 1.25rem;
   line-height: 1;
 }
 
