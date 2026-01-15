@@ -8,6 +8,26 @@
   --color-bg-light: #f9f9f9;
   --color-bg-th: #eee;
   --color-link: #00e;
+
+  /* Panel colors - info (blue) */
+  --panel-info-bg: #e3f2fd;
+  --panel-info-border: #1976d2;
+  --panel-info-text: #0d47a1;
+
+  /* Panel colors - warning (yellow) */
+  --panel-warning-bg: #fff8e1;
+  --panel-warning-border: #f57c00;
+  --panel-warning-text: #e65100;
+
+  /* Panel colors - success (green) */
+  --panel-success-bg: #e8f5e9;
+  --panel-success-border: #388e3c;
+  --panel-success-text: #1b5e20;
+
+  /* Panel colors - error (red) */
+  --panel-error-bg: #ffebee;
+  --panel-error-border: #d32f2f;
+  --panel-error-text: #b71c1c;
 }
 
 /* Reset */
@@ -301,6 +321,94 @@ th {
   margin-bottom: 0;
 }
 
+/* ======================
+   JIRA Panel Styles
+   ====================== */
+
+/* Base panel structure */
+[class^="panel-"],
+[class*=" panel-"] {
+  position: relative;
+  padding: 0.3rem 1.5rem 0.25rem 1.25rem;
+  margin: 1rem 0;
+  border: none;
+  border-radius: 8px;
+  line-height: 1.6;
+}
+
+/* Icon styling */
+[class^="panel-"]::before,
+[class*=" panel-"]::before {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+/* Info Panel */
+.panel-info {
+  background-color: var(--panel-info-bg);
+  color: var(--panel-info-text);
+}
+
+.panel-info::before {
+  content: "ℹ️";
+}
+
+/* Warning Panel */
+.panel-warning {
+  background-color: var(--panel-warning-bg);
+  color: var(--panel-warning-text);
+}
+
+.panel-warning::before {
+  content: "⚠️";
+}
+
+/* Success Panel */
+.panel-success {
+  background-color: var(--panel-success-bg);
+  color: var(--panel-success-text);
+}
+
+.panel-success::before {
+  content: "✅";
+}
+
+/* Error Panel */
+.panel-error {
+  background-color: var(--panel-error-bg);
+  color: var(--panel-error-text);
+}
+
+.panel-error::before {
+  content: "❌";
+}
+
+/* Panel content adjustments */
+[class^="panel-"] > *:first-child,
+[class*=" panel-"] > *:first-child {
+  margin-top: 0;
+}
+
+[class^="panel-"] > *:last-child,
+[class*=" panel-"] > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Panel links */
+[class^="panel-"] a,
+[class*=" panel-"] a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+[class^="panel-"] a:hover,
+[class*=" panel-"] a:hover {
+  opacity: 0.8;
+}
+
 /* Responsive Design */
 
 /* Tablet (1024px and below) */
@@ -347,5 +455,18 @@ th {
 
   main {
     padding: 1rem;
+  }
+
+  /* Panel adjustments for mobile */
+  [class^="panel-"],
+  [class*=" panel-"] {
+    padding: 1.25rem 1rem 1.25rem 3.5rem;
+    font-size: 0.9rem;
+  }
+
+  [class^="panel-"]::before,
+  [class*=" panel-"]::before {
+    left: 0.75rem;
+    font-size: 1.25rem;
   }
 }
