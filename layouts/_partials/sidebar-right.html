@@ -23,10 +23,10 @@
 {{- with site.Taxonomies.tags }}
   <section class="widget">
     <h3>Tags</h3>
-    <ul>
+    <ul class="tag-list">
       {{- range $name, $taxonomy := . }}
         <li>
-          <a href="{{ "/tags/" | relLangURL }}{{ $name | urlize }}">
+          <a href="{{ "/tags/" | relLangURL }}{{ $name | urlize }}" class="tag-badge">
             {{ $name }} ({{ len $taxonomy }})
           </a>
         </li>

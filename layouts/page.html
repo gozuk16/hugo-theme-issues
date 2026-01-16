@@ -1,4 +1,5 @@
 {{ define "main" }}
+page.html
   {{ $content := .Content }}
   {{ $main := replaceRE "(?s)<!-- PAGE_RIGHT_START -->(.*?)<!-- PAGE_RIGHT_END -->" "" $content }}
   <article>

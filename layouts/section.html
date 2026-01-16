@@ -1,4 +1,5 @@
 {{ define "main" }}
+section.html
   <h1>{{ .Title }}</h1>
   {{ .Content }}
 
@@ -6,9 +7,6 @@
     {{ range .Pages }}
       <article class="page-summary">
         <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-        <div class="summary">
-          {{ .Summary }}
-        </div>
         <a href="{{ .RelPermalink }}" class="read-more">Read more →</a>
       </article>
     {{ end }}
