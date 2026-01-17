@@ -178,9 +178,9 @@ JIRA issueページで使用される、issue固有のメタデータを表示�
 {{- with .GetTerms "tags" }}
   <section class="widget">
     <h3>Tags</h3>
-    <ul>
+    <ul class="tag-list">
       {{- range . }}
-        <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+        <li><a href="{{ .RelPermalink }}" class="tag-badge">{{ .LinkTitle }}</a></li>
       {{- end }}
     </ul>
   </section>
