@@ -1,6 +1,6 @@
 baseURL = 'https://example.org/'
-languageCode = 'en-US'
-title = 'My New Hugo Site'
+languageCode = 'ja-JP'
+title = 'Hugo theme JIRA issues'
 
 [menus]
   [[menus.main]]
