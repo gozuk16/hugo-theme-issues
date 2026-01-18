@@ -61,6 +61,36 @@ header {
   padding: 1rem;
 }
 
+/* Header navigation menu */
+header nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+header nav li {
+  margin: 0;
+}
+
+header nav a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+header nav a:hover {
+  color: var(--color-link);
+  text-decoration: underline;
+}
+
+header nav a.active {
+  color: var(--color-link);
+  font-weight: 700;
+}
+
 .sidebar-left {
   grid-area: sidebar-left;
   padding: 1rem;
