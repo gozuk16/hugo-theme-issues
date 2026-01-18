@@ -8,6 +8,11 @@
     {{ partial "header.html" . }}
   </header>
 
+  {{- if .IsHome }}
+  <main-home>
+    {{ block "main" . }}{{ end }}
+  </main-home>
+  {{- else }}
   <aside class="sidebar-left">
     {{ partial "sidebar-left.html" . }}
   </aside>
@@ -15,6 +20,7 @@
   <main>
     {{ block "main" . }}{{ end }}
   </main>
+  {{- end }}
 
   <aside class="sidebar-right">
     {{ block "sidebar" . }}
@@ -22,8 +28,10 @@
     {{ end }}
   </aside>
 
+  {{- if .IsHome }}
   <footer>
     {{ partial "footer.html" . }}
   </footer>
+  {{- end }}
 </body>
 </html>

@@ -2,22 +2,14 @@
 home.html
   {{ .Content }}
 
-  <section class="post-list">
-    {{ range site.RegularPages }}
-      <article class="post-summary">
-        <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-        {{ with .Date }}
-          <time datetime="{{ . | time.Format `2006-01-02` }}">
-            {{ . | time.Format "January 2, 2006" }}
-          </time>
-        {{ end }}
-        <div class="summary">
-          {{ .Summary }}
-        </div>
-        <a href="{{ .RelPermalink }}" class="read-more">Read more →</a>
-      </article>
-    {{ end }}
-  </section>
+  {{- /* プロジェクト一覧を表示 */}}
+  <ul>
+  {{ range .Site.Sections }}
+    <li>
+      <a href="{{ .Permalink }}">{{ .Title }}</a>
+    </li>
+  {{ end }}
+</ul>
 {{ end }}
 
 {{ define "sidebar" }}
@@ -26,6 +18,8 @@ home.html
     <h3>About This Site</h3>
     <p>{{ site.Params.description | default "Welcome to our site!" }}</p>
   </section>
+
+  <br />
 
   {{- /* デフォルトのサイドバーコンテンツも表示 */}}
   {{ partial "sidebar-right.html" . }}
