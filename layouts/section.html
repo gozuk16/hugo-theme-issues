@@ -4,12 +4,50 @@ section.html
   {{ .Content }}
 
   <section class="page-list">
-    {{ range .Pages }}
-      <article class="page-summary">
-        <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-        <a href="{{ .RelPermalink }}" class="read-more">Read more →</a>
-      </article>
-    {{ end }}
+    <ul>
+      {{ range .Pages }}
+        <li class="ticket-item">
+          {{- /* Issue Type アイコン */ -}}
+          <span class="issue-type-icon">
+            {{- with .Params.issue_type }}
+              {{- if or (eq . "Epic") (eq . "エピック") }}🟣
+              {{- else if or (eq . "Story") (eq . "ストーリー") }}📗
+              {{- else if or (eq . "Task") (eq . "タスク") }}☑️
+              {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") }}➡️
+              {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
+              {{- else }}📄
+              {{- end }}
+            {{- end }}
+          </span>
+
+          {{- /* Issue Key + タイトル */ -}}
+          <a href="{{ .RelPermalink }}" class="ticket-link">
+            {{- with .Params.issue_key }}<strong>{{ . }}</strong>: {{- end }}
+            {{ .Title }}
+          </a>
+
+          {{- /* ステータス */ -}}
+          {{- with .Params.status }}
+            <span class="status-badge">[{{ . }}]</span>
+          {{- end }}
+
+          {{- /* 担当者 */ -}}
+          {{- with .Params.assignee }}
+            <span class="assignee-info">[担当者: {{ . }}]</span>
+          {{- end }}
+
+          {{- /* Start date */ -}}
+          {{- with .Params.startdate }}
+            <span class="date-info">[開始日: {{ . }}]</span>
+          {{- end }}
+
+          {{- /* 期日 */ -}}
+          {{- with .Params.duedate }}
+            <span class="date-info">[期日: {{ . }}]</span>
+          {{- end }}
+        </li>
+      {{ end }}
+    </ul>
   </section>
 {{ end }}
 
