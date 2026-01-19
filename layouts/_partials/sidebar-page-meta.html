@@ -46,6 +46,32 @@ sidebar-page-meta.html
       {{ . }}
     </div>
   {{- end }}
+
+  {{- /* ラベル（Hugoタグとしてリンク表示） */ -}}
+  {{- with .Scratch.Get "labels" }}
+    <div class="meta-item">
+      <strong>ラベル:</strong><br>
+      {{- if reflect.IsSlice . }}
+        <ul class="tag-list" style="margin-top: 0.5rem;">
+          {{- range $label := . }}
+            {{- $tag := $.Site.GetPage (printf "/tags/%s" ($label | urlize)) }}
+            {{- if $tag }}
+              <li><a href="{{ $tag.RelPermalink }}" class="tag-badge">{{ $label }}</a></li>
+            {{- else }}
+              <li><span class="tag-badge">{{ $label }}</span></li>
+            {{- end }}
+          {{- end }}
+        </ul>
+      {{- else }}
+        {{- $tag := $.Site.GetPage (printf "/tags/%s" (. | urlize)) }}
+        {{- if $tag }}
+          <a href="{{ $tag.RelPermalink }}" class="tag-badge">{{ . }}</a>
+        {{- else }}
+          <span class="tag-badge">{{ . }}</span>
+        {{- end }}
+      {{- end }}
+    </div>
+  {{- end }}
 </section>
 
 {{- /* 時間管理情報 */}}

@@ -105,4 +105,8 @@ JSON形式でメタデータを記述し、.Scratchに保存します。
   {{- $.Page.Scratch.Set "dev_branches" . }}
 {{- end }}
 
+{{- with $metadata.labels }}
+  {{- $.Page.Scratch.Set "labels" . }}
+{{- end }}
+
 {{- /* 空文字列を返す（メインコンテンツに表示しない） */}}

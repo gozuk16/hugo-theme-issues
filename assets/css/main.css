@@ -505,57 +505,65 @@ th {
   opacity: 0.8;
 }
 
-/* チケット一覧 (section.html) */
-.page-list ul {
-  list-style: none;
-  padding: 0;
+/* チケット一覧テーブル (section.html) */
+.ticket-table {
   margin: 1rem 0;
+  width: 100%;
 }
 
-.ticket-item {
-  margin-bottom: 1rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--color-border);
-  line-height: 1.8;
+.ticket-table th {
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-.ticket-item:last-child {
-  border-bottom: none;
+/* Summary列（Type + Key + Summary結合） */
+.ticket-table .summary-col {
+  min-width: 20rem;
 }
 
-.ticket-item .issue-type-icon {
+.ticket-table .summary-col .issue-type-icon {
   display: inline-block;
   margin-right: 0.5rem;
   font-size: 1rem;
   vertical-align: middle;
 }
 
-.ticket-item .ticket-link {
-  color: var(--color-link);
-  text-decoration: none;
-  font-size: 1rem;
+/* 子issueのインデント */
+.ticket-table .summary-col.child-issue {
+  padding-left: 2rem;
 }
 
-.ticket-item .ticket-link:hover {
+/* 孫issueのインデント */
+.ticket-table .summary-col.grandchild-issue {
+  padding-left: 4rem;
+}
+
+.ticket-table .summary-col a {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+.ticket-table .summary-col a:hover {
   text-decoration: underline;
 }
 
-.ticket-item .status-badge {
-  display: inline;
-  margin-left: 0.5rem;
-  padding: 0.2rem 0.5rem;
-  font-size: 0.75rem;
-  background-color: #6c757d;
-  color: white;
-  border-radius: 3px;
+.ticket-table .status-col {
+  width: 8rem;
 }
 
-.ticket-item .assignee-info,
-.ticket-item .date-info {
-  display: inline;
-  margin-left: 0.5rem;
-  font-size: 0.85rem;
-  color: #666;
+.ticket-table .assignee-col {
+  width: 12rem;
+}
+
+.ticket-table .date-col {
+  width: 8rem;
+  white-space: nowrap;
+}
+
+/* テーブル行のホバー効果 */
+.ticket-table tbody tr:hover {
+  background-color: var(--color-bg-light);
 }
 
 /* Responsive Design */
@@ -619,16 +627,19 @@ th {
     padding: 1rem;
   }
 
-  /* Ticket list adjustments for mobile */
-  .ticket-item {
-    line-height: 1.6;
+  /* Ticket table adjustments for mobile */
+  .page-list {
+    overflow-x: auto;
   }
 
-  .ticket-item .assignee-info,
-  .ticket-item .date-info {
-    display: block;
-    margin-left: 2rem;
-    margin-top: 0.25rem;
+  .ticket-table {
+    min-width: 600px;
+  }
+
+  .ticket-table th,
+  .ticket-table td {
+    font-size: 0.85rem;
+    padding: 0.4rem;
   }
 
   /* Panel adjustments for mobile */
