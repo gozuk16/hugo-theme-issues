@@ -7,8 +7,6 @@ section.html
     <table class="ticket-table">
       <thead>
         <tr>
-          <th>Type</th>
-          <th>Key</th>
           <th>Summary</th>
           <th>Status</th>
           <th>Assignee</th>
@@ -17,39 +15,135 @@ section.html
         </tr>
       </thead>
       <tbody>
-        {{ range .Pages }}
+        {{- $pages := .Pages }}
+
+        {{- /* エピックを抽出してrank順にソート */ -}}
+        {{- $epics := slice }}
+        {{- range $pages }}
+          {{- if or (eq .Params.issue_type "Epic") (eq .Params.issue_type "エピック") }}
+            {{- $epics = $epics | append . }}
+          {{- end }}
+        {{- end }}
+        {{- $sortedEpics := sort $epics ".Params.rank" "asc" }}
+
+        {{- /* エピックごとにグループ表示 */ -}}
+        {{- range $epic := $sortedEpics }}
+          {{- /* エピック行 */ -}}
           <tr>
-            <td class="issue-type-col">
-              {{- with .Params.issue_type }}
-                {{- if or (eq . "Epic") (eq . "エピック") }}🟣
-                {{- else if or (eq . "Story") (eq . "ストーリー") }}📗
-                {{- else if or (eq . "Task") (eq . "タスク") }}☑️
-                {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") }}➡️
-                {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
-                {{- else }}📄
-                {{- end }}
-              {{- end }}
-            </td>
-            <td class="issue-key-col">
-              {{- .Params.issue_key -}}
-            </td>
             <td class="summary-col">
-              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+              <span class="issue-type-icon">🟣</span>
+              <strong>{{ $epic.Params.issue_key }}</strong>:
+              <a href="{{ $epic.RelPermalink }}">{{ $epic.Title }}</a>
             </td>
-            <td class="status-col">
-              {{- .Params.status -}}
-            </td>
-            <td class="assignee-col">
-              {{- .Params.assignee -}}
-            </td>
-            <td class="date-col">
-              {{- .Params.startdate -}}
-            </td>
-            <td class="date-col">
-              {{- .Params.duedate -}}
-            </td>
+            <td class="status-col">{{ $epic.Params.status }}</td>
+            <td class="assignee-col">{{ $epic.Params.assignee }}</td>
+            <td class="date-col">{{ $epic.Params.startdate }}</td>
+            <td class="date-col">{{ $epic.Params.duedate }}</td>
           </tr>
-        {{ end }}
+
+          {{- /* 子issueを抽出してrank順にソート */ -}}
+          {{- $epicKey := $epic.Params.issue_key }}
+          {{- $children := where $pages ".Params.parent" $epicKey }}
+          {{- $sortedChildren := sort $children ".Params.rank" "asc" }}
+
+          {{- /* 子issueを表示 */ -}}
+          {{- range $child := $sortedChildren }}
+            <tr>
+              <td class="summary-col child-issue">
+                <span class="issue-type-icon">
+                  {{- with $child.Params.issue_type }}
+                    {{- if or (eq . "Story") (eq . "ストーリー") }}📗
+                    {{- else if or (eq . "Task") (eq . "タスク") }}☑️
+                    {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
+                    {{- else }}📄
+                    {{- end }}
+                  {{- end }}
+                </span>
+                <strong>{{ $child.Params.issue_key }}</strong>:
+                <a href="{{ $child.RelPermalink }}">{{ $child.Title }}</a>
+              </td>
+              <td class="status-col">{{ $child.Params.status }}</td>
+              <td class="assignee-col">{{ $child.Params.assignee }}</td>
+              <td class="date-col">{{ $child.Params.startdate }}</td>
+              <td class="date-col">{{ $child.Params.duedate }}</td>
+            </tr>
+
+            {{- /* 孫issueを抽出してrank順にソート */ -}}
+            {{- $childKey := $child.Params.issue_key }}
+            {{- $grandchildren := where $pages ".Params.parent" $childKey }}
+            {{- $sortedGrandchildren := sort $grandchildren ".Params.rank" "asc" }}
+
+            {{- /* 孫issueを表示 */ -}}
+            {{- range $grandchild := $sortedGrandchildren }}
+              <tr>
+                <td class="summary-col grandchild-issue">
+                  <span class="issue-type-icon">
+                    {{- with $grandchild.Params.issue_type }}
+                      {{- if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") }}➡️
+                      {{- else if or (eq . "Task") (eq . "タスク") }}☑️
+                      {{- else }}📄
+                      {{- end }}
+                    {{- end }}
+                  </span>
+                  <strong>{{ $grandchild.Params.issue_key }}</strong>:
+                  <a href="{{ $grandchild.RelPermalink }}">{{ $grandchild.Title }}</a>
+                </td>
+                <td class="status-col">{{ $grandchild.Params.status }}</td>
+                <td class="assignee-col">{{ $grandchild.Params.assignee }}</td>
+                <td class="date-col">{{ $grandchild.Params.startdate }}</td>
+                <td class="date-col">{{ $grandchild.Params.duedate }}</td>
+              </tr>
+            {{- end }}
+          {{- end }}
+        {{- end }}
+
+        {{- /* 孤立issueを抽出してrank順にソート */ -}}
+        {{- $epicFamilyKeys := slice }}
+        {{- range $sortedEpics }}
+          {{- $epicFamilyKeys = $epicFamilyKeys | append .Params.issue_key }}
+          {{- $epicKey := .Params.issue_key }}
+          {{- $children := where $pages ".Params.parent" $epicKey }}
+          {{- range $child := $children }}
+            {{- $epicFamilyKeys = $epicFamilyKeys | append $child.Params.issue_key }}
+            {{- $childKey := $child.Params.issue_key }}
+            {{- $grandchildren := where $pages ".Params.parent" $childKey }}
+            {{- range $grandchild := $grandchildren }}
+              {{- $epicFamilyKeys = $epicFamilyKeys | append $grandchild.Params.issue_key }}
+            {{- end }}
+          {{- end }}
+        {{- end }}
+
+        {{- $orphans := slice }}
+        {{- range $page := $pages }}
+          {{- if not (in $epicFamilyKeys $page.Params.issue_key) }}
+            {{- $orphans = $orphans | append $page }}
+          {{- end }}
+        {{- end }}
+        {{- $sortedOrphans := sort $orphans ".Params.rank" "asc" }}
+
+        {{- /* 孤立issueを表示 */ -}}
+        {{- range $orphan := $sortedOrphans }}
+          <tr>
+            <td class="summary-col">
+              <span class="issue-type-icon">
+                {{- with $orphan.Params.issue_type }}
+                  {{- if or (eq . "Epic") (eq . "エピック") }}🟣
+                  {{- else if or (eq . "Story") (eq . "ストーリー") }}📗
+                  {{- else if or (eq . "Task") (eq . "タスク") }}☑️
+                  {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
+                  {{- else }}📄
+                  {{- end }}
+                {{- end }}
+              </span>
+              <strong>{{ $orphan.Params.issue_key }}</strong>:
+              <a href="{{ $orphan.RelPermalink }}">{{ $orphan.Title }}</a>
+            </td>
+            <td class="status-col">{{ $orphan.Params.status }}</td>
+            <td class="assignee-col">{{ $orphan.Params.assignee }}</td>
+            <td class="date-col">{{ $orphan.Params.startdate }}</td>
+            <td class="date-col">{{ $orphan.Params.duedate }}</td>
+          </tr>
+        {{- end }}
       </tbody>
     </table>
   </section>
