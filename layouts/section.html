@@ -4,50 +4,54 @@ section.html
   {{ .Content }}
 
   <section class="page-list">
-    <ul>
-      {{ range .Pages }}
-        <li class="ticket-item">
-          {{- /* Issue Type アイコン */ -}}
-          <span class="issue-type-icon">
-            {{- with .Params.issue_type }}
-              {{- if or (eq . "Epic") (eq . "エピック") }}🟣
-              {{- else if or (eq . "Story") (eq . "ストーリー") }}📗
-              {{- else if or (eq . "Task") (eq . "タスク") }}☑️
-              {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") }}➡️
-              {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
-              {{- else }}📄
+    <table class="ticket-table">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Key</th>
+          <th>Summary</th>
+          <th>Status</th>
+          <th>Assignee</th>
+          <th>Start Date</th>
+          <th>Due Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ range .Pages }}
+          <tr>
+            <td class="issue-type-col">
+              {{- with .Params.issue_type }}
+                {{- if or (eq . "Epic") (eq . "エピック") }}🟣
+                {{- else if or (eq . "Story") (eq . "ストーリー") }}📗
+                {{- else if or (eq . "Task") (eq . "タスク") }}☑️
+                {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") }}➡️
+                {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
+                {{- else }}📄
+                {{- end }}
               {{- end }}
-            {{- end }}
-          </span>
-
-          {{- /* Issue Key + タイトル */ -}}
-          <a href="{{ .RelPermalink }}" class="ticket-link">
-            {{- with .Params.issue_key }}<strong>{{ . }}</strong>: {{- end }}
-            {{ .Title }}
-          </a>
-
-          {{- /* ステータス */ -}}
-          {{- with .Params.status }}
-            <span class="status-badge">[{{ . }}]</span>
-          {{- end }}
-
-          {{- /* 担当者 */ -}}
-          {{- with .Params.assignee }}
-            <span class="assignee-info">[担当者: {{ . }}]</span>
-          {{- end }}
-
-          {{- /* Start date */ -}}
-          {{- with .Params.startdate }}
-            <span class="date-info">[開始日: {{ . }}]</span>
-          {{- end }}
-
-          {{- /* 期日 */ -}}
-          {{- with .Params.duedate }}
-            <span class="date-info">[期日: {{ . }}]</span>
-          {{- end }}
-        </li>
-      {{ end }}
-    </ul>
+            </td>
+            <td class="issue-key-col">
+              {{- .Params.issue_key -}}
+            </td>
+            <td class="summary-col">
+              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            </td>
+            <td class="status-col">
+              {{- .Params.status -}}
+            </td>
+            <td class="assignee-col">
+              {{- .Params.assignee -}}
+            </td>
+            <td class="date-col">
+              {{- .Params.startdate -}}
+            </td>
+            <td class="date-col">
+              {{- .Params.duedate -}}
+            </td>
+          </tr>
+        {{ end }}
+      </tbody>
+    </table>
   </section>
 {{ end }}
 
