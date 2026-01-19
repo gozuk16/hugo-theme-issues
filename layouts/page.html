@@ -17,4 +17,16 @@
   <aside class="page-right">
     {{ $right | safeHTML }}
   </aside>
+
+  {{- /* フロントマターのtagsをバッジ表示 */}}
+  {{- with .GetTerms "tags" }}
+    <section class="widget page-meta">
+      <h3>ラベル</h3>
+      <ul class="tag-list">
+        {{- range . }}
+          <li><a href="{{ .RelPermalink }}" class="tag-badge">{{ .LinkTitle }}</a></li>
+        {{- end }}
+      </ul>
+    </section>
+  {{- end }}
 {{ end }}
