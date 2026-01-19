@@ -355,16 +355,6 @@ th {
   font-weight: bold;
 }
 
-.sidebar-left .status-badge {
-  display: inline-block;
-  margin-left: 0.5rem;
-  padding: 0.2rem 0.5rem;
-  font-size: 0.75rem;
-  background-color: #6c757d;
-  color: white;
-  border-radius: 3px;
-}
-
 /* Issue Type Icon */
 .sidebar-left .issue-type-icon {
   display: inline-block;
@@ -654,4 +644,28 @@ th {
     left: 0.75rem;
     font-size: 1.25rem;
   }
+}
+
+/* Taxonomy and term pages */
+.taxonomy-list,
+.term-pages {
+  margin: 1rem 0;
+}
+
+/* Page right sidebar */
+.page-right {
+  grid-area: sidebar-right;
+  padding: 1rem;
+  border-left: 1px solid var(--color-border);
+}
+
+/* Orphan issue */
+.orphan-issue {
+  /* Orphan issues in sidebar are displayed with standard styling */
+}
+
+/* Ancestor menu item */
+.ancestor {
+  font-weight: 600;
+  opacity: 0.8;
 }

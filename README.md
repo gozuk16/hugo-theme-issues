@@ -89,11 +89,7 @@ hugo-theme-issues/
 │       ├── footer.html            # サイトフッター
 │       ├── menu.html              # ナビゲーションメニュー
 │       ├── sidebar-left.html      # 左サイドバー（プロジェクトナビ）
-│       ├── sidebar-page-meta.html # ページメタデータ
 │       ├── sidebar-right.html     # 右サイドバー
-│       ├── terms.html             # タグなるタクソノミー表示
-│       └── shortcodes/
-│           └── jira_metadata.html # JIRAメタデータ用ショートコード
 ├── content/                       # サンプルコンテンツ
 ├── archetypes/                    # 新規コンテンツテンプレート
 ├── i18n/                          # 国際化ファイル
