@@ -22,3 +22,35 @@
     </ul>
   </section>
 {{- end }}
+
+{{- /* 修正バージョン一覧 */}}
+{{- with site.Taxonomies.fix_versions }}
+  <section class="widget">
+    <h3>Fix Versions</h3>
+    <ul class="tag-list">
+      {{- range $name, $taxonomy := . }}
+        <li>
+          <a href="{{ "/fix_versions/" | relLangURL }}{{ $name | urlize }}" class="tag-badge">
+            {{ $name }} ({{ len $taxonomy }})
+          </a>
+        </li>
+      {{- end }}
+    </ul>
+  </section>
+{{- end }}
+
+{{- /* 影響バージョン一覧 */}}
+{{- with site.Taxonomies.affected_versions }}
+  <section class="widget">
+    <h3>Affected Versions</h3>
+    <ul class="tag-list">
+      {{- range $name, $taxonomy := . }}
+        <li>
+          <a href="{{ "/affected_versions/" | relLangURL }}{{ $name | urlize }}" class="tag-badge">
+            {{ $name }} ({{ len $taxonomy }})
+          </a>
+        </li>
+      {{- end }}
+    </ul>
+  </section>
+{{- end }}
