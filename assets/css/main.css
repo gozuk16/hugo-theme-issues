@@ -669,3 +669,33 @@ th {
   font-weight: 600;
   opacity: 0.8;
 }
+
+/* ======================
+   JIRA Color Macro Styles
+   ====================== */
+
+/* Base color class */
+.color {
+  /* Inherits text styling */
+}
+
+/* JIRA color palette */
+.color-danger {
+  color: #ff5630;
+}
+
+.color-warning {
+  color: #ffab00;
+}
+
+.color-success {
+  color: #36b37e;
+}
+
+.color-info {
+  color: #4c9aff;
+}
+
+.color-purple {
+  color: #6554c0;
+}
