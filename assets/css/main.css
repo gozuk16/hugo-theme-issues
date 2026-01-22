@@ -674,28 +674,42 @@ th {
    JIRA Color Macro Styles
    ====================== */
 
-/* Base color class */
+/* Base color class - badge style */
 .color {
-  /* Inherits text styling */
+  display: inline-block;
+  padding: 0.15em 0.5em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-weight: 500;
 }
 
-/* JIRA color palette */
+/* JIRA color palette - badge style with background */
 .color-danger {
-  color: #ff5630;
+  background-color: #ffebe6;
+  color: #bf2600;
+  border: 1px solid #ff8f73;
 }
 
 .color-warning {
-  color: #ffab00;
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffc107;
 }
 
 .color-success {
-  color: #36b37e;
+  background-color: #e3fcef;
+  color: #006644;
+  border: 1px solid #57d9a3;
 }
 
 .color-info {
-  color: #4c9aff;
+  background-color: #deebff;
+  color: #0747a6;
+  border: 1px solid #4c9aff;
 }
 
 .color-purple {
-  color: #6554c0;
+  background-color: #eae6ff;
+  color: #403294;
+  border: 1px solid #998dd9;
 }
