@@ -675,7 +675,7 @@ th {
    ====================== */
 
 /* Base color class - badge style */
-.color {
+span.color {
   display: inline-block;
   padding: 0.15em 0.5em;
   border-radius: 4px;
