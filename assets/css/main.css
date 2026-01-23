@@ -125,9 +125,8 @@ main {
 footer {
   grid-area: footer;
   border-top: 1px solid var(--color-border-dark);
-  padding: 0.5rem 1rem;
+  padding: 1rem;
   text-align: center;
-  font-size: 0.85rem;
 }
 
 /* Main content list styles */
@@ -736,7 +735,6 @@ th {
    ====================== */
 
 body.is-home {
-  height: auto;
   overflow: visible;
   grid-template-areas:
     "header header"
@@ -759,7 +757,6 @@ body.is-home .sidebar-right {
 body.is-home footer {
   grid-area: footer;
   border-top: 1px solid var(--color-border-dark);
-  padding: 0.5rem 1rem;
+  padding: 1rem;
   text-align: center;
-  font-size: 0.85rem;
 }
