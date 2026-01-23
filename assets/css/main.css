@@ -105,6 +105,11 @@ header nav a.active {
   grid-area: sidebar-left;
   padding: 1rem;
   border-right: 1px solid var(--color-border);
+  /* 独立スクロール用 */
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 main {
@@ -607,6 +612,12 @@ th {
     border-right: none;
     border-left: none;
     border-bottom: 1px solid var(--color-border);
+  }
+
+  .sidebar-left {
+    position: static;
+    height: auto;
+    overflow-y: visible;
   }
 
   .sidebar-right {
