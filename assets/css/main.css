@@ -44,13 +44,13 @@ body {
   line-height: 1.5;
   margin: 0;
   display: grid;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   grid-template-areas:
     "header header header"
-    "sidebar-left main sidebar-right"
-    "footer footer footer";
+    "sidebar-left main sidebar-right";
   grid-template-columns: var(--sidebar-left-width) 1fr var(--sidebar-right-width);
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr;
   gap: 0;
 }
 
@@ -105,18 +105,21 @@ header nav a.active {
   grid-area: sidebar-left;
   padding: 1rem;
   border-right: 1px solid var(--color-border);
+  overflow-y: auto;
 }
 
 main {
   grid-area: main;
   padding: 1rem 2rem;
   max-width: 900px;
+  overflow-y: auto;
 }
 
 .sidebar-right {
   grid-area: sidebar-right;
   padding: 1rem;
   border-left: 1px solid var(--color-border);
+  overflow-y: auto;
 }
 
 footer {
@@ -564,10 +567,9 @@ th {
     grid-template-areas:
       "header header"
       "sidebar-left main"
-      "sidebar-right sidebar-right"
-      "footer footer";
+      "sidebar-right sidebar-right";
     grid-template-columns: 200px 1fr;
-    grid-template-rows: auto 1fr auto auto;
+    grid-template-rows: auto 1fr auto;
   }
 
   .sidebar-right {
@@ -592,14 +594,15 @@ th {
   }
 
   body {
+    height: auto;
+    overflow: visible;
     grid-template-areas:
       "header"
       "sidebar-left"
       "main"
-      "sidebar-right"
-      "footer";
+      "sidebar-right";
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto 1fr auto auto;
+    grid-template-rows: auto auto 1fr auto;
   }
 
   .sidebar-left,
@@ -607,6 +610,7 @@ th {
     border-right: none;
     border-left: none;
     border-bottom: 1px solid var(--color-border);
+    overflow-y: visible;
   }
 
   .sidebar-right {
@@ -724,4 +728,35 @@ th {
   background-color: #f4f5f7;
   color: #42526e;
   border: 1px solid #c1c7d0;
+}
+
+/* ======================
+   トップページ用レイアウト（通常スクロール）
+   ====================== */
+
+body.is-home {
+  overflow: visible;
+  grid-template-areas:
+    "header header"
+    "main-home sidebar-right"
+    "footer footer";
+  grid-template-columns: 1fr var(--sidebar-right-width);
+  grid-template-rows: auto 1fr auto;
+}
+
+body.is-home main-home {
+  grid-area: main-home;
+  padding: 1rem 2rem;
+  overflow-y: visible;
+}
+
+body.is-home .sidebar-right {
+  overflow-y: visible;
+}
+
+body.is-home footer {
+  grid-area: footer;
+  border-top: 1px solid var(--color-border-dark);
+  padding: 1rem;
+  text-align: center;
 }
