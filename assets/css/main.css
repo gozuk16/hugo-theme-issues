@@ -122,6 +122,11 @@ main {
   grid-area: sidebar-right;
   padding: 1rem;
   border-left: 1px solid var(--color-border);
+  /* 独立スクロール用 */
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 footer {
@@ -614,7 +619,8 @@ th {
     border-bottom: 1px solid var(--color-border);
   }
 
-  .sidebar-left {
+  .sidebar-left,
+  .sidebar-right {
     position: static;
     height: auto;
     overflow-y: visible;
