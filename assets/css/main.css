@@ -837,3 +837,10 @@ body.is-home footer {
   outline: 2px solid #007bff;
   outline-offset: -2px;
 }
+
+.header-search .pagefind-ui__button--selected {
+  background-color: #007bff !important;
+  color: white !important;
+  outline: 2px solid #0056b3;
+  outline-offset: -2px;
+}

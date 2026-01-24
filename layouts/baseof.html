@@ -44,23 +44,30 @@
 
       searchContainer.addEventListener('keydown', (e) => {
         const results = searchContainer.querySelectorAll('.pagefind-ui__result');
-        if (results.length === 0) return;
+        const loadMoreBtn = searchContainer.querySelector('.pagefind-ui__button');
+        const totalItems = results.length + (loadMoreBtn ? 1 : 0);
+        if (totalItems === 0) return;
 
         if (e.key === 'ArrowDown') {
           e.preventDefault();
-          selectedIndex = Math.min(selectedIndex + 1, results.length - 1);
-          updateSelection(results);
+          selectedIndex = Math.min(selectedIndex + 1, totalItems - 1);
+          updateSelection(results, loadMoreBtn);
         } else if (e.key === 'ArrowUp') {
           e.preventDefault();
           selectedIndex = Math.max(selectedIndex - 1, 0);
-          updateSelection(results);
+          updateSelection(results, loadMoreBtn);
         } else if (e.key === 'Enter' && selectedIndex >= 0) {
           e.preventDefault();
-          const link = results[selectedIndex].querySelector('a');
-          if (link) link.click();
+          if (selectedIndex < results.length) {
+            const link = results[selectedIndex].querySelector('a');
+            if (link) link.click();
+          } else if (loadMoreBtn) {
+            loadMoreBtn.click();
+            selectedIndex = -1;
+          }
         } else if (e.key === 'Escape') {
           selectedIndex = -1;
-          updateSelection(results);
+          updateSelection(results, loadMoreBtn);
         }
       });
 
@@ -69,12 +76,16 @@
         selectedIndex = -1;
       });
 
-      function updateSelection(results) {
+      function updateSelection(results, loadMoreBtn) {
         results.forEach((r, i) => {
           r.classList.toggle('pagefind-ui__result--selected', i === selectedIndex);
         });
-        if (selectedIndex >= 0 && results[selectedIndex]) {
-          results[selectedIndex].scrollIntoView({ block: 'nearest' });
+        if (loadMoreBtn) {
+          loadMoreBtn.classList.toggle('pagefind-ui__button--selected', selectedIndex === results.length);
+        }
+        if (selectedIndex >= 0) {
+          const target = selectedIndex < results.length ? results[selectedIndex] : loadMoreBtn;
+          if (target) target.scrollIntoView({ block: 'nearest' });
         }
       }
     });
