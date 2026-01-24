@@ -796,3 +796,32 @@ body.is-home footer {
   overflow-y: auto;
   width: 400px;
 }
+
+/* 検索結果のコンパクト化 */
+.header-search .pagefind-ui__message {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.header-search .pagefind-ui__result {
+  padding: 0.5rem 0.75rem;
+}
+
+.header-search .pagefind-ui__result-inner {
+  margin: 0;
+}
+
+.header-search .pagefind-ui__result-title {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.header-search .pagefind-ui__result-excerpt {
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.header-search .pagefind-ui__result-nested {
+  padding-left: 0.75rem;
+  margin-top: 0.25rem;
+}
