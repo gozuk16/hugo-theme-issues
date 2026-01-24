@@ -767,6 +767,7 @@ body.is-home footer {
 
 .header-search {
   flex: 0 0 auto;
+  position: relative;
 }
 
 .header-search .pagefind-ui__search-input {
@@ -779,4 +780,19 @@ body.is-home footer {
 
 .header-search .pagefind-ui__search-clear {
   display: none;
+}
+
+/* 検索結果をオーバーレイ表示 */
+.header-search .pagefind-ui__drawer {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  max-height: 80vh;
+  overflow-y: auto;
+  width: 400px;
 }
