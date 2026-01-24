@@ -793,7 +793,7 @@ body.is-home footer {
   border-radius: 4px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   max-height: 80vh;
-  /* overflow-y: auto; テスト用に一時削除 */
+  overflow-y: auto;
   width: 400px;
 }
 
