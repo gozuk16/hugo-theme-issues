@@ -37,6 +37,46 @@
   <script>
     window.addEventListener('DOMContentLoaded', (event) => {
       new PagefindUI({ element: "#search", showSubResults: true });
+
+      // 矢印キーナビゲーション
+      let selectedIndex = -1;
+      const searchContainer = document.getElementById('search');
+
+      searchContainer.addEventListener('keydown', (e) => {
+        const results = searchContainer.querySelectorAll('.pagefind-ui__result');
+        if (results.length === 0) return;
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          selectedIndex = Math.min(selectedIndex + 1, results.length - 1);
+          updateSelection(results);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          selectedIndex = Math.max(selectedIndex - 1, 0);
+          updateSelection(results);
+        } else if (e.key === 'Enter' && selectedIndex >= 0) {
+          e.preventDefault();
+          const link = results[selectedIndex].querySelector('a');
+          if (link) link.click();
+        } else if (e.key === 'Escape') {
+          selectedIndex = -1;
+          updateSelection(results);
+        }
+      });
+
+      // 検索入力時にリセット
+      searchContainer.addEventListener('input', () => {
+        selectedIndex = -1;
+      });
+
+      function updateSelection(results) {
+        results.forEach((r, i) => {
+          r.classList.toggle('pagefind-ui__result--selected', i === selectedIndex);
+        });
+        if (selectedIndex >= 0 && results[selectedIndex]) {
+          results[selectedIndex].scrollIntoView({ block: 'nearest' });
+        }
+      }
     });
   </script>
 </body>

@@ -830,3 +830,10 @@ body.is-home footer {
   padding-left: 0.75rem !important;
   margin-top: 0.25rem !important;
 }
+
+/* 矢印キー選択時のハイライト */
+.header-search .pagefind-ui__result--selected {
+  background-color: #e8f4ff !important;
+  outline: 2px solid #007bff;
+  outline-offset: -2px;
+}
