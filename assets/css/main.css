@@ -760,3 +760,23 @@ body.is-home footer {
   padding: 1rem;
   text-align: center;
 }
+
+/* ======================
+   Pagefind検索スタイル
+   ====================== */
+
+.header-search {
+  flex: 0 0 auto;
+}
+
+.header-search .pagefind-ui__search-input {
+  padding: 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  width: 200px;
+}
+
+.header-search .pagefind-ui__search-clear {
+  display: none;
+}
