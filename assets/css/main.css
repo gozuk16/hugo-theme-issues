@@ -129,6 +129,17 @@ footer {
   text-align: center;
 }
 
+/* Main content paragraph and hr styles */
+main p {
+  margin-bottom: 0.75em;
+}
+
+main hr {
+  margin-bottom: 0.75em;
+  border: none;
+  border-top: 1px solid var(--color-border);
+}
+
 /* Main content list styles */
 main ul,
 main ol {
