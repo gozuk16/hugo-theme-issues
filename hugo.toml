@@ -9,9 +9,19 @@ title = 'Hugo theme JIRA issues'
     weight = 10
 
   [[menus.main]]
-    name = 'tags'
+    name = 'labels'
     pageRef = '/tags'
     weight = 30
+
+  [[menus.main]]
+    name = 'fix versions'
+    pageRef = '/fix_versions'
+    weight = 31
+
+  [[menus.main]]
+    name = 'affected versions'
+    pageRef = '/affected_versions'
+    weight = 32
 
 [markup]
   [markup.goldmark]
