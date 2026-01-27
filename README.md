@@ -141,6 +141,39 @@ hugo-theme-issues/
 
 ## 実装済み機能
 
+### 検索機能（Pagefind）
+
+ヘッダーにPagefindを使った全文検索機能を搭載しています。
+
+#### セットアップ手順
+
+1. Hugoでサイトをビルド：
+
+```bash
+hugo
+```
+
+2. Pagefindでインデックスを作成：
+
+```bash
+npx pagefind --site public
+```
+
+3. サーバーを起動して確認：
+
+```bash
+hugo server
+```
+
+#### 使用方法
+
+- ヘッダーの検索ボックスにキーワードを入力
+- 矢印キー（↑↓）で検索結果を選択
+- Enterキーで選択したページに移動
+- Escキーで選択解除
+
+**注意**: `hugo server -D` でドラフトを含めて開発する場合、Pagefindインデックスは`public`ディレクトリのビルド済みコンテンツのみを対象とするため、ドラフトページは検索対象外となります。
+
 ### 左サイドバー（プロジェクトナビゲーション）
 
 - **3階層構造対応**：エピック → 子issue → 孫issue を階層的に表示
@@ -174,6 +207,43 @@ GitHub風の青系スタイルでメンションを強調：
 - **シンタックスハイライト**：必要に応じてカスタマイズ可能
 
 ## カスタマイズ
+
+### メニューの追加
+
+`hugo.toml`でヘッダーのナビゲーションメニューを設定できます：
+
+```toml
+[menus]
+  [[menus.main]]
+    name = 'projects'
+    pageRef = '/'
+    weight = 10
+
+  [[menus.main]]
+    name = 'labels'
+    pageRef = '/tags'
+    weight = 30
+
+  [[menus.main]]
+    name = 'fix versions'
+    pageRef = '/fix_versions'
+    weight = 31
+```
+
+| パラメータ | 説明 |
+|---|---|
+| `name` | メニューに表示される名前 |
+| `pageRef` | リンク先のパス |
+| `weight` | 表示順序（小さいほど左に表示） |
+
+**タクソノミーページへのリンク**：タクソノミー（tags, fix_versions等）のリストページにリンクする場合は、`hugo.toml`で対応するタクソノミーを定義する必要があります：
+
+```toml
+[taxonomies]
+  tag = "tags"
+  fix_version = "fix_versions"
+  affected_version = "affected_versions"
+```
 
 ### テンプレートのカスタマイズ
 
