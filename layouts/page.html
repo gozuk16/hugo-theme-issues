@@ -16,41 +16,41 @@
   {{ end }}
   <aside class="page-right">
     {{ $right | safeHTML }}
+
+    {{- /* フロントマターのtagsをバッジ表示 */}}
+    {{- with $.GetTerms "tags" }}
+      <section class="widget page-meta">
+        <h3>ラベル</h3>
+        <ul class="tag-list">
+          {{- range . }}
+            <li><a href="{{ .RelPermalink }}" class="tag-badge">{{ .LinkTitle }}</a></li>
+          {{- end }}
+        </ul>
+      </section>
+    {{- end }}
+
+    {{- /* フロントマターのfix_versionsをバッジ表示 */}}
+    {{- with $.GetTerms "fix_versions" }}
+      <section class="widget page-meta">
+        <h3>修正バージョン</h3>
+        <ul class="tag-list">
+          {{- range . }}
+            <li><a href="{{ .RelPermalink }}" class="tag-badge">{{ .LinkTitle }}</a></li>
+          {{- end }}
+        </ul>
+      </section>
+    {{- end }}
+
+    {{- /* フロントマターのaffected_versionsをバッジ表示 */}}
+    {{- with $.GetTerms "affected_versions" }}
+      <section class="widget page-meta">
+        <h3>影響バージョン</h3>
+        <ul class="tag-list">
+          {{- range . }}
+            <li><a href="{{ .RelPermalink }}" class="tag-badge">{{ .LinkTitle }}</a></li>
+          {{- end }}
+        </ul>
+      </section>
+    {{- end }}
   </aside>
-
-  {{- /* フロントマターのtagsをバッジ表示 */}}
-  {{- with .GetTerms "tags" }}
-    <section class="widget page-meta">
-      <h3>ラベル</h3>
-      <ul class="tag-list">
-        {{- range . }}
-          <li><a href="{{ .RelPermalink }}" class="tag-badge">{{ .LinkTitle }}</a></li>
-        {{- end }}
-      </ul>
-    </section>
-  {{- end }}
-
-  {{- /* フロントマターのfix_versionsをバッジ表示 */}}
-  {{- with .GetTerms "fix_versions" }}
-    <section class="widget page-meta">
-      <h3>修正バージョン</h3>
-      <ul class="tag-list">
-        {{- range . }}
-          <li><a href="{{ .RelPermalink }}" class="tag-badge">{{ .LinkTitle }}</a></li>
-        {{- end }}
-      </ul>
-    </section>
-  {{- end }}
-
-  {{- /* フロントマターのaffected_versionsをバッジ表示 */}}
-  {{- with .GetTerms "affected_versions" }}
-    <section class="widget page-meta">
-      <h3>影響バージョン</h3>
-      <ul class="tag-list">
-        {{- range . }}
-          <li><a href="{{ .RelPermalink }}" class="tag-badge">{{ .LinkTitle }}</a></li>
-        {{- end }}
-      </ul>
-    </section>
-  {{- end }}
 {{ end }}
