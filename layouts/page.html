@@ -14,43 +14,41 @@
     {{ $right = index . 0 }}
     {{ $right = replaceRE "(?s)<!-- PAGE_RIGHT_START -->|<!-- PAGE_RIGHT_END -->" "" $right }}
   {{ end }}
+
+  {{- /* 各メタ情報セクションのHTMLを構築 */}}
+  {{ $metaHTML := "" }}
+
+  {{- /* 修正バージョン */}}
+  {{- with $.GetTerms "fix_versions" }}
+    {{ $metaHTML = printf "%s<section class=\"widget page-meta\"><h3>修正バージョン</h3><ul class=\"tag-list\">" $metaHTML }}
+    {{- range . }}
+      {{ $metaHTML = printf "%s<li><a href=\"%s\" class=\"tag-badge\">%s</a></li>" $metaHTML .RelPermalink .LinkTitle }}
+    {{- end }}
+    {{ $metaHTML = printf "%s</ul></section>" $metaHTML }}
+  {{- end }}
+
+  {{- /* 影響バージョン */}}
+  {{- with $.GetTerms "affected_versions" }}
+    {{ $metaHTML = printf "%s<section class=\"widget page-meta\"><h3>影響バージョン</h3><ul class=\"tag-list\">" $metaHTML }}
+    {{- range . }}
+      {{ $metaHTML = printf "%s<li><a href=\"%s\" class=\"tag-badge\">%s</a></li>" $metaHTML .RelPermalink .LinkTitle }}
+    {{- end }}
+    {{ $metaHTML = printf "%s</ul></section>" $metaHTML }}
+  {{- end }}
+
+  {{- /* ラベル */}}
+  {{- with $.GetTerms "tags" }}
+    {{ $metaHTML = printf "%s<section class=\"widget page-meta\"><h3>ラベル</h3><ul class=\"tag-list\">" $metaHTML }}
+    {{- range . }}
+      {{ $metaHTML = printf "%s<li><a href=\"%s\" class=\"tag-badge\">%s</a></li>" $metaHTML .RelPermalink .LinkTitle }}
+    {{- end }}
+    {{ $metaHTML = printf "%s</ul></section>" $metaHTML }}
+  {{- end }}
+
+  {{- /* 「## 開発情報」の前にメタ情報を挿入 */}}
+  {{ $right = replace $right "## 開発情報" (printf "%s\n\n## 開発情報" $metaHTML) }}
+
   <aside class="page-right">
     {{ $right | safeHTML }}
-
-    {{- /* フロントマターのtagsをバッジ表示 */}}
-    {{- with $.GetTerms "tags" }}
-      <section class="widget page-meta">
-        <h3>ラベル</h3>
-        <ul class="tag-list">
-          {{- range . }}
-            <li><a href="{{ .RelPermalink }}" class="tag-badge">{{ .LinkTitle }}</a></li>
-          {{- end }}
-        </ul>
-      </section>
-    {{- end }}
-
-    {{- /* フロントマターのfix_versionsをバッジ表示 */}}
-    {{- with $.GetTerms "fix_versions" }}
-      <section class="widget page-meta">
-        <h3>修正バージョン</h3>
-        <ul class="tag-list">
-          {{- range . }}
-            <li><a href="{{ .RelPermalink }}" class="tag-badge">{{ .LinkTitle }}</a></li>
-          {{- end }}
-        </ul>
-      </section>
-    {{- end }}
-
-    {{- /* フロントマターのaffected_versionsをバッジ表示 */}}
-    {{- with $.GetTerms "affected_versions" }}
-      <section class="widget page-meta">
-        <h3>影響バージョン</h3>
-        <ul class="tag-list">
-          {{- range . }}
-            <li><a href="{{ .RelPermalink }}" class="tag-badge">{{ .LinkTitle }}</a></li>
-          {{- end }}
-        </ul>
-      </section>
-    {{- end }}
   </aside>
 {{ end }}
