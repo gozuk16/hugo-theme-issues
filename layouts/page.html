@@ -45,8 +45,8 @@
     {{ $metaHTML = printf "%s</ul></section>" $metaHTML }}
   {{- end }}
 
-  {{- /* 「## 開発情報」の前にメタ情報を挿入 */}}
-  {{ $right = replace $right "## 開発情報" (printf "%s\n\n## 開発情報" $metaHTML) }}
+  {{- /* 「<h2 id="開発情報">」の前にメタ情報を挿入 */}}
+  {{ $right = replaceRE `<h2 id="開発情報">` (printf "%s<h2 id=\"開発情報\">" $metaHTML) $right }}
 
   <aside class="page-right">
     {{ $right | safeHTML }}
