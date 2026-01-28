@@ -111,8 +111,11 @@ header nav a.active {
 main {
   grid-area: main;
   padding: 1rem 2rem;
-  max-width: 900px;
   overflow-y: auto;
+}
+
+main article {
+  max-width: 900px;
 }
 
 .sidebar-right {
