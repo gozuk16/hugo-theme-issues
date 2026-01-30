@@ -57,8 +57,8 @@ body {
 /* Grid Areas */
 header {
   grid-area: header;
+  padding: 0.4rem;
   border-bottom: 1px solid var(--color-border-dark);
-  padding: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -778,11 +778,13 @@ body.is-home footer {
 }
 
 .header-search .pagefind-ui__search-input {
-  padding: 0.5rem;
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  font-size: 0.9rem;
-  width: 200px;
+  height: calc(40px * var(--pagefind-ui-scale)) !important;
+  font-size: 0.8rem !important;
+  font-weight: normal !important;
+}
+
+.pagefind-ui__form::before {
+  top: calc(12px * var(--pagefind-ui-scale)) !important;
 }
 
 .header-search .pagefind-ui__search-clear {
