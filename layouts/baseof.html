@@ -36,6 +36,12 @@
 
   <script>
     window.addEventListener('DOMContentLoaded', (event) => {
+      // sidebar-leftのアクティブ要素にスクロール
+      const activeItem = document.querySelector('.sidebar-left a.active');
+      if (activeItem) {
+        activeItem.scrollIntoView({ block: 'center', behavior: 'instant' });
+      }
+
       new PagefindUI({ element: "#search", showSubResults: true });
 
       // 矢印キーナビゲーション
