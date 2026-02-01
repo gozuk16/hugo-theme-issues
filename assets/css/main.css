@@ -867,6 +867,57 @@ h3 {
   font-size: 1.15rem;
 }
 
+/* ======================
+   コメントスタイル
+   ====================== */
+
+.comment {
+  margin-bottom: 1.5rem;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.comment-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.comment-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.comment-author {
+  font-weight: 600;
+}
+
+.comment-date {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.comment-divider {
+  margin: 0.5rem 0 0.5rem 40px;
+  border: none;
+  border-top: 1px solid var(--color-border);
+}
+
+.comment-body {
+  margin-left: 40px;
+}
+
+/* 返信コメント */
+.comment-reply {
+  margin-left: 2rem;
+}
+
 h4 {
   font-size: 1rem;
 }
