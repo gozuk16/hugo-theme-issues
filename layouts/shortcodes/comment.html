@@ -1,13 +1,13 @@
 <div class="comment{{ if .Get "reply" }} comment-reply{{ end }}">
-  <div class="comment-header">
-    <img src="{{ .Get "icon" }}" class="comment-avatar" alt="{{ .Get "name" }}">
+  <img src="{{ .Get "icon" }}" class="comment-avatar" alt="{{ .Get "name" }}">
+  <div class="comment-content">
     <div class="comment-meta">
       <span class="comment-author">{{ .Get "name" }}</span>
       <span class="comment-date">{{ .Get "created" }}</span>
-      <hr class="comment-divider">
     </div>
-  </div>
-  <div class="comment-body">
-    {{ .Inner | markdownify }}
+    <hr class="comment-divider">
+    <div class="comment-body">
+      {{ .Inner | markdownify }}
+    </div>
   </div>
 </div>
