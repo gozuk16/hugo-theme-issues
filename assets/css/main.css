@@ -904,7 +904,7 @@ h3 {
 }
 
 .comment-divider {
-  margin: 0.5rem 0 0.5rem 40px;
+  margin: 0.25rem 0 0;
   border: none;
   border-top: 1px solid var(--color-border);
 }

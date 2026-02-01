@@ -4,9 +4,9 @@
     <div class="comment-meta">
       <span class="comment-author">{{ .Get "name" }}</span>
       <span class="comment-date">{{ .Get "created" }}</span>
+      <hr class="comment-divider">
     </div>
   </div>
-  <hr class="comment-divider">
   <div class="comment-body">
     {{ .Inner | markdownify }}
   </div>
