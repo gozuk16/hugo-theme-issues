@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- taxonomy/termページのレイアウト改善
+  - taxonomy.htmlとterm.htmlでチケットをテーブル形式で表示
+  - sidebar-leftにタグクラウド、Fix Versions、Affected Versionsを表示
+  - sidebar-rightを非表示にして2ペイン構成
 - コード要素（`code` タグ）と `pre` タグのスタイルを追加
   - インラインコードにはグレーの背景と枠線を追加
   - コードブロックにはスクロール可能な背景を追加
