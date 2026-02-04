@@ -1,38 +1,54 @@
+{{ define "sidebar-left" }}
+  {{ partial "sidebar-taxonomy.html" . }}
+{{ end }}
+
 {{ define "main" }}
-term.html
   <h1>{{ .Title }}</h1>
   {{ .Content }}
 
-  <section class="term-pages">
-    {{ range .Pages }}
-      <article>
-        <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-      </article>
-    {{ end }}
+  <section class="page-list">
+    <table class="ticket-table">
+      <thead>
+        <tr>
+          <th>Summary</th>
+          <th>Status</th>
+          <th>Assignee</th>
+          <th>Start Date</th>
+          <th>Due Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{- range .Pages }}
+          <tr>
+            <td class="summary-col">
+              <span class="issue-type-icon">
+                {{- with .Params.issue_type }}
+                  {{- if or (eq . "Epic") (eq . "エピック") }}🟣
+                  {{- else if or (eq . "Story") (eq . "ストーリー") }}📗
+                  {{- else if or (eq . "Task") (eq . "タスク") }}☑️
+                  {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") }}➡️
+                  {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
+                  {{- else }}📄
+                  {{- end }}
+                {{- end }}
+              </span>
+              <strong>{{ .Params.issue_key }}</strong>:
+              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            </td>
+            <td class="status-col">{{ .Params.status }}</td>
+            <td class="assignee-col">{{ .Params.assignee }}</td>
+            <td class="date-col">{{ .Params.startdate }}</td>
+            <td class="date-col">{{ .Params.duedate }}</td>
+          </tr>
+        {{- end }}
+      </tbody>
+    </table>
   </section>
 {{ end }}
 
 {{ define "sidebar" }}
   <section class="widget">
-    <h3>Tag Info</h3>
-    <p><strong>Pages tagged:</strong> {{ len .Pages }}</p>
+    <h3>{{ .Title }}</h3>
+    <p><strong>Pages:</strong> {{ len .Pages }}</p>
   </section>
-
-  {{- /* 関連タグ */}}
-  {{- with site.Taxonomies.tags }}
-    <section class="widget">
-      <h3>Other Tags</h3>
-      <ul>
-        {{- range $name, $taxonomy := . }}
-          {{- if ne $name $.Title }}
-            <li>
-              <a href="{{ "/tags/" | relLangURL }}{{ $name | urlize }}">
-                {{ $name }} ({{ len $taxonomy }})
-              </a>
-            </li>
-          {{- end }}
-        {{- end }}
-      </ul>
-    </section>
-  {{- end }}
 {{ end }}
