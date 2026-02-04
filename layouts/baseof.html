@@ -24,11 +24,11 @@
   </main>
   {{- end }}
 
+  {{ block "sidebar-right" . }}
   <aside class="sidebar-right">
-    {{ block "sidebar" . }}
-      {{ partial "sidebar-right.html" . }}
-    {{ end }}
+    {{ partial "sidebar-right.html" . }}
   </aside>
+  {{ end }}
 
   {{- if .IsHome }}
   <footer>
