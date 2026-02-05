@@ -147,12 +147,12 @@
   </section>
 {{ end }}
 
-{{ define "sidebar" }}
+{{ define "sidebar-right" }}
+<aside class="sidebar-right">
   <section class="widget">
     <h3>In This Section</h3>
     <p>{{ .Params.description | default "Browse all pages in this section." }}</p>
     <p><strong>Total pages:</strong> {{ len .Pages }}</p>
   </section>
-
-  {{ partial "sidebar-right.html" . }}
+</aside>
 {{ end }}
