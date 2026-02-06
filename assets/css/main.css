@@ -741,7 +741,7 @@ th {
    トップページ用レイアウト（通常スクロール）
    ====================== */
 
-body.is-home {
+body.home {
   overflow: visible;
   grid-template-areas:
     "header header"
@@ -751,11 +751,15 @@ body.is-home {
   grid-template-rows: auto 1fr auto;
 }
 
-body.is-page {
+body.page {
   grid-template-columns: var(--sidebar-left-width) 1fr var(--sidebar-right-width);
 }
 
-body.is-section {
+body.section {
+  grid-template-columns: var(--sidebar-left-width) 1fr;
+}
+
+body.term body.taxonomy {
   grid-template-columns: var(--sidebar-left-width) 1fr;
 }
 
