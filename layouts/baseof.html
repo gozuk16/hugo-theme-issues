@@ -3,7 +3,7 @@
 <head>
   {{ partial "head.html" . }}
 </head>
-<body{{ if .IsHome }} class="is-home"{{ end }}>
+<body class={{ .Kind }}>
   <header>
     {{ partial "header.html" . }}
   </header>
@@ -12,27 +12,22 @@
   <main-home>
     {{ block "main" . }}{{ end }}
   </main-home>
+
+  <footer>
+    {{ partial "footer.html" . }}
+  </footer>
   {{- else }}
   <aside class="sidebar-left">
-    {{ partial "sidebar-left.html" . }}
+    {{ block "sidebar-left" . }}
+      {{ partial "sidebar-left.html" . }}
+    {{ end }}
   </aside>
 
   <main>
     {{ block "main" . }}{{ end }}
   </main>
-  {{- end }}
 
-  <aside class="sidebar-right">
-    {{ block "sidebar" . }}
-      {{ partial "sidebar-right.html" . }}
-    {{ end }}
-  </aside>
-
-  {{- if .IsHome }}
-  <footer>
-    {{ partial "footer.html" . }}
-  </footer>
-  {{- end }}
+  {{ block "sidebar-right" . }}{{ end }}
 
   <script>
     window.addEventListener('DOMContentLoaded', (event) => {
@@ -96,5 +91,7 @@
       }
     });
   </script>
+  {{- end }}
+
 </body>
 </html>

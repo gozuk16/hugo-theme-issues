@@ -7,7 +7,7 @@
 {{ end }}
 
 
-{{ define "sidebar" }}
+{{ define "sidebar-right" }}
   {{ $content := .Content }}
   {{ $right := "" }}
   {{ with findRE "(?s)<!-- PAGE_RIGHT_START -->(.*?)<!-- PAGE_RIGHT_END -->" $content }}
@@ -48,7 +48,9 @@
   {{- /* 「<h2 id="開発情報">」の前にメタ情報を挿入 */}}
   {{ $right = replaceRE `<h2 id="開発情報">` (printf "%s<h2 id=\"開発情報\">" $metaHTML) $right }}
 
-  <aside class="page-right">
-    {{ $right | safeHTML }}
+  <aside class="sidebar-right">
+    <aside class="page-right">
+      {{ $right | safeHTML }}
+    </aside>
   </aside>
 {{ end }}

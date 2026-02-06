@@ -1,22 +1,31 @@
+{{ define "sidebar-left" }}
+  {{ partial "sidebar-taxonomy.html" . }}
+{{ end }}
+
 {{ define "main" }}
-taxonomy.html
   <h1>{{ .Title }}</h1>
   {{ .Content }}
 
   <section class="taxonomy-list">
-    {{ range .Pages }}
-      <article>
-        <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-      </article>
-    {{ end }}
+    <table class="ticket-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{- range .Pages }}
+          <tr>
+            <td>
+              <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+            </td>
+            <td>{{ len .Pages }}</td>
+          </tr>
+        {{- end }}
+      </tbody>
+    </table>
   </section>
 {{ end }}
 
-{{ define "sidebar" }}
-  <section class="widget">
-    <h3>{{ .Title }} Overview</h3>
-    <p><strong>Total items:</strong> {{ len .Pages }}</p>
-  </section>
-
-  {{ partial "sidebar-right.html" . }}
-{{ end }}
+{{ define "sidebar-right" }}{{ end }}
