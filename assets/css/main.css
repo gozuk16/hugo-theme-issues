@@ -49,7 +49,6 @@ body {
   grid-template-areas:
     "header header header"
     "sidebar-left main sidebar-right";
-  grid-template-columns: var(--sidebar-left-width) 1fr var(--sidebar-right-width);
   grid-template-rows: auto 1fr;
   gap: 0;
 }
@@ -115,7 +114,7 @@ main {
 }
 
 main article {
-  max-width: 900px;
+  /* `max-width: 900px; */
 }
 
 .sidebar-right {
@@ -750,6 +749,14 @@ body.is-home {
     "footer footer";
   grid-template-columns: 1fr var(--sidebar-right-width);
   grid-template-rows: auto 1fr auto;
+}
+
+body.is-page {
+  grid-template-columns: var(--sidebar-left-width) 1fr var(--sidebar-right-width);
+}
+
+body.is-section {
+  grid-template-columns: var(--sidebar-left-width) 1fr;
 }
 
 body.is-home main-home {
