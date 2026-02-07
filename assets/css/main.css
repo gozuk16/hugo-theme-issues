@@ -40,7 +40,7 @@
 /* Grid Container */
 body {
   color: var(--color-text);
-  font-family: sans-serif;
+  font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", sans-serif;
   line-height: 1.5;
   margin: 0;
   display: grid;
