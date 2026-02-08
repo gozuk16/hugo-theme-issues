@@ -756,10 +756,23 @@ body.page {
 }
 
 body.section {
+  grid-template-areas:
+    "header header"
+    "sidebar-left main";
   grid-template-columns: var(--sidebar-left-width) 1fr;
 }
 
-body.term body.taxonomy {
+body.taxonomy {
+  grid-template-areas:
+    "header header"
+    "sidebar-left main";
+  grid-template-columns: var(--sidebar-left-width) 1fr;
+}
+
+body.term {
+  grid-template-areas:
+    "header header"
+    "sidebar-left main";
   grid-template-columns: var(--sidebar-left-width) 1fr;
 }
 
