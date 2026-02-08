@@ -27,6 +27,11 @@ title = 'Hugo theme JIRA issues'
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+    [markup.goldmark.parser]
+      #wrapStandAloneImageWithinParagraph = false
+      [markup.goldmark.parser.attribute]
+        block = true
+        title = true
 
 [module]
   [module.hugoVersion]
