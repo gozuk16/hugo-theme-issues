@@ -751,6 +751,23 @@ body.home {
   grid-template-rows: auto 1fr auto;
 }
 
+body.home main-home {
+  grid-area: main-home;
+  padding: 1rem 2rem;
+  overflow-y: visible;
+}
+
+body.home .sidebar-right {
+  overflow-y: visible;
+}
+
+body.home footer {
+  grid-area: footer;
+  border-top: 1px solid var(--color-border-dark);
+  padding: 1rem;
+  text-align: center;
+}
+
 body.page {
   grid-template-columns: var(--sidebar-left-width) 1fr var(--sidebar-right-width);
 }
@@ -759,25 +776,12 @@ body.section {
   grid-template-columns: var(--sidebar-left-width) 1fr;
 }
 
-body.term body.taxonomy {
+body.taxonomy {
   grid-template-columns: var(--sidebar-left-width) 1fr;
 }
 
-body.is-home main-home {
-  grid-area: main-home;
-  padding: 1rem 2rem;
-  overflow-y: visible;
-}
-
-body.is-home .sidebar-right {
-  overflow-y: visible;
-}
-
-body.is-home footer {
-  grid-area: footer;
-  border-top: 1px solid var(--color-border-dark);
-  padding: 1rem;
-  text-align: center;
+body.term {
+  grid-template-columns: var(--sidebar-left-width) 1fr;
 }
 
 /* ======================
