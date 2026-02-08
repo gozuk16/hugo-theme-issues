@@ -1,0 +1,20 @@
+{{- $width := "" -}}
+{{- $height := "" -}}
+
+{{- /* Title (引用符の中) から width=xxx を探す */ -}}
+{{- with .Title -}}
+  {{- $w := findRE `width=(\d+)` . 1 -}}
+  {{- if $w -}}
+    {{- $width = (strings.TrimPrefix "width=" (index $w 0)) -}}
+  {{- end -}}
+  {{- $h := findRE `height=(\d+)` . 1 -}}
+  {{- if $h -}}
+    {{- $height = (strings.TrimPrefix "height=" (index $h 0)) -}}
+  {{- end -}}
+{{- end -}}
+
+<img src="{{ .Destination | safeURL }}"
+     alt="{{ .Text }}"
+     {{ with $width }} width="{{ . }}" {{ end }}
+     {{ with $height }} height="{{ . }}" {{ end }}
+     {{ if .Title }} title="{{ . }}" {{ end }}>
