@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
 <head>
-  {{ partial "head.html" . }}
+  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
+  {{ partialCached "head.html" . "global" }}
 </head>
 <body class={{ .Kind }}>
   <header>
-    {{ partial "header.html" . }}
+    {{ partialCached "header.html" . "global" }}
   </header>
 
   {{- if .IsHome }}
@@ -14,12 +15,14 @@
   </main-home>
 
   <footer>
-    {{ partial "footer.html" . }}
+    {{ partialCached "footer.html" . "global" }}
   </footer>
   {{- else }}
   <aside class="sidebar-left">
     {{ block "sidebar-left" . }}
-      {{ partial "sidebar-left.html" . }}
+      {{- with .CurrentSection }}
+        {{ partialCached "sidebar-left.html" . .RelPermalink }}
+      {{- end }}
     {{ end }}
   </aside>
 
@@ -31,10 +34,27 @@
 
   <script>
     window.addEventListener('DOMContentLoaded', (event) => {
-      // sidebar-leftのアクティブ要素にスクロール
-      const activeItem = document.querySelector('.sidebar-left a.active');
-      if (activeItem) {
-        activeItem.scrollIntoView({ block: 'center', behavior: 'instant' });
+      // 現在のページをハイライト（partialCached対応）
+      const currentPath = location.pathname;
+
+      // メニューのアクティブ状態をJSで付与（partialCached対応）
+      const menuLinks = document.querySelectorAll('header nav a[data-url]');
+      menuLinks.forEach(link => {
+        const url = new URL(link.getAttribute('data-url'), location.origin);
+        if (url.pathname === currentPath) {
+          link.classList.add('active');
+          link.setAttribute('aria-current', 'page');
+        } else if (currentPath.startsWith(url.pathname) && url.pathname !== '/') {
+          link.classList.add('ancestor');
+          link.setAttribute('aria-current', 'true');
+        }
+      });
+
+      const activeLink = document.querySelector('.sidebar-left a[data-url="' + currentPath + '"]');
+      if (activeLink) {
+        activeLink.classList.add('active');
+        activeLink.setAttribute('aria-current', 'page');
+        activeLink.scrollIntoView({ block: 'center', behavior: 'instant' });
       }
 
       new PagefindUI({ element: "#search", showSubResults: true });
