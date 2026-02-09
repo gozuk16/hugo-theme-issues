@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - 表示ループと孤立issue検出を1パスに統合
 - menu.html の静的化: IsMenuCurrent/HasMenuCurrent を除去し、アクティブ状態を JavaScript で付与
 - header.html を partialCached 化（menu.html 静的化により全ページ共通出力になったため）
-- head.html を partialCached 化（`.RelPermalink` キーでページごとにキャッシュ）
+- head.html の title タグを baseof.html に移動し、head.html を "global" キーで partialCached 化（4,215回→1回に削減）
 - baseof.html の footer.html を partialCached 化（全ページ同一内容のため "global" キー）
 - head.html の css.html / js.html の partialCached キーを "global" に変更（全ページ共通）
 - sidebar-left.html に partialCached を導入してビルド高速化

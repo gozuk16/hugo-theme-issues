@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
 <head>
-  {{ partialCached "head.html" . .RelPermalink }}
+  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
+  {{ partialCached "head.html" . "global" }}
 </head>
 <body class={{ .Kind }}>
   <header>
