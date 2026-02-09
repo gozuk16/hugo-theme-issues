@@ -19,7 +19,9 @@
   {{- else }}
   <aside class="sidebar-left">
     {{ block "sidebar-left" . }}
-      {{ partial "sidebar-left.html" . }}
+      {{- with .CurrentSection }}
+        {{ partialCached "sidebar-left.html" . .RelPermalink }}
+      {{- end }}
     {{ end }}
   </aside>
 
@@ -31,10 +33,13 @@
 
   <script>
     window.addEventListener('DOMContentLoaded', (event) => {
-      // sidebar-leftのアクティブ要素にスクロール
-      const activeItem = document.querySelector('.sidebar-left a.active');
-      if (activeItem) {
-        activeItem.scrollIntoView({ block: 'center', behavior: 'instant' });
+      // 現在のページをハイライト（partialCached対応）
+      const currentPath = location.pathname;
+      const activeLink = document.querySelector('.sidebar-left a[data-url="' + currentPath + '"]');
+      if (activeLink) {
+        activeLink.classList.add('active');
+        activeLink.setAttribute('aria-current', 'page');
+        activeLink.scrollIntoView({ block: 'center', behavior: 'instant' });
       }
 
       new PagefindUI({ element: "#search", showSubResults: true });

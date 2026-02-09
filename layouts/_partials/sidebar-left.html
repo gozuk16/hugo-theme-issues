@@ -2,12 +2,11 @@
 左サイドバー - プロジェクト内のページ一覧
 
 このパーシャルは、現在表示中のページと同じプロジェクト（セクション）内のページを一覧表示します。
+partialCached で呼び出されるため、セクション単位でキャッシュされます。
+アクティブページのハイライトは JavaScript で行います。
 */}}
 
-{{- $currentPage := . }}
-
-{{- /* 現在のページのセクション（親ディレクトリ）を取得 */}}
-{{- $currentSection := .CurrentSection }}
+{{- $currentSection := . }}
 
 {{- /* セクションが存在する場合のみページリストを表示 */}}
 {{- if $currentSection }}
@@ -46,10 +45,7 @@
         {{- range $epic := $sortedEpics }}
           {{- /* エピック表示 */}}
           <li>
-            <a href="{{ $epic.RelPermalink }}"
-               {{- if eq $currentPage.RelPermalink $epic.RelPermalink }}
-               class="active" aria-current="page"
-               {{- end }}>
+            <a href="{{ $epic.RelPermalink }}" data-url="{{ $epic.RelPermalink }}">
               {{- /* Issue Type アイコン表示 */}}
               <span class="issue-type-icon">
                 {{- with $epic.Params.issue_type }}
@@ -75,10 +71,7 @@
           {{- /* 子issueを表示 */}}
           {{- range $child := $sortedChildren }}
             <li class="child-issue">
-              <a href="{{ $child.RelPermalink }}"
-                 {{- if eq $currentPage.RelPermalink $child.RelPermalink }}
-                 class="active" aria-current="page"
-                 {{- end }}>
+              <a href="{{ $child.RelPermalink }}" data-url="{{ $child.RelPermalink }}">
                 {{- /* Issue Type アイコン表示 */}}
                 <span class="issue-type-icon">
                   {{- with $child.Params.issue_type }}
@@ -104,10 +97,7 @@
             {{- /* 孫issueを表示 */}}
             {{- range $grandchild := $sortedGrandchildren }}
               <li class="grandchild-issue">
-                <a href="{{ $grandchild.RelPermalink }}"
-                   {{- if eq $currentPage.RelPermalink $grandchild.RelPermalink }}
-                   class="active" aria-current="page"
-                   {{- end }}>
+                <a href="{{ $grandchild.RelPermalink }}" data-url="{{ $grandchild.RelPermalink }}">
                   {{- /* Issue Type アイコン表示 */}}
                   <span class="issue-type-icon">
                     {{- with $grandchild.Params.issue_type }}
@@ -162,10 +152,7 @@
           <li class="orphan-section-divider"></li>
           {{- range $orphan := $sortedOrphans }}
             <li class="orphan-issue">
-              <a href="{{ $orphan.RelPermalink }}"
-                 {{- if eq $currentPage.RelPermalink $orphan.RelPermalink }}
-                 class="active" aria-current="page"
-                 {{- end }}>
+              <a href="{{ $orphan.RelPermalink }}" data-url="{{ $orphan.RelPermalink }}">
                 {{- /* Issue Type アイコン表示 */}}
                 <span class="issue-type-icon">
                   {{- with $orphan.Params.issue_type }}
