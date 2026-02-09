@@ -31,6 +31,7 @@
 - [x] issue_key が未設定のページでのビルドエラー修正（nil ガード追加）
 - [x] menu.html の静的化（IsMenuCurrent/HasMenuCurrent → JS移行）
 - [x] header.html を partialCached 化（"global" キー）
+- [x] head.html を partialCached 化（.RelPermalink キー）
 - [ ] ビルド時間の計測・検証（hugo --templateMetrics）
 
 ## ドキュメントとテストの整備
