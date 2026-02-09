@@ -22,6 +22,14 @@
 - [x] ブランチを作成してコミット
 - [x] PRを作成（PR #9）
 
+## ビルドパフォーマンス最適化
+
+- [x] section.html の O(n²) → O(n) 最適化（newScratch インデックス導入）
+- [x] sidebar-left.html の O(n²) → O(n) 最適化（同上）
+- [x] baseof.html の footer.html を partialCached 化
+- [x] head.html の partialCached キーを "global" に最適化
+- [ ] ビルド時間の計測・検証（hugo --templateMetrics）
+
 ## ドキュメントとテストの整備
 
 - [ ] TODO.mdを最新状況に更新 ← 実施中

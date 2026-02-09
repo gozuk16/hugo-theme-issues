@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- section.html / sidebar-left.html の O(n²) ループを newScratch インデックスで O(n) に最適化
+  - `where` による重複スキャンを parent→children 辞書に置換
+  - `in` スライス線形探索を `Scratch.Get` の O(1) ルックアップに置換
+  - 表示ループと孤立issue検出を1パスに統合
+- baseof.html の footer.html を partialCached 化（全ページ同一内容のため "global" キー）
+- head.html の css.html / js.html の partialCached キーを "global" に変更（全ページ共通）
 - sidebar-left.html に partialCached を導入してビルド高速化
   - 同じセクション内でサイドバー計算を1回に削減
   - アクティブページのハイライトをJavaScriptに移行

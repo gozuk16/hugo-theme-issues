@@ -14,7 +14,7 @@
   </main-home>
 
   <footer>
-    {{ partial "footer.html" . }}
+    {{ partialCached "footer.html" . "global" }}
   </footer>
   {{- else }}
   <aside class="sidebar-left">

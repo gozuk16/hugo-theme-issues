@@ -32,6 +32,14 @@ partialCached で呼び出されるため、セクション単位でキャッシ
 
     {{- if $pages }}
       <ul>
+        {{- /* Phase 1: parent→children のインデックスを構築（O(N) 1回） */}}
+        {{- $index := newScratch }}
+        {{- range $page := $pages }}
+          {{- with $page.Params.parent }}
+            {{- $index.Add . (slice $page) }}
+          {{- end }}
+        {{- end }}
+
         {{- /* エピックを抽出してrank順にソート */}}
         {{- $epics := slice }}
         {{- range $pages }}
@@ -41,8 +49,12 @@ partialCached で呼び出されるため、セクション単位でキャッシ
         {{- end }}
         {{- $sortedEpics := sort $epics ".Params.rank" "asc" }}
 
-        {{- /* エピックごとにグループ表示 */}}
+        {{- /* Phase 2: エピックごとにグループ表示しながら familyKeys を構築 */}}
+        {{- $familyKeys := newScratch }}
+
         {{- range $epic := $sortedEpics }}
+          {{- $familyKeys.Set $epic.Params.issue_key true }}
+
           {{- /* エピック表示 */}}
           <li>
             <a href="{{ $epic.RelPermalink }}" data-url="{{ $epic.RelPermalink }}">
@@ -63,13 +75,13 @@ partialCached で呼び出されるため、セクション単位でキャッシ
             </a>
           </li>
 
-          {{- /* このエピックの子issueを抽出 */}}
-          {{- $epicKey := $epic.Params.issue_key }}
-          {{- $children := where $pages ".Params.parent" $epicKey }}
+          {{- /* 子issueをインデックスから取得してrank順にソート */}}
+          {{- $children := $index.Get $epic.Params.issue_key | default slice }}
           {{- $sortedChildren := sort $children ".Params.rank" "asc" }}
 
           {{- /* 子issueを表示 */}}
           {{- range $child := $sortedChildren }}
+            {{- $familyKeys.Set $child.Params.issue_key true }}
             <li class="child-issue">
               <a href="{{ $child.RelPermalink }}" data-url="{{ $child.RelPermalink }}">
                 {{- /* Issue Type アイコン表示 */}}
@@ -89,13 +101,13 @@ partialCached で呼び出されるため、セクション単位でキャッシ
               </a>
             </li>
 
-            {{- /* この子issueの子issue（孫）を抽出 */}}
-            {{- $childKey := $child.Params.issue_key }}
-            {{- $grandchildren := where $pages ".Params.parent" $childKey }}
+            {{- /* 孫issueをインデックスから取得してrank順にソート */}}
+            {{- $grandchildren := $index.Get $child.Params.issue_key | default slice }}
             {{- $sortedGrandchildren := sort $grandchildren ".Params.rank" "asc" }}
 
             {{- /* 孫issueを表示 */}}
             {{- range $grandchild := $sortedGrandchildren }}
+              {{- $familyKeys.Set $grandchild.Params.issue_key true }}
               <li class="grandchild-issue">
                 <a href="{{ $grandchild.RelPermalink }}" data-url="{{ $grandchild.RelPermalink }}">
                   {{- /* Issue Type アイコン表示 */}}
@@ -118,30 +130,10 @@ partialCached で呼び出されるため、セクション単位でキャッシ
           {{- end }}
         {{- end }}
 
-        {{- /* 孤立issueを表示 */}}
-        {{- /* エピック配下の全issue（エピック、子、孫）のissue_keyリストを作成 */}}
-        {{- $epicFamilyKeys := slice }}
-        {{- range $sortedEpics }}
-          {{- $epicFamilyKeys = $epicFamilyKeys | append .Params.issue_key }}
-          {{- /* 子issueを追加 */}}
-          {{- $epicKey := .Params.issue_key }}
-          {{- $children := where $pages ".Params.parent" $epicKey }}
-          {{- range $child := $children }}
-            {{- $epicFamilyKeys = $epicFamilyKeys | append $child.Params.issue_key }}
-            {{- /* 孫issueを追加 */}}
-            {{- $childKey := $child.Params.issue_key }}
-            {{- $grandchildren := where $pages ".Params.parent" $childKey }}
-            {{- range $grandchild := $grandchildren }}
-              {{- $epicFamilyKeys = $epicFamilyKeys | append $grandchild.Params.issue_key }}
-            {{- end }}
-          {{- end }}
-        {{- end }}
-
-        {{- /* 孤立issueを抽出してrank順にソート */}}
+        {{- /* Phase 3: 孤立issue検出（O(1) ルックアップ） */}}
         {{- $orphans := slice }}
         {{- range $page := $pages }}
-          {{- /* エピック配下に属さないissueを孤立issueとする */}}
-          {{- if not (in $epicFamilyKeys $page.Params.issue_key) }}
+          {{- if not ($familyKeys.Get $page.Params.issue_key) }}
             {{- $orphans = $orphans | append $page }}
           {{- end }}
         {{- end }}
