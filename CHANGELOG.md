@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- sidebar-left.html に partialCached を導入してビルド高速化
+  - 同じセクション内でサイドバー計算を1回に削減
+  - アクティブページのハイライトをJavaScriptに移行
+
 ### Added
 - taxonomy/termページのレイアウト改善
   - taxonomy.htmlとterm.htmlでチケットをテーブル形式で表示
