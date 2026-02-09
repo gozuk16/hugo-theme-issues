@@ -133,7 +133,8 @@ partialCached で呼び出されるため、セクション単位でキャッシ
         {{- /* Phase 3: 孤立issue検出（O(1) ルックアップ） */}}
         {{- $orphans := slice }}
         {{- range $page := $pages }}
-          {{- if not ($familyKeys.Get $page.Params.issue_key) }}
+          {{- $key := $page.Params.issue_key | default "" }}
+          {{- if or (eq $key "") (not ($familyKeys.Get $key)) }}
             {{- $orphans = $orphans | append $page }}
           {{- end }}
         {{- end }}

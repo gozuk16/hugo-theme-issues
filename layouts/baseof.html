@@ -5,7 +5,7 @@
 </head>
 <body class={{ .Kind }}>
   <header>
-    {{ partial "header.html" . }}
+    {{ partialCached "header.html" . "global" }}
   </header>
 
   {{- if .IsHome }}
@@ -35,6 +35,20 @@
     window.addEventListener('DOMContentLoaded', (event) => {
       // 現在のページをハイライト（partialCached対応）
       const currentPath = location.pathname;
+
+      // メニューのアクティブ状態をJSで付与（partialCached対応）
+      const menuLinks = document.querySelectorAll('header nav a[data-url]');
+      menuLinks.forEach(link => {
+        const url = new URL(link.getAttribute('data-url'), location.origin);
+        if (url.pathname === currentPath) {
+          link.classList.add('active');
+          link.setAttribute('aria-current', 'page');
+        } else if (currentPath.startsWith(url.pathname) && url.pathname !== '/') {
+          link.classList.add('ancestor');
+          link.setAttribute('aria-current', 'true');
+        }
+      });
+
       const activeLink = document.querySelector('.sidebar-left a[data-url="' + currentPath + '"]');
       if (activeLink) {
         activeLink.classList.add('active');

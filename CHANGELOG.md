@@ -7,11 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- section.html / sidebar-left.html で issue_key が未設定のページでビルドエラーが発生する問題を修正
+  - `$page.Params.issue_key | default ""` で nil ガードを追加
+
 ### Changed
 - section.html / sidebar-left.html の O(n²) ループを newScratch インデックスで O(n) に最適化
   - `where` による重複スキャンを parent→children 辞書に置換
   - `in` スライス線形探索を `Scratch.Get` の O(1) ルックアップに置換
   - 表示ループと孤立issue検出を1パスに統合
+- menu.html の静的化: IsMenuCurrent/HasMenuCurrent を除去し、アクティブ状態を JavaScript で付与
+- header.html を partialCached 化（menu.html 静的化により全ページ共通出力になったため）
 - baseof.html の footer.html を partialCached 化（全ページ同一内容のため "global" キー）
 - head.html の css.html / js.html の partialCached キーを "global" に変更（全ページ共通）
 - sidebar-left.html に partialCached を導入してビルド高速化
