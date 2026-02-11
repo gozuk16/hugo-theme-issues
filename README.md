@@ -8,8 +8,10 @@ JIRAのissueをMarkdownに変換して表示するためのHugoテーマです�
 - **Issue Type別アイコン表示**：Epic、Story、Task、Sub-task、Bug など各種issueを視覚的に区別
 - **レスポンシブデザイン**：デスクトップ、タブレット、モバイルに対応
 - **左右サイドバーレイアウト**：プロジェクトナビゲーション（左）とページメタデータ（右）を同時表示
+- **タクソノミー対応**：タグ、Fix Versions、Affected Versions 別のページを自動生成
+- **全文検索**：Pagefind による高速な全文検索機能
 - **GitHub風スタイリング**：メンション、コード要素など一般的なMarkdown要素をGitHub風に表示
-- **シンプルなテンプレート構造**：カスタマイズが容易なGo Templateベース
+- **高速ビルド**：partialCached + Scratch インデックスによる最適化で4,000ページ超を約2分でビルド
 
 ## 動作環境
 
@@ -65,37 +67,114 @@ make build
 hugo server -D --source .
 ```
 
+### Makefileコマンド
+
+| コマンド | 説明 |
+|---|---|
+| `make server` | 開発サーバー起動（:1313） |
+| `make build` | 本番ビルド |
+| `make build-theme` | テーマ単体ビルド |
+| `make clean` | キャッシュクリア |
+| `make test` | ビルドテスト |
+| `make lint` | Markdown チェック |
+| `make serve-prod` | 本番モードサーバー |
+| `make fresh` | クリーンビルド+サーバー起動 |
+| `make help` | ヘルプ表示 |
+
+## フロントマター
+
+コンテンツファイルのフロントマター形式（TOML）：
+
+```toml
++++
+title = 'Issue Title'
+date = 2024-01-15
+draft = false
+
+# Issue パラメータ
+issue_key = 'PROJ-123'          # issue の一意識別子
+issue_type = 'Story'            # Epic / Story / Task / Sub-task / Bug
+status = 'In Progress'          # ステータス
+assignee = 'user@example.com'   # 担当者
+
+# 日付
+startdate = '2024-01-15'        # 開始日
+duedate = '2024-01-31'          # 終了日
+
+# 階層構造
+parent = 'PROJ-100'             # 親 issue の issue_key
+rank = 1                        # ソート順序（昇順）
+
+# タクソノミー
+tags = ['tag1', 'tag2']
+fix_versions = ['v1.0', 'v1.1']
+affected_versions = ['v0.9']
++++
+```
+
+### パラメータ一覧
+
+| パラメータ | 必須 | 説明 |
+|---|---|---|
+| `issue_key` | 推奨 | issue の一意識別子（例: `PROJ-123`） |
+| `issue_type` | 推奨 | issue 種別。`Epic` / `Story` / `Task` / `Sub-task` / `Bug` |
+| `status` | - | ステータス（セクションページのテーブルに表示） |
+| `assignee` | - | 担当者 |
+| `startdate` | - | 開始日 |
+| `duedate` | - | 終了日 |
+| `parent` | - | 親 issue の `issue_key`。これにより階層構造を形成 |
+| `rank` | - | ソート順序（昇順、数値が小さいほど上に表示） |
+| `tags` | - | タグ（タクソノミー） |
+| `fix_versions` | - | 修正バージョン（タクソノミー） |
+| `affected_versions` | - | 影響バージョン（タクソノミー） |
+
+### 階層構造の例
+
+```
+PROJ-1 (Epic)          ← parent なし、issue_type = "Epic"
+├── PROJ-10 (Story)    ← parent = "PROJ-1"
+│   ├── PROJ-100 (Task)  ← parent = "PROJ-10"
+│   └── PROJ-101 (Task)  ← parent = "PROJ-10"
+└── PROJ-11 (Story)    ← parent = "PROJ-1"
+```
+
 ## ディレクトリ構造
 
 ```
 hugo-theme-issues/
 ├── assets/
 │   ├── css/
-│   │   └── main.css              # メインスタイルシート
+│   │   └── main.css                # メインスタイルシート
 │   └── js/
-│       └── main.js                # JavaScriptファイル
+│       └── main.js                 # JavaScriptファイル
 ├── layouts/
-│   ├── baseof.html                # ベーステンプレート（3カラムレイアウト）
-│   ├── home.html                  # ホームページレイアウト
-│   ├── page.html                  # 個別ページレイアウト
-│   ├── section.html               # セクションリストページ
-│   ├── taxonomy.html              # タクソノミーページ
-│   ├── term.html                  # ターム（タグなど）ページ
-│   └── _partials/                 # 再利用可能なテンプレート
-│       ├── head.html              # HTMLヘッダ
-│       ├── head/css.html          # CSS読み込み
-│       ├── head/js.html           # JavaScript読み込み
-│       ├── header.html            # サイトヘッダー
-│       ├── footer.html            # サイトフッター
-│       ├── menu.html              # ナビゲーションメニュー
-│       ├── sidebar-left.html      # 左サイドバー（プロジェクトナビ）
-│       ├── sidebar-right.html     # 右サイドバー
-├── content/                       # サンプルコンテンツ
-├── archetypes/                    # 新規コンテンツテンプレート
-├── i18n/                          # 国際化ファイル
-├── data/                          # データファイル
-├── static/                        # 静的ファイル
-└── hugo.toml                      # Hugo設定ファイル
+│   ├── baseof.html                 # ベーステンプレート（3カラムレイアウト）
+│   ├── home.html                   # ホームページレイアウト
+│   ├── page.html                   # 個別ページレイアウト
+│   ├── section.html                # セクションリストページ
+│   ├── taxonomy.html               # タクソノミーページ
+│   ├── term.html                   # ターム（タグなど）ページ
+│   ├── _markup/
+│   │   ├── render-image.html       # 画像レンダリングカスタマイズ
+│   │   └── render-table.html.html  # テーブルレンダリングカスタマイズ
+│   ├── _partials/
+│   │   ├── head.html               # HTMLヘッダ
+│   │   ├── head/css.html           # CSS読み込み
+│   │   ├── head/js.html            # JavaScript読み込み
+│   │   ├── header.html             # サイトヘッダー
+│   │   ├── footer.html             # サイトフッター
+│   │   ├── menu.html               # ナビゲーションメニュー
+│   │   ├── sidebar-left.html       # 左サイドバー（プロジェクトナビ）
+│   │   ├── sidebar-taxonomy.html   # タクソノミーサイドバー
+│   │   └── _sidebar-right.html     # 右サイドバー
+│   └── shortcodes/
+│       └── comment.html            # コメント表示用ショートコード
+├── content/                        # サンプルコンテンツ
+├── archetypes/                     # 新規コンテンツテンプレート
+├── i18n/                           # 国際化ファイル
+├── data/                           # データファイル
+├── static/                         # 静的ファイル
+└── hugo.toml                       # Hugo設定ファイル
 ```
 
 ## デザイン・レイアウト
@@ -104,14 +183,14 @@ hugo-theme-issues/
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                        HEADER                            │
-├─────────────────┬──────────────────────┬─────────────────┤
-│ Sidebar-Left    │                      │ Sidebar-Right   │
-│ (250px)         │     MAIN CONTENT     │ (300px)         │
-│ プロジェクト    │    (flexible width)  │ ページメタデータ │
-│ ナビゲーション  │                      │                 │
-├─────────────────┴──────────────────────┴─────────────────┤
-│                       FOOTER                             │
+│                        HEADER                           │
+├─────────────────┬──────────────────────┬────────────────┤
+│ Sidebar-Left    │                      │ Sidebar-Right  │
+│ (250px)         │     MAIN CONTENT     │ (300px)        │
+│ プロジェクト    │    (flexible width)  │ ページメタデータ│
+│ ナビゲーション  │                      │                │
+├─────────────────┴──────────────────────┴────────────────┤
+│                       FOOTER                            │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -122,24 +201,30 @@ hugo-theme-issues/
 | 1024px 以下 | 2カラム（左サイドバー＋メイン、右サイドバーは下部へ） |
 | 768px 以下 | 1カラム（全要素がスタック） |
 
-## CSS変数
-
-`assets/css/main.css` で定義されている主なCSS変数：
-
-```css
-:root {
-  --sidebar-left-width: 250px;      /* 左サイドバー幅 */
-  --sidebar-right-width: 300px;     /* 右サイドバー幅 */
-  --color-text: #222;               /* テキスト色 */
-  --color-border: #ddd;             /* ボーダー色 */
-  --color-border-dark: #222;        /* 濃いボーダー色 */
-  --color-bg-light: #f9f9f9;        /* 薄い背景色 */
-  --color-bg-th: #eee;              /* テーブルヘッダ背景色 */
-  --color-link: #00e;               /* リンク色 */
-}
-```
-
 ## 実装済み機能
+
+### 左サイドバー（プロジェクトナビゲーション）
+
+- **3階層構造対応**：エピック → 子issue → 孫issue を階層的に表示
+- **Issue Type別アイコン**：
+  - 🟣 Epic
+  - 📗 Story
+  - ☑️ Task
+  - ➡️ Sub-task
+  - 🐞 Bug
+  - 📄 その他
+- **インデント機能**：子issue（1rem）と孫issue（2rem）を視覚的に区別
+- **アクティブページハイライト**：現在のページを `.active` クラスで強調表示
+- **親階層ナビゲーション**：⬆️ボタンでエピック単位に遡航
+- **孤立issue管理**：どのエピックにも属さないissueを分離表示
+- **レスポンシブ対応**：モバイル端末では非表示（768px以下）
+
+### タクソノミー
+
+- **タグ（tags）**: issue にラベルを付与し、タグ別ページで一覧表示
+- **Fix Versions（fix_versions）**: 修正バージョン別に issue を分類
+- **Affected Versions（affected_versions）**: 影響バージョン別に issue を分類
+- 左サイドバーにタグクラウドとバージョン一覧を表示
 
 ### 検索機能（Pagefind）
 
@@ -174,21 +259,17 @@ hugo server
 
 **注意**: `hugo server -D` でドラフトを含めて開発する場合、Pagefindインデックスは`public`ディレクトリのビルド済みコンテンツのみを対象とするため、ドラフトページは検索対象外となります。
 
-### 左サイドバー（プロジェクトナビゲーション）
+### ショートコード
 
-- **3階層構造対応**：エピック → 子issue → 孫issue を階層的に表示
-- **Issue Type別アイコン**：
-  - 🟣 Epic
-  - 📗 Story
-  - ☑️ Task
-  - ➡️ Sub-task
-  - 🐞 Bug
-  - 📄 その他
-- **インデント機能**：子issue（1rem）と孫issue（2rem）を視覚的に区別
-- **アクティブページハイライト**：現在のページを `.active` クラスで強調表示
-- **親階層ナビゲーション**：⬆️ボタンでエピック単位に遡航
-- **孤立issue管理**：どのエピックにも属さないissueを分離表示
-- **レスポンシブ対応**：モバイル端末では非表示（768px以下）
+#### comment.html
+
+JIRAのコメントを表示するためのショートコード：
+
+```markdown
+{{< comment author="user@example.com" date="2024-01-15" >}}
+コメント本文
+{{< /comment >}}
+```
 
 ### スタイリング
 
@@ -208,11 +289,26 @@ GitHub風の青系スタイルでメンションを強調：
 
 ## カスタマイズ
 
-### メニューの追加
-
-`hugo.toml`でヘッダーのナビゲーションメニューを設定できます：
+### hugo.toml の設定例
 
 ```toml
+baseURL = 'https://example.org/'
+languageCode = 'ja-JP'
+title = 'My JIRA Issues'
+theme = 'hugo-theme-issues'
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[markup.goldmark.parser.attribute]
+  block = true
+  title = true
+
+[taxonomies]
+  tag = "tags"
+  fix_version = "fix_versions"
+  affected_version = "affected_versions"
+
 [menus]
   [[menus.main]]
     name = 'projects'
@@ -228,66 +324,60 @@ GitHub風の青系スタイルでメンションを強調：
     name = 'fix versions'
     pageRef = '/fix_versions'
     weight = 31
+
+  [[menus.main]]
+    name = 'affected versions'
+    pageRef = '/affected_versions'
+    weight = 32
+
+[module.hugoVersion]
+  extended = false
+  min = '0.146.0'
 ```
 
-| パラメータ | 説明 |
-|---|---|
-| `name` | メニューに表示される名前 |
-| `pageRef` | リンク先のパス |
-| `weight` | 表示順序（小さいほど左に表示） |
+### CSS変数
 
-**タクソノミーページへのリンク**：タクソノミー（tags, fix_versions等）のリストページにリンクする場合は、`hugo.toml`で対応するタクソノミーを定義する必要があります：
-
-```toml
-[taxonomies]
-  tag = "tags"
-  fix_version = "fix_versions"
-  affected_version = "affected_versions"
-```
-
-### テンプレートのカスタマイズ
-
-各テンプレートは以下の場所に配置されており、自由にカスタマイズ可能です：
-
-- `layouts/baseof.html` - ベーステンプレート
-- `layouts/_partials/*.html` - パーシャルテンプレート
-
-### スタイルのカスタマイズ
-
-`assets/css/main.css` でCSS変数を変更することで、デザインを一括変更できます：
+`assets/css/main.css` で定義されている主なCSS変数：
 
 ```css
 :root {
-  --sidebar-left-width: 300px;  /* サイドバーの幅を変更 */
-  --color-link: #0969da;        /* リンク色を変更 */
+  --sidebar-left-width: 250px;      /* 左サイドバー幅 */
+  --sidebar-right-width: 300px;     /* 右サイドバー幅 */
+  --color-text: #222;               /* テキスト色 */
+  --color-border: #ddd;             /* ボーダー色 */
+  --color-border-dark: #222;        /* 濃いボーダー色 */
+  --color-bg-light: #f9f9f9;        /* 薄い背景色 */
+  --color-bg-th: #eee;              /* テーブルヘッダ背景色 */
+  --color-link: #00e;               /* リンク色 */
 }
 ```
 
-## 開発時の注意点
+## パフォーマンス最適化
 
-### Go Template構文
+4,000ページ超の大規模サイトでも高速にビルドするため、以下の最適化を実施しています：
 
-Hugoテンプレートは Go Template を使用しています：
+### newScratch インデックス（section.html / sidebar-left.html）
 
-```go
-{{ .Content }}              // ページコンテンツ
-{{ site.Title }}            // サイトタイトル
-{{ .RelPermalink }}         // 相対URL
-{{ partial "name.html" . }} // パーシャルの呼び出し
-```
+`where` による O(N) スキャンと `in` による O(N) 線形探索を、`newScratch` の辞書インデックスで O(1) ルックアップに置換。計算量を O(N²) → O(N) に改善。
 
-### フロントマター
+### partialCached による重複計算の排除
 
-コンテンツファイルのフロントマター形式（TOML）：
+| テンプレート | キャッシュキー | 効果 |
+|---|---|---|
+| head.html | `"global"` | 4,215回 → 1回 |
+| header.html | `"global"` | 4,215回 → 1回 |
+| footer.html | `"global"` | 4,215回 → 1回 |
+| sidebar-left.html | `.RelPermalink` | セクション単位でキャッシュ |
+| head/css.html | `"global"` | 4,215回 → 1回 |
+| head/js.html | `"global"` | 4,215回 → 1回 |
 
-```toml
-+++
-title = 'ページタイトル'
-date = 2023-01-15T09:00:00-07:00
-draft = false
-tags = ['tag1', 'tag2']
-+++
-```
+### ビルド時間の改善実績
+
+| 指標 | 最適化前 | 最適化後 |
+|---|---|---|
+| 全体ビルド時間 | ~2時間 | ~2分 |
+| section.html | 1分54秒 | 1.5秒 |
+| header.html 累積 | 4分07秒 | 103ms |
 
 ## テスト
 
@@ -323,14 +413,10 @@ hugo server -D
 
 ## ライセンス
 
-[ライセンスを記載]
-
-## サポート・フィードバック
-
-問題が発生した場合や改善提案は、GitHubのissuesセクションで報告してください。
+MIT License - 詳細は [LICENSE](./LICENSE) を参照してください。
 
 ## 関連リンク
 
 - [Hugo公式ドキュメント](https://gohugo.io/)
+- [Pagefind](https://pagefind.app/)
 - [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
-- [Semantic Versioning](https://semver.org/)
