@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `$page.Params.issue_key | default ""` で nil ガードを追加
 
 ### Changed
+- section/taxonomy/term ページの sidebar-left を sidebar-nav.html に変更
+  - メニュー + プロジェクト一覧 + タクソノミーナビを統合表示
+  - partialCached "global" キーでキャッシュ可能（ページ非依存、アクティブ状態はJS）
+  - sidebar-taxonomy.html の呼び出しを sidebar-nav.html に置換
 - section.html / sidebar-left.html の O(n²) ループを newScratch インデックスで O(n) に最適化
   - `where` による重複スキャンを parent→children 辞書に置換
   - `in` スライス線形探索を `Scratch.Get` の O(1) ルックアップに置換

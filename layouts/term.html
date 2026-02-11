@@ -1,5 +1,5 @@
 {{ define "sidebar-left" }}
-  {{ partial "sidebar-taxonomy.html" . }}
+  {{ partialCached "sidebar-nav.html" . "global" }}
 {{ end }}
 
 {{ define "main" }}
