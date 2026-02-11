@@ -31,10 +31,10 @@
   </main>
 
   {{ block "sidebar-right" . }}{{ end }}
+  {{- end }}
 
   <script>
     window.addEventListener('DOMContentLoaded', (event) => {
-      // 現在のページをハイライト（partialCached対応）
       const currentPath = location.pathname;
 
       // メニューのアクティブ状態をJSで付与（partialCached対応）
@@ -50,6 +50,7 @@
         }
       });
 
+      // サイドバーのアクティブページハイライト（partialCached対応）
       const activeLink = document.querySelector('.sidebar-left a[data-url="' + currentPath + '"]');
       if (activeLink) {
         activeLink.classList.add('active');
@@ -57,6 +58,7 @@
         activeLink.scrollIntoView({ block: 'center', behavior: 'instant' });
       }
 
+      // Pagefind 検索UI初期化
       new PagefindUI({ element: "#search", showSubResults: true });
 
       // 矢印キーナビゲーション
@@ -111,7 +113,6 @@
       }
     });
   </script>
-  {{- end }}
 
 </body>
 </html>

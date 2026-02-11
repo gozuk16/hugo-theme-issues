@@ -2,5 +2,5 @@
 <meta name="viewport" content="width=device-width">
 {{ partialCached "head/css.html" . "global" }}
 {{ partialCached "head/js.html" . "global" }}
-<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
-<script src="/pagefind/pagefind-ui.js"></script>
+<link href="{{ "pagefind/pagefind-ui.css" | relURL }}" rel="stylesheet">
+<script src="{{ "pagefind/pagefind-ui.js" | relURL }}"></script>
