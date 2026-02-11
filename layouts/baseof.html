@@ -4,7 +4,7 @@
   <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
   {{ partialCached "head.html" . "global" }}
 </head>
-<body class={{ .Kind }}>
+<body class="{{ .Kind }}"{{ if eq .Kind "page" }} data-pagefind-body{{ end }}>
   <header>
     {{ partialCached "header.html" . "global" }}
   </header>
