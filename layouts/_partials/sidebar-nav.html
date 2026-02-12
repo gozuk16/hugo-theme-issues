@@ -1,5 +1,5 @@
 {{- /*
-ナビゲーション用サイドバー - メニュー + プロジェクト一覧 + タクソノミーナビ
+ナビゲーション用サイドバー - メニュー + プロジェクト一覧
 section, taxonomy, term ページの sidebar-left で使用
 partialCached "sidebar-nav.html" . "global" で呼び出す（ページ非依存）
 */}}
@@ -23,52 +23,4 @@ partialCached "sidebar-nav.html" . "global" で呼び出す（ページ非依存
       {{- end }}
     </ul>
   </section>
-
-  {{- /* タグクラウド */}}
-  {{- with site.Taxonomies.tags }}
-    <section class="widget">
-      <h3>Tags</h3>
-      <ul class="tag-list">
-        {{- range $name, $taxonomy := . }}
-          <li>
-            <a href="{{ "/tags/" | relLangURL }}{{ $name | urlize }}/" data-url="{{ "/tags/" | relLangURL }}{{ $name | urlize }}/" class="tag-badge">
-              {{ $name }} ({{ len $taxonomy }})
-            </a>
-          </li>
-        {{- end }}
-      </ul>
-    </section>
-  {{- end }}
-
-  {{- /* 修正バージョン一覧 */}}
-  {{- with site.Taxonomies.fix_versions }}
-    <section class="widget">
-      <h3>Fix Versions</h3>
-      <ul class="tag-list">
-        {{- range $name, $taxonomy := . }}
-          <li>
-            <a href="{{ "/fix_versions/" | relLangURL }}{{ $name | urlize }}/" data-url="{{ "/fix_versions/" | relLangURL }}{{ $name | urlize }}/" class="tag-badge">
-              {{ $name }} ({{ len $taxonomy }})
-            </a>
-          </li>
-        {{- end }}
-      </ul>
-    </section>
-  {{- end }}
-
-  {{- /* 影響バージョン一覧 */}}
-  {{- with site.Taxonomies.affected_versions }}
-    <section class="widget">
-      <h3>Affected Versions</h3>
-      <ul class="tag-list">
-        {{- range $name, $taxonomy := . }}
-          <li>
-            <a href="{{ "/affected_versions/" | relLangURL }}{{ $name | urlize }}/" data-url="{{ "/affected_versions/" | relLangURL }}{{ $name | urlize }}/" class="tag-badge">
-              {{ $name }} ({{ len $taxonomy }})
-            </a>
-          </li>
-        {{- end }}
-      </ul>
-    </section>
-  {{- end }}
 </nav>
