@@ -47,8 +47,12 @@
     {{ $metaHTML = printf "%s</ul></section>" $metaHTML }}
   {{- end }}
 
-  {{- /* 「<h2 id="開発情報">」の前にメタ情報を挿入 */}}
-  {{ $right = replaceRE `<h2 id="開発情報">` (printf "%s<h2 id=\"開発情報\">" $metaHTML) $right }}
+  {{- /* 「<h2 id="開発情報">」の前にメタ情報を挿入。開発情報がない場合は末尾に追加 */}}
+  {{ if findRE `<h2 id="開発情報">` $right }}
+    {{ $right = replaceRE `<h2 id="開発情報">` (printf "%s<h2 id=\"開発情報\">" $metaHTML) $right }}
+  {{ else if $metaHTML }}
+    {{ $right = printf "%s%s" $right $metaHTML }}
+  {{ end }}
 
   <aside class="sidebar-right">
     <aside class="page-right">

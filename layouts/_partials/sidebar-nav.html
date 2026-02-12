@@ -6,7 +6,6 @@ partialCached "sidebar-nav.html" . "global" で呼び出す（ページ非依存
 <nav class="sidebar-nav" aria-label="Navigation">
   {{- /* メニュー */}}
   <section class="widget">
-    <h3>Menu</h3>
     <ul>
       {{- range site.Menus.main }}
         <li><a href="{{ .URL }}" data-url="{{ .URL }}">{{ .Name }}</a></li>
