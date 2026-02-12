@@ -1,3 +1,7 @@
+{{ define "sidebar-left" }}
+  {{ partialCached "sidebar-nav.html" . "global" }}
+{{ end }}
+
 {{ define "main" }}
   {{ .Content }}
 

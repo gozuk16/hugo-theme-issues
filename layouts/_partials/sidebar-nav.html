@@ -1,0 +1,25 @@
+{{- /*
+ナビゲーション用サイドバー - メニュー + プロジェクト一覧
+section, taxonomy, term ページの sidebar-left で使用
+partialCached "sidebar-nav.html" . "global" で呼び出す（ページ非依存）
+*/}}
+<nav class="sidebar-nav" aria-label="Navigation">
+  {{- /* メニュー */}}
+  <section class="widget">
+    <ul>
+      {{- range site.Menus.main }}
+        <li><a href="{{ .URL }}" data-url="{{ .URL }}">{{ .Name }}</a></li>
+      {{- end }}
+    </ul>
+  </section>
+
+  {{- /* プロジェクト一覧 */}}
+  <section class="widget">
+    <h3>Projects</h3>
+    <ul>
+      {{- range site.Sections }}
+        <li><a href="{{ .RelPermalink }}" data-url="{{ .RelPermalink }}">{{ .Title }}</a></li>
+      {{- end }}
+    </ul>
+  </section>
+</nav>

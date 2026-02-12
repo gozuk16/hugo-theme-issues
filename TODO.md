@@ -34,9 +34,18 @@
 - [x] head.html を partialCached 化（.RelPermalink キー）
 - [ ] ビルド時間の計測・検証（hugo --templateMetrics）
 
+## sidebar-left のナビゲーション改善
+
+- [x] sidebar-nav.html パーシャル作成（Menu + Projects + タクソノミーナビ）
+- [x] section.html の sidebar-left を sidebar-nav.html に変更
+- [x] taxonomy.html の sidebar-left を sidebar-nav.html に変更
+- [x] term.html の sidebar-left を sidebar-nav.html に変更
+- [x] CSS スタイル追加（.sidebar-nav）
+- [ ] 動作確認（hugo server -D）
+
 ## ドキュメントとテストの整備
 
-- [ ] TODO.mdを最新状況に更新 ← 実施中
+- [ ] TODO.mdを最新状況に更新
 - [ ] CHANGELOG.mdをアップデート
 - [ ] Makefileを作成
 - [ ] README.mdを充実させる

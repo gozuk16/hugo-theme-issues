@@ -675,6 +675,22 @@ th {
   /* Orphan issues in sidebar are displayed with standard styling */
 }
 
+/* Sidebar Navigation (section/taxonomy/term pages) */
+.sidebar-nav h3 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem 0;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sidebar-nav .widget {
+  margin-bottom: 1.25rem;
+}
+
+.sidebar-nav .widget:last-child {
+  margin-bottom: 0;
+}
+
 /* Ancestor menu item */
 .ancestor {
   font-weight: 600;
