@@ -3,6 +3,12 @@
   <span data-pagefind-meta="title:{{ with .Params.issue_key }}{{ . }}: {{ end }}{{ .Title }}" style="display:none;"></span>
   {{ $content := .Content }}
   {{ $main := replaceRE "(?s)<!-- PAGE_RIGHT_START -->(.*?)<!-- PAGE_RIGHT_END -->" "" $content }}
+  <div class="raw-toggle-container">
+    <button type="button" class="raw-toggle-btn" onclick="toggleRawMarkdown()" aria-expanded="false" aria-controls="raw-markdown">Markdown を表示</button>
+  </div>
+  <div id="raw-markdown" class="raw-markdown-view" hidden data-pagefind-ignore>
+    <pre><code>{{ .RawContent }}</code></pre>
+  </div>
   <article>
 	{{ $main | safeHTML }}
   </article>
