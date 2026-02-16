@@ -985,3 +985,39 @@ h6 {
   word-wrap: break-word;
 }
 
+/* サイドバーページング */
+.sidebar-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sidebar-pager-btn {
+  padding: 0.15em 0.5em;
+  font-size: 0.8rem;
+  color: var(--color-link);
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.sidebar-pager-btn:hover:not(:disabled) {
+  background-color: var(--color-bg-light);
+  border-color: #999;
+}
+
+.sidebar-pager-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.sidebar-pager-info {
+  font-size: 0.8rem;
+  color: #666;
+}
+
