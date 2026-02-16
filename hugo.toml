@@ -32,6 +32,9 @@ title = 'Hugo theme JIRA issues'
       [markup.goldmark.parser.attribute]
         block = true
         title = true
+  [markup.highlight]
+	guessSyntax = true
+    style = 'xcode'
 
 [module]
   [module.hugoVersion]
