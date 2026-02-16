@@ -21,7 +21,7 @@
   <aside class="sidebar-left">
     {{ block "sidebar-left" . }}
       {{- with .CurrentSection }}
-        {{ partialCached "sidebar-left.html" . .RelPermalink }}
+        <div data-sidebar-src="{{ .RelPermalink }}sidebar.html"></div>
       {{- end }}
     {{ end }}
   </aside>
@@ -50,80 +50,92 @@
         }
       });
 
-      // サイドバーのアクティブページハイライト（partialCached対応）
-      const sidebarLinks = document.querySelectorAll('.sidebar-left a[data-url]');
-      let bestMatch = null;
-      let bestLength = 0;
-      sidebarLinks.forEach(link => {
-        const url = new URL(link.getAttribute('data-url'), location.origin);
-        if (url.pathname === currentPath || (currentPath.startsWith(url.pathname) && url.pathname !== '/')) {
-          if (url.pathname.length > bestLength) {
-            bestMatch = link;
-            bestLength = url.pathname.length;
+      // サイドバーの状態適用（アクティブ判定・ページング・スクロール）
+      function applySidebarState() {
+        // アクティブページハイライト
+        const sidebarLinks = document.querySelectorAll('.sidebar-left a[data-url]');
+        let bestMatch = null;
+        let bestLength = 0;
+        sidebarLinks.forEach(link => {
+          const url = new URL(link.getAttribute('data-url'), location.origin);
+          if (url.pathname === currentPath || (currentPath.startsWith(url.pathname) && url.pathname !== '/')) {
+            if (url.pathname.length > bestLength) {
+              bestMatch = link;
+              bestLength = url.pathname.length;
+            }
           }
+        });
+        if (bestMatch) {
+          bestMatch.classList.add('active');
+          bestMatch.setAttribute('aria-current', 'page');
         }
-      });
-      if (bestMatch) {
-        bestMatch.classList.add('active');
-        bestMatch.setAttribute('aria-current', 'page');
-      }
 
-      // サイドバーのページング（100件超の場合のみ）
-      const sidebarUl = document.querySelector('.sidebar-left nav > ul');
-      if (sidebarUl) {
-        const PAGE_SIZE = 100;
-        const allItems = Array.from(sidebarUl.children).filter(li => !li.classList.contains('orphan-section-divider'));
-        if (allItems.length > PAGE_SIZE) {
-          const totalPages = Math.ceil(allItems.length / PAGE_SIZE);
-
-          // アクティブアイテムを含むページを特定
-          let activePage = 0;
-          allItems.forEach((li, i) => {
-            if (li.querySelector('a.active')) activePage = Math.floor(i / PAGE_SIZE);
-          });
-
-          // ページャーUIを作成
-          const pager = document.createElement('div');
-          pager.className = 'sidebar-pager';
-          const prevBtn = document.createElement('button');
-          prevBtn.className = 'sidebar-pager-btn';
-          prevBtn.textContent = '<';
-          const nextBtn = document.createElement('button');
-          nextBtn.className = 'sidebar-pager-btn';
-          nextBtn.textContent = '>';
-          const info = document.createElement('span');
-          info.className = 'sidebar-pager-info';
-          pager.appendChild(prevBtn);
-          pager.appendChild(info);
-          pager.appendChild(nextBtn);
-          sidebarUl.parentNode.insertBefore(pager, sidebarUl);
-
-          let currentPage = activePage;
-
-          function showPage(page) {
-            currentPage = page;
-            const start = page * PAGE_SIZE;
-            const end = start + PAGE_SIZE;
-            allItems.forEach((li, i) => { li.hidden = i < start || i >= end; });
-            // orphan-section-divider の表示制御
-            sidebarUl.querySelectorAll('.orphan-section-divider').forEach(div => {
-              const next = div.nextElementSibling;
-              div.hidden = !next || next.hidden;
+        // ページング（100件超の場合のみ）
+        const sidebarUl = document.querySelector('.sidebar-left nav > ul');
+        if (sidebarUl) {
+          const PAGE_SIZE = 100;
+          const allItems = Array.from(sidebarUl.children).filter(li => !li.classList.contains('orphan-section-divider'));
+          if (allItems.length > PAGE_SIZE) {
+            const totalPages = Math.ceil(allItems.length / PAGE_SIZE);
+            let activePage = 0;
+            allItems.forEach((li, i) => {
+              if (li.querySelector('a.active')) activePage = Math.floor(i / PAGE_SIZE);
             });
-            info.textContent = (page + 1) + ' / ' + totalPages;
-            prevBtn.disabled = page === 0;
-            nextBtn.disabled = page === totalPages - 1;
-          }
 
-          prevBtn.addEventListener('click', () => { if (currentPage > 0) showPage(currentPage - 1); });
-          nextBtn.addEventListener('click', () => { if (currentPage < totalPages - 1) showPage(currentPage + 1); });
-          showPage(activePage);
+            const pager = document.createElement('div');
+            pager.className = 'sidebar-pager';
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'sidebar-pager-btn';
+            prevBtn.textContent = '<';
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'sidebar-pager-btn';
+            nextBtn.textContent = '>';
+            const info = document.createElement('span');
+            info.className = 'sidebar-pager-info';
+            pager.appendChild(prevBtn);
+            pager.appendChild(info);
+            pager.appendChild(nextBtn);
+            sidebarUl.parentNode.insertBefore(pager, sidebarUl);
+
+            let currentPage = activePage;
+            function showPage(page) {
+              currentPage = page;
+              const start = page * PAGE_SIZE;
+              const end = start + PAGE_SIZE;
+              allItems.forEach((li, i) => { li.hidden = i < start || i >= end; });
+              sidebarUl.querySelectorAll('.orphan-section-divider').forEach(div => {
+                const next = div.nextElementSibling;
+                div.hidden = !next || next.hidden;
+              });
+              info.textContent = (page + 1) + ' / ' + totalPages;
+              prevBtn.disabled = page === 0;
+              nextBtn.disabled = page === totalPages - 1;
+            }
+            prevBtn.addEventListener('click', () => { if (currentPage > 0) showPage(currentPage - 1); });
+            nextBtn.addEventListener('click', () => { if (currentPage < totalPages - 1) showPage(currentPage + 1); });
+            showPage(activePage);
+          }
+        }
+
+        // アクティブ要素へスクロール
+        if (bestMatch) {
+          bestMatch.scrollIntoView({ block: 'center', behavior: 'instant' });
         }
       }
 
-      // アクティブ要素へスクロール（ページング適用後）
-      if (bestMatch) {
-        bestMatch.scrollIntoView({ block: 'center', behavior: 'instant' });
+      // サイドバーの動的読み込み or 静的サイドバーの状態適用
+      const sidebarSrc = document.querySelector('.sidebar-left [data-sidebar-src]');
+      if (sidebarSrc) {
+        fetch(sidebarSrc.dataset.sidebarSrc)
+          .then(r => r.ok ? r.text() : '')
+          .then(html => {
+            if (html) {
+              sidebarSrc.outerHTML = html;
+            }
+            applySidebarState();
+          });
+      } else {
+        applySidebarState();
       }
 
       // Pagefind 検索UI初期化
