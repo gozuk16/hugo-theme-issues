@@ -23,6 +23,15 @@ title = 'Hugo theme JIRA issues'
     pageRef = '/affected_versions'
     weight = 32
 
+[outputFormats.sidebar]
+  mediaType = "text/html"
+  baseName = "sidebar"
+  isHTML = true
+  notAlternative = true
+
+[outputs]
+  section = ["html", "sidebar"]
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
