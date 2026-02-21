@@ -43,7 +43,7 @@ title = 'Hugo theme JIRA issues'
         title = true
   [markup.highlight]
 	guessSyntax = true
-    style = 'xcode'
+    style = 'tango'
 
 [module]
   [module.hugoVersion]
