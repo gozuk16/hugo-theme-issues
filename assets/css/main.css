@@ -400,6 +400,29 @@ th {
   font-size: 0.9rem;
 }
 
+/* 基本情報テーブル */
+.sidebar-right table {
+  width: 100%;
+  border-collapse: collapse;
+  border: none;
+  font-size: 0.85rem;
+}
+
+.sidebar-right thead {
+  display: none;
+}
+
+.sidebar-right td {
+  padding: 0.15rem 0.3rem;
+  border: none;
+}
+
+.sidebar-right td:first-child {
+  white-space: nowrap;
+  font-weight: bold;
+  color: #666;
+}
+
 /* 開発情報の子階層のインデント */
 .sidebar-right li ul li {
   padding-left: 0.5rem;
