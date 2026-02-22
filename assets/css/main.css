@@ -41,7 +41,7 @@
 body {
   color: var(--color-text);
   font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", sans-serif;
-  line-height: 1.5;
+  line-height: normal;
   margin: 0;
   display: grid;
   height: 100vh;
@@ -199,12 +199,12 @@ main ol ol ul {
 code {
   background-color: #f5f5f5;
   color: #d63384;
-  padding: 0.2em 0.4em;
+  padding: 0.1em 0.2em;
   border: 1px solid #e0e0e0;
   border-radius: 3px;
   font-family: monospace;
   font-size: 0.875rem;
-  line-height: 0.95;
+  line-height: 1;
 }
 
 pre {
