@@ -100,14 +100,6 @@ header nav a.active {
   font-weight: 700;
 }
 
-.sidebar-left {
-  grid-area: sidebar-left;
-  padding: 0.3rem 0.1rem 0.3rem 0.5rem;
-  border-right: 1px solid var(--color-border);
-  overflow-y: auto;
-  font-size: 0.9rem;
-}
-
 main {
   grid-area: main;
   padding: 1rem 2rem;
@@ -116,13 +108,6 @@ main {
 
 main article {
   /* `max-width: 900px; */
-}
-
-.sidebar-right {
-  grid-area: sidebar-right;
-  padding: 1rem;
-  border-left: 1px solid var(--color-border);
-  overflow-y: auto;
 }
 
 footer {
@@ -203,7 +188,7 @@ code {
   border: 1px solid #e0e0e0;
   border-radius: 3px;
   font-family: monospace;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   line-height: 1;
 }
 
@@ -321,6 +306,14 @@ th {
 }
 
 /* Left Sidebar - Project Pages */
+.sidebar-left {
+  grid-area: sidebar-left;
+  padding: 0.3rem 0.1rem 0.3rem 0.5rem;
+  border-right: 1px solid var(--color-border);
+  overflow-y: auto;
+  font-size: 0.9rem;
+}
+
 .sidebar-left nav h2 {
   font-size: 1.2rem;
   margin-bottom: 1rem;
@@ -376,7 +369,7 @@ th {
 .sidebar-left .issue-type-icon {
   display: inline-block;
   margin-right: 0.5rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
   vertical-align: middle;
 }
 
@@ -398,11 +391,33 @@ th {
   list-style: none;
 }
 
+/* Right Sidebar - Meta-item Pages */
+.sidebar-right {
+  grid-area: sidebar-right;
+  padding: 1rem;
+  border-left: 1px solid var(--color-border);
+  overflow-y: auto;
+  font-size: 0.9rem;
+}
+
+/* 開発情報の子階層のインデント */
+.sidebar-right li ul li {
+  padding-left: 0.5rem;
+}
+
+.sidebar-right li ul li ul li {
+  padding-left: 1rem;
+}
+
 .sidebar-right h3 {
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
   border-bottom: 1px solid var(--color-border);
   padding-bottom: 0.25rem;
+}
+.sidebar-right code {
+  padding: 0 0.2em;
+  font-size: 0.875rem;
 }
 
 .page-meta {
