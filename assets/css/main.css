@@ -192,6 +192,10 @@ code {
   line-height: 1;
 }
 
+a code {
+  color: var(--color-link);
+}
+
 pre {
   background-color: #f5f5f5;
   border: 1px solid #ddd;
