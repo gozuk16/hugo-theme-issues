@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
 <head>
-  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
+  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ with .Params.issue_key }}[{{ . }}]{{ end }}{{ .Title }} - {{ site.Title }}{{ end }}</title>
   {{ partialCached "head.html" . "global" }}
 </head>
 <body class="{{ .Kind }}"{{ if eq .Kind "page" }} data-pagefind-body{{ end }}>
