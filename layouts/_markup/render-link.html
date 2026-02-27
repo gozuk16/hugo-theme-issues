@@ -1,0 +1,19 @@
+{{- $url := .Destination -}}
+{{- $page := .Page -}}
+{{- if and (strings.HasSuffix $url ".md") (not (strings.HasPrefix $url "http")) (not (strings.HasPrefix $url "/")) -}}
+  {{- with $page.Resources.GetMatch $url -}}
+    {{- $pageDir := path.Dir $page.File.Filename -}}
+    {{- $workDir := hugo.WorkingDir -}}
+    {{- $relDir := strings.TrimPrefix (printf "%s/" $workDir) $pageDir -}}
+    {{- $srcPath := printf "%s/%s" $relDir $url -}}
+    {{- $rawContent := os.ReadFile $srcPath -}}
+    {{- if $rawContent -}}
+      {{- $basePath := (urls.Parse site.BaseURL).Path -}}
+      {{- $relPermalink := strings.TrimPrefix $basePath $page.RelPermalink -}}
+      {{- $outPath := printf "%s%s" $relPermalink $url -}}
+      {{- $published := resources.FromString $outPath $rawContent -}}
+      {{- $url = $published.RelPermalink -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+<a href="{{ $url | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text }}</a>
