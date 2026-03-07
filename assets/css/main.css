@@ -1064,3 +1064,8 @@ h6 {
   color: #666;
 }
 
+/* ヘッダーが空のテーブルのtheadを非表示にする */
+/* JIRAのヘッダー無しテーブルはMarkdown変換時に空ヘッダーが自動生成されるため */
+thead:not(:has(th:not(:empty))) {
+  display: none;
+}
