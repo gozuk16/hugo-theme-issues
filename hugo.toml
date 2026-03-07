@@ -34,15 +34,18 @@ title = 'Hugo theme JIRA issues'
 
 [markup]
   [markup.goldmark]
-    [markup.goldmark.renderer]
-      unsafe = true
+    [markup.goldmark.extensions]
+      linkify = true
     [markup.goldmark.parser]
-      #wrapStandAloneImageWithinParagraph = false
+      wrapStandAloneImageWithinParagraph = false
       [markup.goldmark.parser.attribute]
         block = true
         title = true
+    [markup.goldmark.renderer]
+      hardWraps = true
+      unsafe = true
   [markup.highlight]
-	guessSyntax = true
+    guessSyntax = true
     style = 'tango'
 
 [module]

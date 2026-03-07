@@ -120,6 +120,7 @@ footer {
 /* Main content paragraph and hr styles */
 main p {
   margin-bottom: 0.5em;
+  white-space: pre-wrap;
 }
 
 main hr {
