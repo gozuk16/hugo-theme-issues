@@ -42,7 +42,6 @@ title = 'Hugo theme JIRA issues'
         block = true
         title = true
     [markup.goldmark.renderer]
-      hardWraps = true
       unsafe = true
   [markup.highlight]
     guessSyntax = true
