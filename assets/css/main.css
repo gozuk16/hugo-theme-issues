@@ -123,6 +123,10 @@ main p {
   white-space: pre-wrap;
 }
 
+p.breadcrumbs {
+  white-space: normal;
+}
+
 main hr {
   margin-bottom: 0.75em;
   border: none;
