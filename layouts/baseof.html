@@ -3,6 +3,18 @@
 <head>
   <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ with .Params.issue_key }}[{{ . }}]{{ end }}{{ .Title }} - {{ site.Title }}{{ end }}</title>
   {{ partialCached "head.html" . "global" }}
+  <script>
+  (function(){
+    function gc(n){var m=document.cookie.match(new RegExp('(^| )'+n+'=([^;]+)'));return m?decodeURIComponent(m[2]):null;}
+    var s=document.documentElement.style;
+    var ls=gc('sidebar_left_state'),rs=gc('sidebar_right_state');
+    var lw=gc('sidebar_left_width'),rw=gc('sidebar_right_width');
+    if(ls==='closed') s.setProperty('--sidebar-left-width','0px');
+    else if(lw) s.setProperty('--sidebar-left-width',lw+'px');
+    if(rs==='closed') s.setProperty('--sidebar-right-width','0px');
+    else if(rw) s.setProperty('--sidebar-right-width',rw+'px');
+  })();
+  </script>
 </head>
 <body class="{{ .Kind }}"{{ if eq .Kind "page" }} data-pagefind-body{{ end }}>
   <header>
@@ -133,9 +145,11 @@
               sidebarSrc.outerHTML = html;
             }
             applySidebarState();
+            document.dispatchEvent(new CustomEvent('sidebar-left-loaded'));
           });
       } else {
         applySidebarState();
+        document.dispatchEvent(new CustomEvent('sidebar-left-loaded'));
       }
 
       // Pagefind 検索UI初期化

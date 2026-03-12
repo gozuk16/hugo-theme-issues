@@ -319,7 +319,6 @@ th {
   grid-area: sidebar-left;
   padding: 0.3rem 0.1rem 0.3rem 0.5rem;
   border-right: 1px solid var(--color-border);
-  overflow-y: auto;
   font-size: 0.9rem;
 }
 
@@ -405,7 +404,6 @@ th {
   grid-area: sidebar-right;
   padding: 1rem;
   border-left: 1px solid var(--color-border);
-  overflow-y: auto;
   font-size: 0.9rem;
 }
 
@@ -1072,4 +1070,123 @@ h6 {
 /* JIRAのヘッダー無しテーブルはMarkdown変換時に空ヘッダーが自動生成されるため */
 thead:not(:has(th:not(:empty))) {
   display: none;
+}
+
+/* ======================
+   サイドバー開閉・リサイズ
+   ====================== */
+
+/* 折り畳み状態のCSS変数オーバーライド */
+body.sidebar-left-collapsed {
+  --sidebar-left-width: 0px;
+}
+body.sidebar-right-collapsed {
+  --sidebar-right-width: 0px;
+}
+
+/* サイドバー構造: トグルボタン・リサイズハンドルのためにposition:relativeとoverflow:visibleを設定 */
+.sidebar-left,
+.sidebar-right {
+  position: relative;
+  overflow: visible;
+}
+
+/* サイドバー内コンテンツ領域（JSで生成） */
+.sidebar-content {
+  overflow-y: auto;
+  height: 100%;
+}
+
+/* 折り畳み時: コンテンツ非表示・ボーダー非表示 */
+.sidebar-left.collapsed .sidebar-content,
+.sidebar-right.collapsed .sidebar-content {
+  display: none;
+}
+
+.sidebar-left.collapsed {
+  border-right: none;
+  padding: 0;
+  pointer-events: none;
+}
+
+.sidebar-right.collapsed {
+  border-left: none;
+  padding: 0;
+  pointer-events: none;
+}
+
+/* 折り畳み時もトグルボタンだけはクリック可能にする */
+.sidebar-left.collapsed .sidebar-toggle,
+.sidebar-right.collapsed .sidebar-toggle {
+  pointer-events: auto;
+}
+
+/* トグルボタン */
+.sidebar-toggle {
+  position: absolute;
+  z-index: 10;
+  top: 10%;
+  transform: translateY(-10%);
+  width: 20px;
+  height: 24px;
+  padding: 0;
+  background: #f0f0f0;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  font-size: 10px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.sidebar-toggle:hover {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.sidebar-toggle-left {
+  right: -20px;
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+}
+
+.sidebar-toggle-right {
+  left: -20px;
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+}
+
+/* リサイズハンドル */
+.sidebar-resize-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  cursor: col-resize;
+  z-index: 5;
+  background: transparent;
+  transition: background-color 0.2s;
+}
+
+.sidebar-resize-handle:hover,
+.sidebar-resize-handle.dragging {
+  background-color: rgba(0, 123, 255, 0.3);
+}
+
+.sidebar-left .sidebar-resize-handle {
+  right: 0;
+}
+
+.sidebar-right .sidebar-resize-handle {
+  left: 0;
+}
+
+/* レスポンシブ: モバイルではトグル・リサイズ非表示 */
+@media (max-width: 768px) {
+  .sidebar-toggle,
+  .sidebar-resize-handle {
+    display: none !important;
+  }
 }

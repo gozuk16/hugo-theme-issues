@@ -10,3 +10,148 @@ window.toggleRawMarkdown = function() {
   btn.setAttribute('aria-expanded', String(isHidden));
   btn.textContent = isHidden ? 'Markdown を閉じる' : 'Markdown を表示';
 };
+
+// === Sidebar: Cookie utilities ===
+
+function setCookie(name, value, days) {
+  days = days || 365;
+  var expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + expires + ';path=/;SameSite=Lax';
+}
+
+function getCookie(name) {
+  var m = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return m ? decodeURIComponent(m[2]) : null;
+}
+
+// === Sidebar: Resize handle ===
+
+function initResize(side, handle, sidebar) {
+  var startX, startWidth;
+
+  handle.addEventListener('mousedown', function(e) {
+    e.preventDefault();
+    startX = e.clientX;
+    startWidth = sidebar.getBoundingClientRect().width;
+    handle.classList.add('dragging');
+    document.body.style.userSelect = 'none';
+    document.body.style.cursor = 'col-resize';
+    sidebar.style.transition = 'none';
+
+    function onMouseMove(e) {
+      var delta = e.clientX - startX;
+      if (side === 'right') delta = -delta;
+      var newWidth = Math.max(150, Math.min(500, startWidth + delta));
+      document.documentElement.style.setProperty('--sidebar-' + side + '-width', newWidth + 'px');
+    }
+
+    function onMouseUp() {
+      handle.classList.remove('dragging');
+      document.body.style.userSelect = '';
+      document.body.style.cursor = '';
+      sidebar.style.transition = '';
+
+      var finalWidth = Math.round(sidebar.getBoundingClientRect().width);
+      setCookie('sidebar_' + side + '_width', finalWidth);
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
+}
+
+// === Sidebar: Toggle ===
+
+function updateToggleIcon(btn, side, isCollapsed) {
+  if (side === 'left') {
+    btn.textContent = isCollapsed ? '▶' : '◀';
+    btn.title = isCollapsed ? '左サイドバーを開く' : '左サイドバーを閉じる';
+  } else {
+    btn.textContent = isCollapsed ? '◀' : '▶';
+    btn.title = isCollapsed ? '右サイドバーを開く' : '右サイドバーを閉じる';
+  }
+}
+
+function toggleSidebar(side, btn) {
+  var sidebar = document.querySelector('.sidebar-' + side);
+  if (!sidebar) return;
+
+  var isCollapsed = sidebar.classList.toggle('collapsed');
+  document.body.classList.toggle('sidebar-' + side + '-collapsed', isCollapsed);
+
+  if (isCollapsed) {
+    document.documentElement.style.setProperty('--sidebar-' + side + '-width', '0px');
+    setCookie('sidebar_' + side + '_state', 'closed');
+  } else {
+    var savedWidth = getCookie('sidebar_' + side + '_width');
+    var defaultWidth = side === 'left' ? '250' : '300';
+    var w = savedWidth || defaultWidth;
+    document.documentElement.style.setProperty('--sidebar-' + side + '-width', w + 'px');
+    setCookie('sidebar_' + side + '_state', 'open');
+  }
+
+  updateToggleIcon(btn, side, isCollapsed);
+}
+
+// === Sidebar: Init ===
+
+function initSidebar(side) {
+  var sidebar = document.querySelector('.sidebar-' + side);
+  if (!sidebar) return;
+
+  // 既存の子要素を .sidebar-content で包む
+  var content = document.createElement('div');
+  content.className = 'sidebar-content';
+  while (sidebar.firstChild) {
+    content.appendChild(sidebar.firstChild);
+  }
+  sidebar.appendChild(content);
+
+  // リサイズハンドルを追加
+  var handle = document.createElement('div');
+  handle.className = 'sidebar-resize-handle';
+  sidebar.appendChild(handle);
+  initResize(side, handle, sidebar);
+
+  // トグルボタンを追加
+  var btn = document.createElement('button');
+  btn.className = 'sidebar-toggle sidebar-toggle-' + side;
+  btn.setAttribute('aria-label', (side === 'left' ? '左' : '右') + 'サイドバーを開閉');
+  sidebar.appendChild(btn);
+
+  // Cookie から状態を復元
+  var savedState = getCookie('sidebar_' + side + '_state');
+  var savedWidth = getCookie('sidebar_' + side + '_width');
+
+  if (savedState === 'closed') {
+    sidebar.classList.add('collapsed');
+    document.body.classList.add('sidebar-' + side + '-collapsed');
+    document.documentElement.style.setProperty('--sidebar-' + side + '-width', '0px');
+    updateToggleIcon(btn, side, true);
+  } else {
+    if (savedWidth) {
+      document.documentElement.style.setProperty('--sidebar-' + side + '-width', savedWidth + 'px');
+    }
+    updateToggleIcon(btn, side, false);
+  }
+
+  // トグルボタンのクリックイベント
+  btn.addEventListener('click', function() {
+    toggleSidebar(side, btn);
+  });
+}
+
+// === DOMContentLoaded ===
+
+window.addEventListener('DOMContentLoaded', function() {
+  // 右サイドバーはすぐに初期化
+  initSidebar('right');
+
+  // 左サイドバーは fetch 完了後（または静的の場合も同じイベント）に初期化
+  document.addEventListener('sidebar-left-loaded', function() {
+    initSidebar('left');
+  }, { once: true });
+});
