@@ -1125,8 +1125,8 @@ body.sidebar-right-collapsed {
 .sidebar-toggle {
   position: absolute;
   z-index: 10;
-  top: 20%;
-  transform: translateY(-20%);
+  top: 10%;
+  transform: translateY(-10%);
   width: 20px;
   height: 24px;
   padding: 0;
