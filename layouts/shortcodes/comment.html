@@ -6,6 +6,6 @@
   </div>
   <hr class="comment-divider" />
   <div class="comment-body">
-    {{ .Inner | markdownify }}
+    {{ .Inner | replaceRE "(?m)^(.+)$" "$1  " | markdownify }}
   </div>
 </div>
