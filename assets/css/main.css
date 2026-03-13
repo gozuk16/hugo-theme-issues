@@ -1089,6 +1089,7 @@ body.sidebar-right-collapsed {
 .sidebar-right {
   position: relative;
   overflow: visible;
+  min-height: 0; /* グリッドアイテムがトラックサイズ内に収まり、.sidebar-contentのスクロールを有効にする */
 }
 
 /* サイドバー内コンテンツ領域（JSで生成） */
