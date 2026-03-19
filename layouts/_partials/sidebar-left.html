@@ -59,17 +59,7 @@ partialCached で呼び出されるため、セクション単位でキャッシ
           <li>
             <a href="{{ $epic.RelPermalink }}" data-url="{{ $epic.RelPermalink }}">
               {{- /* Issue Type アイコン表示 */}}
-              <span class="issue-type-icon">
-                {{- with $epic.Params.issue_type }}
-                  {{- if or (eq . "Epic") (eq . "エピック") }}🟣
-                  {{- else if or (eq . "Story") (eq . "ストーリー") }}📗
-                  {{- else if or (eq . "Task") (eq . "タスク") }}☑️
-                  {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") }}➡️
-                  {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
-                  {{- else }}📄
-                  {{- end }}
-                {{- end }}
-              </span>
+              {{- partial "issue-type-icon.html" $epic.Params.issue_type }}
               {{- with $epic.Params.issue_key }}{{ . }}: {{- end }}
               {{ $epic.Title }}
             </a>
@@ -85,17 +75,7 @@ partialCached で呼び出されるため、セクション単位でキャッシ
             <li class="child-issue">
               <a href="{{ $child.RelPermalink }}" data-url="{{ $child.RelPermalink }}">
                 {{- /* Issue Type アイコン表示 */}}
-                <span class="issue-type-icon">
-                  {{- with $child.Params.issue_type }}
-                    {{- if or (eq . "Epic") (eq . "エピック") }}🟣
-                    {{- else if or (eq . "Story") (eq . "ストーリー") }}📗
-                    {{- else if or (eq . "Task") (eq . "タスク") }}☑️
-                    {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") }}➡️
-                    {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
-                    {{- else }}📄
-                    {{- end }}
-                  {{- end }}
-                </span>
+                {{- partial "issue-type-icon.html" $child.Params.issue_type }}
                 {{- with $child.Params.issue_key }}{{ . }}: {{- end }}
                 {{ $child.Title }}
               </a>
@@ -111,17 +91,7 @@ partialCached で呼び出されるため、セクション単位でキャッシ
               <li class="grandchild-issue">
                 <a href="{{ $grandchild.RelPermalink }}" data-url="{{ $grandchild.RelPermalink }}">
                   {{- /* Issue Type アイコン表示 */}}
-                  <span class="issue-type-icon">
-                    {{- with $grandchild.Params.issue_type }}
-                      {{- if or (eq . "Epic") (eq . "エピック") }}🟣
-                      {{- else if or (eq . "Story") (eq . "ストーリー") }}📗
-                      {{- else if or (eq . "Task") (eq . "タスク") }}☑️
-                      {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") }}➡️
-                      {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
-                      {{- else }}📄
-                      {{- end }}
-                    {{- end }}
-                  </span>
+                  {{- partial "issue-type-icon.html" $grandchild.Params.issue_type }}
                   {{- with $grandchild.Params.issue_key }}{{ . }}: {{- end }}
                   {{ $grandchild.Title }}
                 </a>
@@ -147,17 +117,7 @@ partialCached で呼び出されるため、セクション単位でキャッシ
             <li class="orphan-issue">
               <a href="{{ $orphan.RelPermalink }}" data-url="{{ $orphan.RelPermalink }}">
                 {{- /* Issue Type アイコン表示 */}}
-                <span class="issue-type-icon">
-                  {{- with $orphan.Params.issue_type }}
-                    {{- if or (eq . "Epic") (eq . "エピック") }}🟣
-                    {{- else if or (eq . "Story") (eq . "ストーリー") }}📗
-                    {{- else if or (eq . "Task") (eq . "タスク") }}☑️
-                    {{- else if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") }}➡️
-                    {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
-                    {{- else }}📄
-                    {{- end }}
-                  {{- end }}
-                </span>
+                {{- partial "issue-type-icon.html" $orphan.Params.issue_type }}
                 {{- with $orphan.Params.issue_key }}{{ . }}: {{- end }}
                 {{ $orphan.Title }}
               </a>

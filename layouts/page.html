@@ -24,34 +24,11 @@
   {{ end }}
 
   {{- /* 各メタ情報セクションのHTMLを構築 */}}
-  {{ $metaHTML := "" }}
-
-  {{- /* 修正バージョン */}}
-  {{- with $.GetTerms "fix_versions" }}
-    {{ $metaHTML = printf "%s<section class=\"widget page-meta\"><strong>修正バージョン</strong><ul class=\"tag-list\">" $metaHTML }}
-    {{- range . }}
-      {{ $metaHTML = printf "%s<li><a href=\"%s\" class=\"tag-badge\">%s</a></li>" $metaHTML .RelPermalink .LinkTitle }}
-    {{- end }}
-    {{ $metaHTML = printf "%s</ul></section>" $metaHTML }}
-  {{- end }}
-
-  {{- /* 影響バージョン */}}
-  {{- with $.GetTerms "affected_versions" }}
-    {{ $metaHTML = printf "%s<section class=\"widget page-meta\"><strong>影響バージョン</strong><ul class=\"tag-list\">" $metaHTML }}
-    {{- range . }}
-      {{ $metaHTML = printf "%s<li><a href=\"%s\" class=\"tag-badge\">%s</a></li>" $metaHTML .RelPermalink .LinkTitle }}
-    {{- end }}
-    {{ $metaHTML = printf "%s</ul></section>" $metaHTML }}
-  {{- end }}
-
-  {{- /* ラベル */}}
-  {{- with $.GetTerms "tags" }}
-    {{ $metaHTML = printf "%s<section class=\"widget page-meta\"><strong>ラベル</strong><ul class=\"tag-list\">" $metaHTML }}
-    {{- range . }}
-      {{ $metaHTML = printf "%s<li><a href=\"%s\" class=\"tag-badge\">%s</a></li>" $metaHTML .RelPermalink .LinkTitle }}
-    {{- end }}
-    {{ $metaHTML = printf "%s</ul></section>" $metaHTML }}
-  {{- end }}
+  {{- $metaHTML := printf "%s%s%s"
+    (partial "taxonomy-widget.html" (dict "label" "修正バージョン" "terms" ($.GetTerms "fix_versions")))
+    (partial "taxonomy-widget.html" (dict "label" "影響バージョン" "terms" ($.GetTerms "affected_versions")))
+    (partial "taxonomy-widget.html" (dict "label" "ラベル" "terms" ($.GetTerms "tags")))
+  -}}
 
   {{- /* 「<h2 id="開発情報">」の前にメタ情報を挿入。開発情報がない場合は末尾に追加 */}}
   {{ if findRE `<h2 id="開発情報">` $right }}
