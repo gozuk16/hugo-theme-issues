@@ -45,7 +45,7 @@
           {{- /* エピック行 */ -}}
           <tr>
             <td class="summary-col">
-              <span class="issue-type-icon">🟣</span>
+              {{- partial "issue-type-icon.html" $epic.Params.issue_type }}
               <strong>{{ $epic.Params.issue_key }}</strong>:
               <a href="{{ $epic.RelPermalink }}">{{ $epic.Title }}</a>
             </td>
@@ -64,15 +64,7 @@
             {{- $familyKeys.Set $child.Params.issue_key true }}
             <tr>
               <td class="summary-col child-issue">
-                <span class="issue-type-icon">
-                  {{- with $child.Params.issue_type }}
-                    {{- if or (eq . "Story") (eq . "ストーリー") }}📗
-                    {{- else if or (eq . "Task") (eq . "タスク") }}☑️
-                    {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
-                    {{- else }}📄
-                    {{- end }}
-                  {{- end }}
-                </span>
+                {{- partial "issue-type-icon.html" $child.Params.issue_type }}
                 <strong>{{ $child.Params.issue_key }}</strong>:
                 <a href="{{ $child.RelPermalink }}">{{ $child.Title }}</a>
               </td>
@@ -91,14 +83,7 @@
               {{- $familyKeys.Set $grandchild.Params.issue_key true }}
               <tr>
                 <td class="summary-col grandchild-issue">
-                  <span class="issue-type-icon">
-                    {{- with $grandchild.Params.issue_type }}
-                      {{- if or (eq . "Sub-task") (eq . "Subtask") (eq . "サブタスク") }}➡️
-                      {{- else if or (eq . "Task") (eq . "タスク") }}☑️
-                      {{- else }}📄
-                      {{- end }}
-                    {{- end }}
-                  </span>
+                  {{- partial "issue-type-icon.html" $grandchild.Params.issue_type }}
                   <strong>{{ $grandchild.Params.issue_key }}</strong>:
                   <a href="{{ $grandchild.RelPermalink }}">{{ $grandchild.Title }}</a>
                 </td>
@@ -125,16 +110,7 @@
         {{- range $orphan := $sortedOrphans }}
           <tr>
             <td class="summary-col">
-              <span class="issue-type-icon">
-                {{- with $orphan.Params.issue_type }}
-                  {{- if or (eq . "Epic") (eq . "エピック") }}🟣
-                  {{- else if or (eq . "Story") (eq . "ストーリー") }}📗
-                  {{- else if or (eq . "Task") (eq . "タスク") }}☑️
-                  {{- else if or (eq . "Bug") (eq . "バグ") }}🐞
-                  {{- else }}📄
-                  {{- end }}
-                {{- end }}
-              </span>
+              {{- partial "issue-type-icon.html" $orphan.Params.issue_type }}
               <strong>{{ $orphan.Params.issue_key }}</strong>:
               <a href="{{ $orphan.RelPermalink }}">{{ $orphan.Title }}</a>
             </td>

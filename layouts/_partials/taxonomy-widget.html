@@ -1,0 +1,10 @@
+{{- /* dict "label" "修正バージョン" "terms" ($.GetTerms "fix_versions") で呼び出し */ -}}
+{{- $html := "" -}}
+{{- with .terms -}}
+  {{- $html = printf "<section class=\"widget page-meta\"><strong>%s</strong><ul class=\"tag-list\">" $.label -}}
+  {{- range . -}}
+    {{- $html = printf "%s<li><a href=\"%s\" class=\"tag-badge\">%s</a></li>" $html .RelPermalink .LinkTitle -}}
+  {{- end -}}
+  {{- $html = printf "%s</ul></section>" $html -}}
+{{- end -}}
+{{- return $html -}}
