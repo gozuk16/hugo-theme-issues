@@ -14,6 +14,9 @@
           <th>Assignee</th>
           <th>Start Date</th>
           <th>Due Date</th>
+          <th>Σ初期見積り</th>
+          <th>Σ残り時間</th>
+          <th>Σ作業時間</th>
         </tr>
       </thead>
       <tbody>
@@ -53,6 +56,9 @@
             <td class="assignee-col">{{ $epic.Params.assignee }}</td>
             <td class="date-col">{{ $epic.Params.startdate }}</td>
             <td class="date-col">{{ $epic.Params.duedate }}</td>
+            <td class="time-col">{{ $epic.Params.aggregate_time_original_estimate }}</td>
+            <td class="time-col">{{ $epic.Params.aggregate_time_estimate }}</td>
+            <td class="time-col">{{ $epic.Params.aggregate_time_spent }}</td>
           </tr>
 
           {{- /* 子issueをインデックスから取得してrank順にソート */ -}}
@@ -72,6 +78,9 @@
               <td class="assignee-col">{{ $child.Params.assignee }}</td>
               <td class="date-col">{{ $child.Params.startdate }}</td>
               <td class="date-col">{{ $child.Params.duedate }}</td>
+              <td class="time-col">{{ $child.Params.aggregate_time_original_estimate }}</td>
+              <td class="time-col">{{ $child.Params.aggregate_time_estimate }}</td>
+              <td class="time-col">{{ $child.Params.aggregate_time_spent }}</td>
             </tr>
 
             {{- /* 孫issueをインデックスから取得してrank順にソート */ -}}
@@ -91,6 +100,9 @@
                 <td class="assignee-col">{{ $grandchild.Params.assignee }}</td>
                 <td class="date-col">{{ $grandchild.Params.startdate }}</td>
                 <td class="date-col">{{ $grandchild.Params.duedate }}</td>
+                <td class="time-col">{{ $grandchild.Params.aggregate_time_original_estimate }}</td>
+                <td class="time-col">{{ $grandchild.Params.aggregate_time_estimate }}</td>
+                <td class="time-col">{{ $grandchild.Params.aggregate_time_spent }}</td>
               </tr>
             {{- end }}
           {{- end }}
@@ -118,6 +130,9 @@
             <td class="assignee-col">{{ $orphan.Params.assignee }}</td>
             <td class="date-col">{{ $orphan.Params.startdate }}</td>
             <td class="date-col">{{ $orphan.Params.duedate }}</td>
+            <td class="time-col">{{ $orphan.Params.aggregate_time_original_estimate }}</td>
+            <td class="time-col">{{ $orphan.Params.aggregate_time_estimate }}</td>
+            <td class="time-col">{{ $orphan.Params.aggregate_time_spent }}</td>
           </tr>
         {{- end }}
       </tbody>
