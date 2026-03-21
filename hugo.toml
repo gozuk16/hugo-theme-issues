@@ -29,8 +29,15 @@ title = 'Hugo theme JIRA issues'
   isHTML = true
   notAlternative = true
 
+[outputFormats.rawmd]
+  mediaType = "text/plain"
+  baseName = "raw"
+  isPlainText = true
+  notAlternative = true
+
 [outputs]
   section = ["html", "sidebar"]
+  page = ["html", "rawmd"]
 
 [markup]
   [markup.goldmark]

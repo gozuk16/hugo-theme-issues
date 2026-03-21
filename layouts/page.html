@@ -6,8 +6,9 @@
   <div class="raw-toggle-container">
     <button type="button" class="raw-toggle-btn" onclick="toggleRawMarkdown()" aria-expanded="false" aria-controls="raw-markdown">Markdown を表示</button>
   </div>
-  <div id="raw-markdown" class="raw-markdown-view" hidden data-pagefind-ignore>
-    <pre><code>{{ .RawContent }}</code></pre>
+  <div id="raw-markdown" class="raw-markdown-view" hidden data-pagefind-ignore
+       data-raw-url="{{ .RelPermalink }}raw.txt">
+    <pre><code></code></pre>
   </div>
   <article>
 	{{ $main | safeHTML }}
