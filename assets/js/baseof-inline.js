@@ -81,10 +81,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
       }
     }
 
-    // アクティブ要素へスクロール
-    if (bestMatch) {
-      bestMatch.scrollIntoView({ block: 'center', behavior: 'instant' });
-    }
   }
 
   // サイドバーの動的読み込み or 静的サイドバーの状態適用

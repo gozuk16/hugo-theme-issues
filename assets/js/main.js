@@ -173,5 +173,10 @@ window.addEventListener('DOMContentLoaded', function() {
   // 左サイドバーは fetch 完了後（または静的の場合も同じイベント）に初期化
   document.addEventListener('sidebar-left-loaded', function() {
     initSidebar('left');
+    // initSidebar による DOM 再構成（.sidebar-content wrap）後にスクロール
+    var active = document.querySelector('.sidebar-left a.active');
+    if (active) {
+      active.scrollIntoView({ block: 'center', behavior: 'instant' });
+    }
   }, { once: true });
 });
