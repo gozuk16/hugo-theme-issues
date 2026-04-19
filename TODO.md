@@ -48,7 +48,7 @@
 - [x] `baseof.html` に `data-baseurl` 属性を追加（JS から baseURL 取得用）
 - [x] `baseof-inline.js` に issue key ダイレクトジャンプを追加（`BOFL-123` 入力 + Enter で即遷移）
 - [x] ブランチ作成・コミット・PR作成
-- [ ] 親プロジェクト `hugo-jira/pagefind.yml` のコミット（別リポジトリ）
+- [x] `pagefind.yml` をテーマルートに追加し README.md の手順を更新
 
 ## pagefind 検索高速化（中期: Meilisearch 移行）
 

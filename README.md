@@ -232,19 +232,39 @@ hugo-theme-issues/
 
 #### セットアップ手順
 
-1. Hugoでサイトをビルド：
+1. Pagefind の設定ファイルをプロジェクトルートにコピー（初回のみ）：
+
+```bash
+cp themes/hugo-theme-issues/pagefind.yml .
+```
+
+`pagefind.yml` の内容（必要に応じて調整してください）：
+
+```yaml
+site: public
+force_language: ja       # 日本語インデックスに固定
+exclude_selectors:       # 本文以外をインデックス対象外に
+  - "#raw-markdown"
+  - ".sidebar-left"
+  - ".header-search"
+  - ".taxonomy-widget"
+  - "footer"
+  - "nav"
+```
+
+2. Hugoでサイトをビルド：
 
 ```bash
 hugo
 ```
 
-2. Pagefindでインデックスを作成：
+3. Pagefindでインデックスを作成（`pagefind.yml` を自動検出）：
 
 ```bash
-npx pagefind --site public
+npx pagefind
 ```
 
-3. サーバーを起動して確認：
+4. サーバーを起動して確認：
 
 ```bash
 hugo server
@@ -255,6 +275,7 @@ hugo server
 - ヘッダーの検索ボックスにキーワードを入力
 - 矢印キー（↑↓）で検索結果を選択
 - Enterキーで選択したページに移動
+- **issue key ダイレクトジャンプ**: `BOFL-123` のような `プロジェクトキー-番号` 形式で入力して Enter を押すと、検索を経由せず即座に該当ページへ移動
 - Escキーで選択解除
 
 **注意**: `hugo server -D` でドラフトを含めて開発する場合、Pagefindインデックスは`public`ディレクトリのビルド済みコンテンツのみを対象とするため、ドラフトページは検索対象外となります。

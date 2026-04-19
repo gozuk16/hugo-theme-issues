@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - issue key ダイレクトジャンプ: 検索バーに `BOFL-123` 形式で入力して Enter を押すと、pagefind を介さず即座に該当 issue ページへ遷移
 - `baseof.html` の `<html>` タグに `data-baseurl` 属性を追加（JS から Hugo の baseURL を取得するため）
-- `hugo-jira/pagefind.yml` 新設: `force_language: ja` と不要要素の `exclude_selectors` を設定し、pagefind インデックスサイズとビルド時間を削減
+- `pagefind.yml` をテーマルートに追加: `force_language: ja` と不要要素の `exclude_selectors` を設定し、インデックスサイズとビルド時間を削減。`cp themes/hugo-theme-issues/pagefind.yml .` でプロジェクトルートにコピーして使用
+- `README.md` のセットアップ手順に `pagefind.yml` のコピー手順と issue key ダイレクトジャンプの説明を追記
 
 ### Fixed
 - section.html / sidebar-left.html で issue_key が未設定のページでビルドエラーが発生する問題を修正
