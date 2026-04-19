@@ -3,7 +3,7 @@
 
   {{- /* プロジェクト一覧を表示 */}}
   <ul>
-  {{ range .Site.Sections }}
+  {{ range sort .Site.Sections "Title" "asc" }}
     <li>
       <a href="{{ .Permalink }}">{{ .Title }}</a>
     </li>
