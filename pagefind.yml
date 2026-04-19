@@ -1,0 +1,9 @@
+site: public
+force_language: ja
+exclude_selectors:
+  - "#raw-markdown"
+  - ".sidebar-left"
+  - ".header-search"
+  - ".taxonomy-widget"
+  - "footer"
+  - "nav"
