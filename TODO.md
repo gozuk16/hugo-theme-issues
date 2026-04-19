@@ -43,6 +43,21 @@
 - [x] CSS スタイル追加（.sidebar-nav）
 - [ ] 動作確認（hugo server -D）
 
+## pagefind 検索高速化（短期チューニング）
+
+- [x] `baseof.html` に `data-baseurl` 属性を追加（JS から baseURL 取得用）
+- [x] `baseof-inline.js` に issue key ダイレクトジャンプを追加（`BOFL-123` 入力 + Enter で即遷移）
+- [x] ブランチ作成・コミット・PR作成
+- [ ] 親プロジェクト `hugo-jira/pagefind.yml` のコミット（別リポジトリ）
+
+## pagefind 検索高速化（中期: Meilisearch 移行）
+
+- [ ] `layouts/index.json` 新設（全 page を JSON 出力）
+- [ ] 親プロジェクトに `docker-compose.yml` 追加（Meilisearch）
+- [ ] `Makefile` に `index:` ターゲット追加（差分インデックス投入）
+- [ ] `head.html` / `baseof-inline.js` / `main.css` を InstantMeiliSearch ベースに差し替え
+- [ ] pagefind 撤去・`README.md` 手順更新
+
 ## ドキュメントとテストの整備
 
 - [ ] TODO.mdを最新状況に更新

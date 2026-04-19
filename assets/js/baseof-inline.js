@@ -121,14 +121,25 @@ window.addEventListener('DOMContentLoaded', (event) => {
       e.preventDefault();
       selectedIndex = Math.max(selectedIndex - 1, 0);
       updateSelection(results, loadMoreBtn);
-    } else if (e.key === 'Enter' && selectedIndex >= 0) {
-      e.preventDefault();
-      if (selectedIndex < results.length) {
-        const link = results[selectedIndex].querySelector('a');
-        if (link) link.click();
-      } else if (loadMoreBtn) {
-        loadMoreBtn.click();
-        selectedIndex = -1;
+    } else if (e.key === 'Enter') {
+      const inputEl = searchContainer.querySelector('.pagefind-ui__search-input');
+      const val = inputEl ? inputEl.value.trim() : '';
+      const keyMatch = /^([A-Z][A-Z0-9]*)-(\d+)$/.exec(val);
+      if (keyMatch) {
+        e.preventDefault();
+        const base = document.documentElement.dataset.baseurl || '/';
+        window.location.href = base + keyMatch[1] + '/' + val + '/';
+        return;
+      }
+      if (selectedIndex >= 0) {
+        e.preventDefault();
+        if (selectedIndex < results.length) {
+          const link = results[selectedIndex].querySelector('a');
+          if (link) link.click();
+        } else if (loadMoreBtn) {
+          loadMoreBtn.click();
+          selectedIndex = -1;
+        }
       }
     } else if (e.key === 'Escape') {
       e.preventDefault();

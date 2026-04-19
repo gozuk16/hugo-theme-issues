@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
+<html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}" data-baseurl="{{ "/" | relURL }}">
 <head>
   <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ with .Params.issue_key }}[{{ . }}]{{ end }}{{ .Title }} - {{ site.Title }}{{ end }}</title>
   {{ partialCached "head.html" . "global" }}
