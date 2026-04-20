@@ -50,6 +50,11 @@
 - [x] ブランチ作成・コミット・PR作成
 - [x] `pagefind.yml` をテーマルートに追加し README.md の手順を更新
 
+## 検索エリア Enter キーでのチケット遷移バグ修正
+
+- [x] `baseof-inline.js:117` の正規表現判定前に `toUpperCase()` を追加（小文字・混在入力対応）
+- [x] ブランチ作成・コミット・PR作成
+
 ## pagefind 検索高速化（中期: Meilisearch 移行）
 
 - [ ] `layouts/index.json` 新設（全 page を JSON 出力）

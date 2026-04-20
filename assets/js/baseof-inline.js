@@ -107,6 +107,27 @@ window.addEventListener('DOMContentLoaded', (event) => {
   let selectedIndex = -1;
   const searchContainer = document.getElementById('search');
 
+  // pagefind-ui が input を生成してから直接リスナーを付ける（stopPropagation 対策）
+  const observer = new MutationObserver(() => {
+    const pagefindInput = searchContainer.querySelector('.pagefind-ui__search-input');
+    if (pagefindInput && !pagefindInput.dataset.keyJumpBound) {
+      pagefindInput.dataset.keyJumpBound = '1';
+      pagefindInput.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') return;
+        const val = pagefindInput.value.trim().toUpperCase();
+        const keyMatch = /^([A-Z][A-Z0-9]*)-(\d+)$/.exec(val);
+        if (keyMatch) {
+          e.preventDefault();
+          e.stopPropagation();
+          const base = document.documentElement.dataset.baseurl || '/';
+          window.location.href = base + keyMatch[1].toLowerCase() + '/' + val.toLowerCase() + '/';
+        }
+      });
+      observer.disconnect();
+    }
+  });
+  observer.observe(searchContainer, { childList: true, subtree: true });
+
   searchContainer.addEventListener('keydown', (e) => {
     const results = searchContainer.querySelectorAll('.pagefind-ui__result');
     const loadMoreBtn = searchContainer.querySelector('.pagefind-ui__button');
@@ -122,15 +143,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
       selectedIndex = Math.max(selectedIndex - 1, 0);
       updateSelection(results, loadMoreBtn);
     } else if (e.key === 'Enter') {
-      const inputEl = searchContainer.querySelector('.pagefind-ui__search-input');
-      const val = inputEl ? inputEl.value.trim() : '';
-      const keyMatch = /^([A-Z][A-Z0-9]*)-(\d+)$/.exec(val);
-      if (keyMatch) {
-        e.preventDefault();
-        const base = document.documentElement.dataset.baseurl || '/';
-        window.location.href = base + keyMatch[1] + '/' + val + '/';
-        return;
-      }
       if (selectedIndex >= 0) {
         e.preventDefault();
         if (selectedIndex < results.length) {
