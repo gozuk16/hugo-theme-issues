@@ -120,7 +120,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
           e.preventDefault();
           e.stopPropagation();
           const base = document.documentElement.dataset.baseurl || '/';
-          window.location.href = base + keyMatch[1] + '/' + val + '/';
+          window.location.href = base + keyMatch[1].toLowerCase() + '/' + val.toLowerCase() + '/';
         }
       });
       observer.disconnect();
