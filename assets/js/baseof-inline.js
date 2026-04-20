@@ -114,7 +114,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
       pagefindInput.dataset.keyJumpBound = '1';
       pagefindInput.addEventListener('keydown', (e) => {
         if (e.key !== 'Enter') return;
-        const val = pagefindInput.value.trim();
+        const val = pagefindInput.value.trim().toUpperCase();
         const keyMatch = /^([A-Z][A-Z0-9]*)-(\d+)$/.exec(val);
         if (keyMatch) {
           e.preventDefault();

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - issue key ダイレクトジャンプが動作しない不具合を修正: pagefind-ui が input の Enter イベントを `stopPropagation` するため、MutationObserver で input 生成を待ち、直接 keydown リスナーを付ける方式に変更
+- issue key ダイレクトジャンプが小文字・混在大小文字の入力（例: `kt-1`, `Kt-1`）で動作しない不具合を修正: 判定前に `toUpperCase()` を適用し大小文字を統一
 
 ### Added
 - issue key ダイレクトジャンプ: 検索バーに `BOFL-123` 形式で入力して Enter を押すと、pagefind を介さず即座に該当 issue ページへ遷移
