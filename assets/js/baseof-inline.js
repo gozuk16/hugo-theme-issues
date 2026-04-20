@@ -107,19 +107,28 @@ window.addEventListener('DOMContentLoaded', (event) => {
   let selectedIndex = -1;
   const searchContainer = document.getElementById('search');
 
-  searchContainer.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      const inputEl = searchContainer.querySelector('.pagefind-ui__search-input');
-      const val = inputEl ? inputEl.value.trim() : '';
-      const keyMatch = /^([A-Z][A-Z0-9]*)-(\d+)$/.exec(val);
-      if (keyMatch) {
-        e.preventDefault();
-        const base = document.documentElement.dataset.baseurl || '/';
-        window.location.href = base + keyMatch[1] + '/' + val + '/';
-        return;
-      }
+  // pagefind-ui が input を生成してから直接リスナーを付ける（stopPropagation 対策）
+  const observer = new MutationObserver(() => {
+    const pagefindInput = searchContainer.querySelector('.pagefind-ui__search-input');
+    if (pagefindInput && !pagefindInput.dataset.keyJumpBound) {
+      pagefindInput.dataset.keyJumpBound = '1';
+      pagefindInput.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') return;
+        const val = pagefindInput.value.trim();
+        const keyMatch = /^([A-Z][A-Z0-9]*)-(\d+)$/.exec(val);
+        if (keyMatch) {
+          e.preventDefault();
+          e.stopPropagation();
+          const base = document.documentElement.dataset.baseurl || '/';
+          window.location.href = base + keyMatch[1] + '/' + val + '/';
+        }
+      });
+      observer.disconnect();
     }
+  });
+  observer.observe(searchContainer, { childList: true, subtree: true });
 
+  searchContainer.addEventListener('keydown', (e) => {
     const results = searchContainer.querySelectorAll('.pagefind-ui__result');
     const loadMoreBtn = searchContainer.querySelector('.pagefind-ui__button');
     const totalItems = results.length + (loadMoreBtn ? 1 : 0);

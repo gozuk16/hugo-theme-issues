@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
-- issue key ダイレクトジャンプが動作しない不具合を修正: keydown ハンドラ冒頭の `totalItems === 0` 早期リターンに引っかかっていたため、判定を最先頭に移動
+- issue key ダイレクトジャンプが動作しない不具合を修正: pagefind-ui が input の Enter イベントを `stopPropagation` するため、MutationObserver で input 生成を待ち、直接 keydown リスナーを付ける方式に変更
 
 ### Added
 - issue key ダイレクトジャンプ: 検索バーに `BOFL-123` 形式で入力して Enter を押すと、pagefind を介さず即座に該当 issue ページへ遷移
