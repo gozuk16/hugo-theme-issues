@@ -108,6 +108,18 @@ window.addEventListener('DOMContentLoaded', (event) => {
   const searchContainer = document.getElementById('search');
 
   searchContainer.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const inputEl = searchContainer.querySelector('.pagefind-ui__search-input');
+      const val = inputEl ? inputEl.value.trim() : '';
+      const keyMatch = /^([A-Z][A-Z0-9]*)-(\d+)$/.exec(val);
+      if (keyMatch) {
+        e.preventDefault();
+        const base = document.documentElement.dataset.baseurl || '/';
+        window.location.href = base + keyMatch[1] + '/' + val + '/';
+        return;
+      }
+    }
+
     const results = searchContainer.querySelectorAll('.pagefind-ui__result');
     const loadMoreBtn = searchContainer.querySelector('.pagefind-ui__button');
     const totalItems = results.length + (loadMoreBtn ? 1 : 0);
@@ -122,15 +134,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
       selectedIndex = Math.max(selectedIndex - 1, 0);
       updateSelection(results, loadMoreBtn);
     } else if (e.key === 'Enter') {
-      const inputEl = searchContainer.querySelector('.pagefind-ui__search-input');
-      const val = inputEl ? inputEl.value.trim() : '';
-      const keyMatch = /^([A-Z][A-Z0-9]*)-(\d+)$/.exec(val);
-      if (keyMatch) {
-        e.preventDefault();
-        const base = document.documentElement.dataset.baseurl || '/';
-        window.location.href = base + keyMatch[1] + '/' + val + '/';
-        return;
-      }
       if (selectedIndex >= 0) {
         e.preventDefault();
         if (selectedIndex < results.length) {

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- issue key ダイレクトジャンプが動作しない不具合を修正: keydown ハンドラ冒頭の `totalItems === 0` 早期リターンに引っかかっていたため、判定を最先頭に移動
+
 ### Added
 - issue key ダイレクトジャンプ: 検索バーに `BOFL-123` 形式で入力して Enter を押すと、pagefind を介さず即座に該当 issue ページへ遷移
 - `baseof.html` の `<html>` タグに `data-baseurl` 属性を追加（JS から Hugo の baseURL を取得するため）
